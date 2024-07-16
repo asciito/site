@@ -14,6 +14,23 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                ...defaultTheme.colors,
+                'harlequin': {
+                    DEFAULT: '#33FF33',
+                    50: '#EBFFEB',
+                    100: '#D6FFD6',
+                    200: '#ADFFAD',
+                    300: '#85FF85',
+                    400: '#5CFF5C',
+                    500: '#33FF33',
+                    600: '#00FA00',
+                    700: '#00C200',
+                    800: '#008A00',
+                    900: '#005200',
+                    950: '#003600'
+                },
+            }
         },
     },
 
