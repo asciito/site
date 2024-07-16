@@ -12,16 +12,28 @@
             <nav id="menu" class="p-4">
                 <ol class="flex flex-wrap justify-center space-x-4">
                     <li>
-                        <a href="/" class="relative group p-1">
+                        <a href="{{ route('home') }}" class="relative group p-1">
                             <span class="relative z-10">HOME</span>
-                            <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-0 group-hover:scale-110 w-full h-full bg-transparent group-hover:bg-[rgba(51,255,51,1.0)] transition duration-100"></span>
+                            <span @class([
+                                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                "w-full h-full",
+                                "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! \Illuminate\Support\Facades\Route::is('home'),
+                                "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
+                                "transition duration-100",
+                            ])></span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="/contact" class="relative group p-1">
+                        <a href="{{ route('contact') }}" class="relative group p-1">
                             <span class="relative z-10">CONTACT</span>
-                            <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-0 group-hover:scale-110 w-full h-full bg-transparent group-hover:bg-[rgba(51,255,51,1.0)] transition duration-100"></span>
+                            <span @class([
+                                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                "w-full h-full",
+                                "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! \Illuminate\Support\Facades\Route::is('contact'),
+                                "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
+                                "transition duration-100",
+                            ])></span>
                         </a>
                     </li>
                 </ol>
