@@ -6,4 +6,28 @@
     html {
         @apply bg-slate-50 text-slate-800 font-mono;
     }
+
+    @supports (hanging-punctuation: first) and (font: -apple-system-body) and (-webkit-appearance: none) {
+        html {
+            & {
+                --bar-color: rgba(51, 255, 51, 1.0);
+
+                scrollbar-color: #999 #333;
+            }
+
+            &::-webkit-scrollbar {
+                width: 10px; /* Mostly for vertical scrollbars */
+                height: 10px; /* Mostly for horizontal scrollbars */
+            }
+
+            &::-webkit-scrollbar-thumb { /* Foreground */
+                background: var(--bar-color);
+            }
+
+            &::-webkit-scrollbar-track { /* Background */
+                background: #1e293b;
+            }
+        }
+    }
 }
+
