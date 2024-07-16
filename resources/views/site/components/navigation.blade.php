@@ -28,7 +28,7 @@
             </nav>
 
             <div id="cv" class="p-4 w-full">
-                <form method="POST" class="flex justify-center w-full">
+                <form method="POST" class="flex justify-end w-full">
                     @csrf
 
                     <button class="px-6 py-2 bg-[rgba(51,255,51,1.0)] cursor-pointer">
