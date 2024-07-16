@@ -15,7 +15,9 @@
 
     <main class="border-b-2 border-slate-400">
         <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto my-10 p-4">
-            {{ $slot }}
+            <div class="max-w-3xl mx-auto">
+                {{ $slot }}
+            </div>
         </div>
     </main>
 

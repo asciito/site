@@ -7,6 +7,10 @@ Route::group([], function () {
         ->name('home');
     Route::get('contact/', [App\Http\Controllers\SiteController::class, 'contact'])
         ->name('contact');
+
+    Route::get('/{post:slug}', function (\App\Models\Post $post) {
+       return  view('site::pages.post', ['post' => $post]);
+    })->name('post');
 });
 
 Route::group([
