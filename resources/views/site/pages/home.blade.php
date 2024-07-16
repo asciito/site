@@ -8,6 +8,14 @@
         <h2 class="text-4xl mb-8">Recent Posts</h2>
 
         <section>
+            <form method="POST" class="flex space-x-2 mb-5">
+                <div class="w-full">
+                    <input id="search" type="search" name="search" placeholder="Search by name" class="px-2 py-1 w-full text-lg p-0 border-none bg-[rgba(51,255,51,1.0)] placeholder:text-slate-800 outline-none focus:ring focus:ring-slate-500">
+                </div>
+
+                <button class="text-lg px-4 py-1 bg-[rgba(51,255,51,1.0)] cursor-pointer">SEARCH</button>
+            </form>
+
             <div class="flex flex-wrap space-y-5">
                 <article class="space-y-2">
                     <header>
