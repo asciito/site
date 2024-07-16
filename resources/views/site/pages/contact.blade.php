@@ -1,4 +1,4 @@
-<x-site::layout>
+<x-site::layout title-page="Contact">
     <div class="max-w-3xl mx-auto">
         <div class="text-center mb-10">
             <h2 class="text-4xl mb-8">Contact Me</h2>
