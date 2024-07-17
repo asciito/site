@@ -5,8 +5,9 @@
 
     <div class="col-span-1">
         <textarea
-            id="{{ $id }}"
+            id="{{ $id ?? $name }}"
             name="{{ $name }}"
+            placeholder="{{ $placeholder ?? \Illuminate\Support\Str::of($name)->snake(' ')->title() }}"
             {{ $attributes->class([
                 'w-full bg-transparent p-0 text-2xl',
                 'focus:outline-none',

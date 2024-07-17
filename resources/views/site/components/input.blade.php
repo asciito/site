@@ -5,9 +5,10 @@
 
     <div class="col-span-1">
         <input
-            id="{{ $id }}"
+            id="{{ $id ?? $name }}"
             name="{{ $name }}"
             type="{{ $type }}"
+            placeholder="{{ $placeholder ?? \Illuminate\Support\Str::of($name)->snake(' ')->title() }}"
             {{ $attributes->class([
                 'w-full text-2xl',
                 'bg-transparent focus:outline-none',
