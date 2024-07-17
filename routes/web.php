@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+require __DIR__.'/auth.php';
+
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/', [\App\Http\Controllers\SiteController::class, 'index'])
         ->name('home');
@@ -22,5 +24,3 @@ Route::group([
 
     Route::view('profile/', 'profile')->name('profile');
 });
-
-require __DIR__.'/auth.php';
