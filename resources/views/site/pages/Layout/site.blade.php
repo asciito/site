@@ -8,6 +8,7 @@
 
     <title>{{ config('app.name') . \Illuminate\Support\Str::title($titlePage ? " | $titlePage" : '') }}</title>
 
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
@@ -62,5 +63,7 @@
             </form>
         </div>
     </footer>
+
+    @livewireScripts
 </body>
 </html>
