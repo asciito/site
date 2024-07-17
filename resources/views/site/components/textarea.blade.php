@@ -10,7 +10,7 @@
             {{ $attributes->class([
                 'w-full bg-transparent p-0 text-2xl',
                 'focus:outline-none',
-                'uppercase placeholder:text-slate-600'
+                'placeholder:text-slate-600 uppercase focus:placeholder:text-slate-600/50'
             ]) }}
         ></textarea>
     </div>
