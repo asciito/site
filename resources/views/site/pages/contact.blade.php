@@ -11,17 +11,13 @@
 
     <form method="POST" class="grid md:grid-cols-2 space-y-4">
         <div class="col-span-full grid grid-cols-subgrid space-y-4 md:space-y-0 md:space-x-4">
-            <div class="col-span-1">
-                <input id="name" type="text" name="name" placeholder="> NAME" class="px-2 py-1 w-full text-2xl p-0 border-none bg-[rgba(51,255,51,1.0)] placeholder:text-slate-800 outline-none focus:ring focus:ring-slate-500">
-            </div>
+            <x-site::input id="name" name="name" type="text" placeholder="name" class="col-span-1"/>
 
-            <div class="col-span-1">
-                <input id="lastName" type="text" name="lastName" placeholder="> LAST NAME" class="px-2 py-1 w-full text-2xl p-0 border-none bg-[rgba(51,255,51,1.0)] placeholder:text-slate-800 outline-none focus:ring focus:ring-slate-500">
-            </div>
+            <x-site::input id="lastName" type="text" name="lastName" placeholder="last name" class="col-span-1"/>
         </div>
 
         <div class="col-span-full">
-            <textarea id="message" type="text" name="message" placeholder="> YOUR MESSAGE" class="px-2 py-1 w-full text-2xl p-0 border-none bg-[rgba(51,255,51,1.0)] placeholder:text-slate-800 outline-none focus:ring focus:ring-slate-500" rows="5"></textarea>
+            <x-site::textarea id="message" type="text" name="message" placeholder="your message" rows="5"/>
         </div>
 
         <div class="col-span-full flex justify-end">

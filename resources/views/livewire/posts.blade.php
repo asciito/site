@@ -33,13 +33,12 @@ new class extends Component {
 
 <section>
     <div class="w-full mb-5">
-        <input
+        <x-site::input
             id="search"
             type="search"
             name="search"
             placeholder="Search by name"
-            wire:model.live.debounce.500ms="search"
-            class="px-2 py-1 w-full text-lg p-0 border-none bg-[rgba(51,255,51,1.0)] placeholder:text-slate-800 outline-none focus:ring focus:ring-slate-500">
+            wire:model.live.debounce.500ms="search"/>
     </div>
 
     <div class="flex flex-wrap space-y-5">
