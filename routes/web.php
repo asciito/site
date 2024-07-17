@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group([], function () {
+Route::group(['middleware' => 'guest'], function () {
     Route::get('/', [\App\Http\Controllers\SiteController::class, 'index'])
         ->name('home');
     Route::get('contact/', [App\Http\Controllers\SiteController::class, 'contact'])
