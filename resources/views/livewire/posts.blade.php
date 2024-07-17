@@ -68,10 +68,9 @@ new class extends Component {
                         sunt tenetur voluptate!
                     </p>
 
-                    <a href="{{ $url }}"
-                       class="inline-block px-3 py-1 bg-[rgba(51,255,51,1.0)] text-sm cursor-pointer">
+                    <x-site::button href="{{ $url }}" size="sm">
                         VISIT
-                    </a>
+                    </x-site::button>
                 </div>
             </article>
         @empty
@@ -80,15 +79,12 @@ new class extends Component {
     </div>
 
     @if (! $this->posts()->onLastPage())
-        <div class="flex justify-center">
-            <button
-                wire:click="loadMorePosts()"
-                wire:loading.attr="disabled"
-                wire:loading.class="disabled:opacity-80"
-                class="mt-10 px-3 py-1 bg-[rgba(51,255,51,1.0)] text-xl cursor-pointer flex items-center space-x-2">
-                <span>LOAD MORE..</span>
-                <span class="loader hidden h-5 w-5 border-2 border-slate-50 border-b-transparent rounded-full animate-spin" wire:loading.class.remove="hidden"></span>
-            </button>
-        </div>
+        <x-site::button
+            class="mt-5"
+            position="center"
+            wire:click.throttle.500ms="loadMorePosts()"
+        >
+            LOAD MORE...
+        </x-site::button>
     @endif
 </section>
