@@ -90,6 +90,9 @@ class PostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('view')
+                        ->icon('heroicon-o-eye')
+                        ->url(fn (Post $record) => route('post', $record), true),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
