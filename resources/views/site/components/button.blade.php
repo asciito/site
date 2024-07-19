@@ -17,7 +17,6 @@
         $sizeClasses,
         'select-none',
         'text-slate-800',
-        'flex justify-between items-center',
         'px-6 py-2 bg-harlequin',
         'cursor-pointer',
         'w-full' => $shouldExpand,
