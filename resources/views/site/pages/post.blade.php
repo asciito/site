@@ -8,9 +8,13 @@
         </p>
     </div>
 
-    {{ $post->getFirstMedia() }}
+    @php
+        $media = $post->getFirstMedia();
+    @endphp
 
-    <div class="prose mt-4">
+    {{ $post->getFirstMedia()->img()->attributes(['class' => 'w-full']) }}
+
+    <div class="mt-4 prose prose-xl">
         {!! $post->content !!}
     </div>
 </x-site::layout>
