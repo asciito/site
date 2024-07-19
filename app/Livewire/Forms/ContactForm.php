@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Events\Contacted;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -29,14 +30,28 @@ class ContactForm extends Form
 
         RateLimiter::hit($this->throttleKey());
 
-        $this->sendEmail();
+        $this->sendMessage();
 
         $this->reset();
     }
 
-    protected function sendEmail(): void
+    public function sendMessage(): void
     {
-        // TODO: Implement
+        Contacted::dispatch(
+            $this->resolveUser(),
+            $this->message,
+        );
+    }
+
+    public function resolveUser(): \App\Models\User
+    {
+        return \App\Models\User::firstOrCreate(
+            ['email' => $this->email],
+            [
+                'name' => "{$this->name} {$this->lastName}",
+                'password' => bcrypt(Str::random(32)),
+            ]
+        );
     }
 
     /**

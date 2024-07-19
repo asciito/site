@@ -5,18 +5,15 @@ use Livewire\Volt\Component;
 new #[\Livewire\Attributes\Layout('site::pages.Layout.site', ['titlePage' => 'Contact'])] class extends Component {
     public \App\Livewire\Forms\ContactForm $form;
 
+    public bool $messageSend = false;
+
     public function submit(): void
     {
         $this->validate();
 
         $this->form->contact();
 
-        $this->displaySuccessMessage();
-    }
-
-    public function displaySuccessMessage(): void
-    {
-        // TODO: Implement
+        $this->messageSend = true;
     }
 }; ?>
 
@@ -33,10 +30,10 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site', ['titlePage' => 'Co
 
     <form
         wire:submit.prevent="submit"
-        @class(["relative grid md:grid-cols-2 space-y-4", "pt-40" => $errors->isNotEmpty()])
+        @class(["relative grid md:grid-cols-2 space-y-4"])
     >
         @if ($errors->isNotEmpty())
-            <div class="absolute top-0 left-0 right-0 bg-dark-blue-200 p-4">
+            <div class="col-span-2 bg-dark-blue-200 p-4">
                 <div class="flex justify-center">
                     <p class="uppercase font-bold font-mono text-dark-blue-200 text-xl mb-4 px-4 py-0 bg-gray-300">Form Error</p>
                 </div>
@@ -58,6 +55,22 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site', ['titlePage' => 'Co
                         <li class="text-white uppercase text-xs">* {!! \Illuminate\Support\Str::replaceMatches('/`(.*)`/', '<strong>\0</strong>', $message) !!}</li>
                     @enderror
                 </ul>
+            </div>
+        @endif
+
+        @if ($messageSend)
+            <div
+                class="col-span-2 bg-dark-blue-200 p-4"
+                x-data="{ open: true }"
+                x-show="open"
+                x-init="setTimeout(() => open = false, 5000)"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-90"
+            >
+                <div class="flex justify-center">
+                    <p class="uppercase font-bold font-mono text-dark-blue-200 text-2xl px-4 py-0 bg-gray-300">MESSAGE SEND</p>
+                </div>
             </div>
         @endif
 
