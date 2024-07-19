@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
-use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use function Livewire\Volt\dehydrate;
 
 class PostResource extends Resource
 {
@@ -61,7 +59,7 @@ class PostResource extends Resource
                             ])
                             ->columnSpan([
                                 'md' => 9,
-                                'lg' => 8
+                                'lg' => 8,
                             ]),
                         Forms\Components\Section::make()
                             ->schema([
@@ -79,7 +77,7 @@ class PostResource extends Resource
                                 'md' => 3,
                                 'lg' => 4,
                             ]),
-                    ])
+                    ]),
             ]);
     }
 
@@ -93,7 +91,7 @@ class PostResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Last time updated')
-                    ->formatStateUsing(fn (Carbon $state) => $state->diffForHumans())
+                    ->formatStateUsing(fn (Carbon $state) => $state->diffForHumans()),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -106,7 +104,7 @@ class PostResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

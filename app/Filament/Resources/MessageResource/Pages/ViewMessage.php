@@ -18,7 +18,7 @@ class ViewMessage extends ViewRecord
             Actions\Action::make('Mark as read')
                 ->hidden(fn (Message $record) => $record->status === MessageStatusEnum::READ)
                 ->action(fn (Message $record) => $record->markAsRead())
-                ->requiresConfirmation()
+                ->requiresConfirmation(),
         ];
     }
 }

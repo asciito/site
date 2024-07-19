@@ -34,7 +34,7 @@ class MessageResource extends Resource
                             ->url(fn (User $state) => "mailto:{$state->email}"),
                         Infolists\Components\TextEntry::make('message'),
                     ])
-                    ->columnSpan(8),
+                        ->columnSpan(8),
                     Infolists\Components\Section::make([
                         Infolists\Components\TextEntry::make('status')
                             ->formatStateUsing(fn (MessageStatusEnum $state) => $state->name)
@@ -53,10 +53,10 @@ class MessageResource extends Resource
                         Infolists\Components\TextEntry::make('created_at')
                             ->date('F d, Y \a\t H:i'),
                     ])
-                        ->grow(false)
+                        ->grow(false),
                 ])
                     ->from('md')
-                    ->columnSpan(2)
+                    ->columnSpan(2),
             ]);
     }
 

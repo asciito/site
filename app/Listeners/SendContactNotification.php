@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\Contacted;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendContactNotification
 {
