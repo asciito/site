@@ -50,7 +50,7 @@
                 </li>
             </ul>
 
-            <div>
+            <div class="mt-4 md:mt-0">
                 <livewire:download-resume/>
             </div>
         </div>
