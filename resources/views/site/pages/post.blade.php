@@ -1,7 +1,16 @@
 <x-site::layout>
-    <h1 class="text-4xl mb-8 text-slate-800">{{ \Illuminate\Support\Str::title($post->title) }}</h1>
+    <div class="mb-8 space-y-2">
+        <h1 class="text-4xl text-slate-800">{{ \Illuminate\Support\Str::title($post->title) }}</h1>
 
-    <img src="" alt="">
+        <p class="text-blue-600 text-sm">
+            <span>{{ $post->created_at->equalTo($post->updated_at) ? 'Created on' : 'Last updated on' }}</span>
+            <time>{{ $post->updated_at->format('F d, Y') }}</time>
+        </p>
+    </div>
 
-    {!! $post->content !!}
+    {{ $post->getFirstMedia() }}
+
+    <div class="prose mt-4">
+        {!! $post->content !!}
+    </div>
 </x-site::layout>

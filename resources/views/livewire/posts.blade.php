@@ -22,7 +22,7 @@ new class extends Component {
     {
         return \App\Models\Post::when($this->search, function (Builder $query) {
             $query->where('title', 'LIKE', "%{$this->search}%");
-        })->paginate(perPage: $this->perPage);
+        })->orderBy('updated_at', 'DESC')->paginate(perPage: $this->perPage);
     }
 
     public function loadMorePosts(): void
@@ -45,16 +45,15 @@ new class extends Component {
         @forelse($this->posts() as $post)
             @php
                 $title = $post->title;
-                $time = empty($post->deleted_at) ? $post->created_at : $post->updated_at;
                 $url = route('post', $post);
             @endphp
             <article class="space-y-2">
                 <header>
                     <h3 class="text-2xl">{{ $post->title }}</h3>
 
-                    <p class="text-sm text-slate-500">Posted:
-                        <time
-                            datetime="{{ $time->format('y-m-d') }}">{{ $time->diffForHumans() }}</time>
+                    <p class="text-sm text-slate-500">
+                        <span>Publish on</span>
+                        <time datetime="{{ $post->created_at->format('y-m-d') }}">{{ $post->created_at->format('F d, Y') }}</time>
                     </p>
                 </header>
 
