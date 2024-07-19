@@ -63,7 +63,15 @@ class PostResource extends Resource
                             ]),
                         Forms\Components\Section::make()
                             ->schema([
-
+                                \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('thumbnail')
+                                    ->image()
+                                    ->imageEditor()
+                                    ->imageCropAspectRatio('16:9')
+                                    ->loadingIndicatorPosition('right')
+                                    ->uploadButtonPosition('left')
+                                    ->uploadProgressIndicatorPosition('right')
+                                    ->removeUploadedFileButtonPosition('right')
+                                    ->responsiveImages(),
                             ])
                             ->columnSpan([
                                 'md' => 3,

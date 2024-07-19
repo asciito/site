@@ -8,8 +8,9 @@
         </p>
     </div>
 
+    {{ $post->getFirstMedia() }}
 
-    <img src="" alt="">
-
-    {!! $post->content !!}
+    <div class="prose mt-4">
+        {!! $post->content !!}
+    </div>
 </x-site::layout>
