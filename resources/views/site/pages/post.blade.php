@@ -12,7 +12,7 @@
         $media = $post->getFirstMedia();
     @endphp
 
-    {{ $post->getFirstMedia()->img()->attributes(['class' => 'w-full']) }}
+    {{ $post->getFirstMedia()?->img()->attributes(['class' => 'w-full']) }}
 
     <div class="mt-4 prose prose-xl">
         {!! $post->content !!}
