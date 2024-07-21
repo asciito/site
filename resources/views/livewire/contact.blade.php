@@ -38,23 +38,13 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site', ['titlePage' => 'Co
                     <p class="uppercase font-bold font-mono text-dark-blue-200 text-xl mb-4 px-4 py-0 bg-gray-300">Form Error</p>
                 </div>
 
-                <ul class="space-y-1">
-                    @error('form.name')
-                        <li class="text-white uppercase text-xs">* {!! \Illuminate\Support\Str::replaceMatches('/`(.*)`/', '<strong>\0</strong>', $message) !!}</li>
-                    @enderror
-
-                    @error('form.lastName')
-                        <li class="text-white uppercase text-xs">* {!! \Illuminate\Support\Str::replaceMatches('/`(.*)`/', '<strong>\0</strong>', $message) !!}</li>
-                    @enderror
-
-                    @error('form.email')
-                        <li class="text-white uppercase text-xs">* {!! \Illuminate\Support\Str::replaceMatches('/`(.*)`/', '<strong>\0</strong>', $message) !!}</li>
-                    @enderror
-
-                    @error('form.message')
-                        <li class="text-white uppercase text-xs">* {!! \Illuminate\Support\Str::replaceMatches('/`(.*)`/', '<strong>\0</strong>', $message) !!}</li>
-                    @enderror
-                </ul>
+                @error('form.*')
+                    <ul class="space-y-1">
+                        @foreach($errors->get('form.*') as $_ => $error)
+                            <li class="text-white uppercase text-xs">* {!! \Illuminate\Support\Str::replaceMatches('/`(.*)`/', '<strong>\0</strong>', $error[0]) !!}</li>
+                        @endforeach
+                    </ul>
+                @enderror
             </div>
         @endif
 
