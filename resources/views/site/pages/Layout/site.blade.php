@@ -11,7 +11,11 @@
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body @class(['relative pt-16' => \Illuminate\Support\Facades\Auth::user()])>
+    @auth
+        <livewire:adminbar />
+    @endauth
+
     <x-site::navigation/>
 
     <main class="border-b-2 border-slate-400">
