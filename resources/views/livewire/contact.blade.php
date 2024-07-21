@@ -33,7 +33,7 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site', ['titlePage' => 'Co
         @class(["relative grid md:grid-cols-2 space-y-4"])
     >
         @if ($errors->isNotEmpty())
-            <div class="col-span-2 bg-dark-blue-200 p-4">
+            <div class="col-span-full bg-dark-blue-200 p-4">
                 <div class="flex justify-center">
                     <p class="uppercase font-bold font-mono text-dark-blue-200 text-xl mb-4 px-4 py-0 bg-gray-300">Form Error</p>
                 </div>
@@ -60,7 +60,7 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site', ['titlePage' => 'Co
 
         @if ($messageSend)
             <div
-                class="col-span-2 bg-dark-blue-200 p-4"
+                class="col-span-full bg-dark-blue-200 p-4"
                 x-data="{ open: true }"
                 x-show="open"
                 x-init="setTimeout(() => open = false, 5000)"
