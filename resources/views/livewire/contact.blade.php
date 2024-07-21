@@ -86,10 +86,12 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site', ['titlePage' => 'Co
             <x-site::textarea name="message" placeholder="your message" rows="5" wire:model="form.message"/>
         </div>
 
-        <div class="col-span-full flex justify-end">
-            <button class="px-6 py-2 bg-[rgba(51,255,51,1.0)] cursor-pointer">
-                SUBMIT
-            </button>
+        <div class="col-span-full">
+            <x-site::button
+                type="submit"
+                class="col-span-full"
+                position="end"
+            >Submit</x-site::button>
         </div>
     </form>
 </div>
