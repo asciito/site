@@ -19,11 +19,11 @@ new class extends Component {
                 <li>
                     <a
                         href="{{ route('filament.webtools.pages.dashboard') }}"
-                        class="flex items-center gap-x-2 leading-2 hover:underline hover:underline-1"
+                        class="group/link relative inline-flex items-center justify-center outline-none gap-1.5 cursor-pointer"
                     >
                         <x-icon name="heroicon-s-wrench-screwdriver" class="w-4"/>
 
-                        <span>Webtools</span>
+                        <span class="font-semibold group-hover/link:underline group-focus-visible/link:underline text-sm">Webtools</span>
                     </a>
                 </li>
 
