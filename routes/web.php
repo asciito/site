@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
-Volt::route('contact/', 'contact')->name('contact');
+Route::get('contact/', [SiteController::class, 'contact'])->name('contact');
 
 Route::get('/{post:slug}', function (Post $post) {
     return view('site::pages.post', ['post' => $post]);

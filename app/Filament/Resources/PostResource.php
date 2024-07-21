@@ -9,9 +9,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class PostResource extends Resource
@@ -72,6 +74,17 @@ class PostResource extends Resource
                                     ->uploadProgressIndicatorPosition('right')
                                     ->removeUploadedFileButtonPosition('right')
                                     ->responsiveImages(),
+                                Forms\Components\Textarea::make('excerpt')
+                                    ->live(debounce: 250)
+                                    ->maxLength(255)
+                                    ->helperText(function (Forms\Components\Textarea $component, ?string $state): Htmlable {
+                                        $current = strlen($state ?? '');
+
+                                        $color = $current / $component->getMaxLength() < 0.8 ? '--gray-600' : '--danger-600';
+
+                                        return new HtmlString("Characters count: <span class='font-semibold text-custom-600' style='--c-600: var($color)'>$current of 255<span>");
+                                    })
+                                    ->rows(6),
                             ])
                             ->columnSpan([
                                 'md' => 3,
