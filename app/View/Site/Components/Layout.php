@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 
 class Layout extends Component
 {
-    public function __construct(public string $titlePage = '')
+    public function __construct(public $page = null)
     {
         //
     }

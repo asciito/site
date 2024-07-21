@@ -1,4 +1,4 @@
-<x-site::layout>
+<x-site::layout :page="$post">
     <div class="mb-8 space-y-2">
         <h1 class="text-4xl text-slate-800">{{ \Illuminate\Support\Str::title($post->title) }}</h1>
 
