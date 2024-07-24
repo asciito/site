@@ -49,7 +49,13 @@ new class extends Component {
             @endphp
             <article class="space-y-2">
                 <header>
-                    <h3 class="text-2xl">{{ $post->title }}</h3>
+                    <h3 @class(["text-2xl", "flex items-center space-x-2" => $post->isDraft()])>
+                        <span>{{ $post->title }}</span>
+
+                        @if($post->isDraft())
+                            <span class="text-xs px-2 py-1 bg-slate-200 text-slate-800">{{ $post->status->name }}</span>
+                        @endif
+                    </h3>
 
                     <p class="text-sm text-slate-500">
                         <span>Publish on</span>
