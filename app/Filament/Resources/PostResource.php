@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
+use App\Models\Scopes\PostStatusScope;
+use App\Site\Enums\PostStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -102,6 +104,14 @@ class PostResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->formatStateUsing(fn (PostStatus $state) => $state->name)
+                    ->badge()
+                    ->color(fn (PostStatus $state) => match ($state) {
+                        PostStatus::DRAFT => \Filament\Support\Colors\Color::Gray,
+                        PostStatus::PUBLISHED => \Filament\Support\Colors\Color::Blue,
+                        PostStatus::ARCHIVED => \Filament\Support\Colors\Color::Red,
+                    }),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Last time updated')
                     ->formatStateUsing(fn (Carbon $state) => $state->diffForHumans()),

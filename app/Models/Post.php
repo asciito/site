@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\PostStatusScope;
+use App\Site\Enums\PostStatus;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use function Livewire\Volt\title;
 
 class Post extends Model implements HasMedia
 {
@@ -22,9 +25,37 @@ class Post extends Model implements HasMedia
     protected $fillable = [
         'title',
         'slug',
+        'status',
         'content',
         'excerpt',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => PostStatus::class,
+        ];
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->hasStatus(PostStatus::DRAFT);
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->hasStatus(PostStatus::PUBLISHED);
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->hasStatus(PostStatus::ARCHIVED);
+    }
+
+    public function hasStatus(PostStatus $status): bool
+    {
+        return $this->status === $status;
+    }
 
     public function getExcerpt(): string
     {
@@ -48,4 +79,12 @@ class Post extends Model implements HasMedia
             enableTitleSuffix: false,
         );
     }
+
+    protected static function booted(): void
+    {
+        if (! Auth::id()) {
+            static::addGlobalScope(PostStatusScope::class);
+        }
+    }
+
 }
