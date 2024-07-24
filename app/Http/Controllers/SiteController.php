@@ -12,11 +12,6 @@ class SiteController extends Controller
         return view('site::pages.home');
     }
 
-    public function blog(): Request|View
-    {
-        return view('site::pages.blog');
-    }
-
     public function contact(): Request|View
     {
         return view('site::pages.contact');
