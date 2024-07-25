@@ -27,7 +27,7 @@ class WebtoolsPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('webtools')
-            ->path('webtools')
+            ->path(config('site.webtools_path'))
             ->login()
             ->colors([
                 'primary' => '#0000AA',
