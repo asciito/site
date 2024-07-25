@@ -21,7 +21,7 @@
 
     {{ $post->getFirstMedia()?->img()->attributes(['class' => 'w-full']) }}
 
-    <div class="mt-4 prose prose-xl prose-figcaption:mt-0 prose-img:has-[figcaption]:mb-2">
+    <div class="mt-4 prose max-w-full prose-figcaption:mt-0 prose-img:has-[figcaption]:mb-2">
         {!! $post->content !!}
     </div>
 </x-site::layout>
