@@ -1,14 +1,26 @@
 <?php
 
 use Livewire\Volt\Component;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 
 new #[\Livewire\Attributes\Layout('site::pages.Layout.site')] class extends Component {
+    use WithRateLimiting;
+
     public \App\Livewire\Forms\ContactForm $form;
 
     public bool $messageSend = false;
 
     public function submit(): void
     {
+        try {
+            $this->rateLimit(5, component: 'contact-form');
+        } catch (TooManyRequestsException $e) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'form.email' => "Slow down! Please wait another {$e->secondsUntilAvailable} seconds to contact me again",
+            ]);
+        }
+
         $this->validate();
 
         $this->form->contact();

@@ -26,10 +26,6 @@ class ContactForm extends Form
 
     public function contact(): void
     {
-        $this->ensureIsNotRateLimited();
-
-        RateLimiter::hit($this->throttleKey());
-
         $this->sendMessage();
 
         $this->reset();
@@ -52,34 +48,5 @@ class ContactForm extends Form
                 'password' => bcrypt(Str::random(32)),
             ]
         );
-    }
-
-    /**
-     * Ensure the authentication request is not rate limited.
-     */
-    protected function ensureIsNotRateLimited(): void
-    {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
-            return;
-        }
-
-        event(new Lockout(request()));
-
-        $seconds = RateLimiter::availableIn($this->throttleKey());
-
-        throw ValidationException::withMessages([
-            'form.name' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
-        ]);
-    }
-
-    /**
-     * Get the authentication rate limiting throttle key.
-     */
-    protected function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->name).'|'.request()->ip());
     }
 }
