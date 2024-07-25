@@ -4,7 +4,7 @@ namespace App\Filament\Resources\PostResource\Pages;
 
 use App\Filament\Resources\PostResource;
 use App\Models\Post;
-use App\Site\Enums\PostStatus;
+use App\Site\Enums\Status;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -18,7 +18,7 @@ class EditPost extends EditRecord
             Actions\Action::make('publish')
                 ->visible(fn (Post $record) => $record->isDraft())
                 ->action(function (Post $record) {
-                    $record->update(['status' => PostStatus::PUBLISHED]);
+                    $record->update(['status' => Status::PUBLISHED]);
 
                     $this->getSavedNotification()->send();
                 })

@@ -4,7 +4,7 @@ namespace App\Site\Enums;
 
 use Illuminate\Support\Collection;
 
-enum PostStatus: string
+enum Status: string
 {
     case DRAFT = 'draft';
 

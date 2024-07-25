@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\PostStatusScope;
-use App\Site\Enums\PostStatus;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use App\Models\Concerns\ModelStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +19,7 @@ class Post extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
     use SoftDeletes;
+    use ModelStatus;
     use HasSEO;
 
     protected $fillable = [
@@ -29,33 +29,6 @@ class Post extends Model implements HasMedia
         'content',
         'excerpt',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'status' => PostStatus::class,
-        ];
-    }
-
-    public function isDraft(): bool
-    {
-        return $this->hasStatus(PostStatus::DRAFT);
-    }
-
-    public function isPublished(): bool
-    {
-        return $this->hasStatus(PostStatus::PUBLISHED);
-    }
-
-    public function isArchived(): bool
-    {
-        return $this->hasStatus(PostStatus::ARCHIVED);
-    }
-
-    public function hasStatus(PostStatus $status): bool
-    {
-        return $this->status === $status;
-    }
 
     public function getExcerpt(): string
     {
@@ -80,11 +53,10 @@ class Post extends Model implements HasMedia
         );
     }
 
-    protected static function booted(): void
+    public function resolveRouteBinding($value, $field = null)
     {
-        if (! Auth::id()) {
-            static::addGlobalScope(PostStatusScope::class);
-        }
+        return parent::resolveRouteBindingQuery($this, $value, $field)
+            ->when(Auth::check(), fn (Builder $query) => $query->withDrafts())
+            ->first();
     }
-
 }

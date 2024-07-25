@@ -4,8 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
-use App\Models\Scopes\PostStatusScope;
-use App\Site\Enums\PostStatus;
+use App\Models\Scopes\ModelStatusScope;
+use App\Site\Enums\Status;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -105,12 +105,12 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->formatStateUsing(fn (PostStatus $state) => $state->name)
+                    ->formatStateUsing(fn (Status $state) => $state->name)
                     ->badge()
-                    ->color(fn (PostStatus $state) => match ($state) {
-                        PostStatus::DRAFT => \Filament\Support\Colors\Color::Gray,
-                        PostStatus::PUBLISHED => \Filament\Support\Colors\Color::Blue,
-                        PostStatus::ARCHIVED => \Filament\Support\Colors\Color::Red,
+                    ->color(fn (Status $state) => match ($state) {
+                        Status::DRAFT => \Filament\Support\Colors\Color::Gray,
+                        Status::PUBLISHED => \Filament\Support\Colors\Color::Blue,
+                        Status::ARCHIVED => \Filament\Support\Colors\Color::Red,
                     }),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Last time updated')
@@ -118,6 +118,7 @@ class PostResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                \App\Site\Filament\Tables\Filters\StatusFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -160,6 +161,7 @@ class PostResource extends Resource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
+                ModelStatusScope::class,
             ]);
     }
 }
