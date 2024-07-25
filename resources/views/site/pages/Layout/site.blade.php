@@ -17,7 +17,7 @@
 
     <x-site::navigation/>
 
-    <main class="border-b-2 border-slate-400">
+    <main class="relative border-b-2 border-slate-400">
         <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto my-10 p-4">
             <div class="max-w-3xl mx-auto">
                 {{ $slot }}
@@ -58,6 +58,30 @@
             </div>
         </div>
     </footer>
+
+    <div
+        x-data="{
+            visible: false,
+            handleScroll() {
+                const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+                if (scrollTop >= 64) {
+                    this.visible = true;
+                } else {
+                    this.visible = false;
+                }
+            }
+        }"
+        x-show="visible"
+        x-transition
+        @scroll.window.throttle.25ms="handleScroll"
+        class="fixed bottom-5 right-5 h-10 w-10 drop-shadow">
+            <x-site::button
+                @click="window.scroll({top: 0, behavior: 'smooth'})"
+                class="relative rounded-full h-10 w-10 !p-0">
+                <x-icon name="heroicon-s-arrow-up" class="w-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"/>
+            </x-site::button>
+    </div>
 
     @livewireScripts
 </body>
