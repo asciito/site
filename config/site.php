@@ -12,4 +12,15 @@ return [
     */
 
     'allowed_emails' => explode(',', env('SITE_ALLOWED_EMAILS', '')) ?? [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Webtools Panel path
+    |--------------------------------------------------------------------------
+    |
+    | This option contains the path to  the webtools panel
+    |
+    */
+
+    'webtools_path' => env('WEBTOOLS_PATH', 'webtools'),
 ];
