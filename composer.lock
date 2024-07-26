@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d8a81de055a4e0923646ff6f6d06040c",
+    "content-hash": "c65be739cfaae5c4a3a02bceeadac693",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1254,16 +1254,16 @@
         },
         {
             "name": "filament/actions",
-            "version": "v3.2.95",
+            "version": "v3.2.96",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/actions.git",
-                "reference": "0a8192a0feaaf8108b27e302d951a22e4f379604"
+                "reference": "c8b71f18d28a2f9e23ade2631f3f80907ffe6946"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/actions/zipball/0a8192a0feaaf8108b27e302d951a22e4f379604",
-                "reference": "0a8192a0feaaf8108b27e302d951a22e4f379604",
+                "url": "https://api.github.com/repos/filamentphp/actions/zipball/c8b71f18d28a2f9e23ade2631f3f80907ffe6946",
+                "reference": "c8b71f18d28a2f9e23ade2631f3f80907ffe6946",
                 "shasum": ""
             },
             "require": {
@@ -1303,20 +1303,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2024-07-17T10:40:55+00:00"
+            "time": "2024-07-24T12:10:05+00:00"
         },
         {
             "name": "filament/filament",
-            "version": "v3.2.95",
+            "version": "v3.2.96",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/panels.git",
-                "reference": "076acbf82a9299ffbff7edd6a59a3b721b7876f4"
+                "reference": "06a66eb3874d9942e2c926fb4cea7166115fb6ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/panels/zipball/076acbf82a9299ffbff7edd6a59a3b721b7876f4",
-                "reference": "076acbf82a9299ffbff7edd6a59a3b721b7876f4",
+                "url": "https://api.github.com/repos/filamentphp/panels/zipball/06a66eb3874d9942e2c926fb4cea7166115fb6ae",
+                "reference": "06a66eb3874d9942e2c926fb4cea7166115fb6ae",
                 "shasum": ""
             },
             "require": {
@@ -1368,20 +1368,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2024-07-18T10:43:09+00:00"
+            "time": "2024-07-24T12:10:23+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v3.2.95",
+            "version": "v3.2.96",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
-                "reference": "eb03e5ea7e91e9b6bab5a7a05846a9b510eb43f3"
+                "reference": "a2169e69650aad55c5110b6132c05ef18dea6d4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/eb03e5ea7e91e9b6bab5a7a05846a9b510eb43f3",
-                "reference": "eb03e5ea7e91e9b6bab5a7a05846a9b510eb43f3",
+                "url": "https://api.github.com/repos/filamentphp/forms/zipball/a2169e69650aad55c5110b6132c05ef18dea6d4e",
+                "reference": "a2169e69650aad55c5110b6132c05ef18dea6d4e",
                 "shasum": ""
             },
             "require": {
@@ -1424,20 +1424,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2024-07-18T10:43:03+00:00"
+            "time": "2024-07-24T12:10:06+00:00"
         },
         {
             "name": "filament/infolists",
-            "version": "v3.2.95",
+            "version": "v3.2.96",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/infolists.git",
-                "reference": "0edfac1491954078668bfc25f7c373ecc71bf27b"
+                "reference": "8b9b8cd3d4fd2ace6deac224eb646a0228b9f053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/infolists/zipball/0edfac1491954078668bfc25f7c373ecc71bf27b",
-                "reference": "0edfac1491954078668bfc25f7c373ecc71bf27b",
+                "url": "https://api.github.com/repos/filamentphp/infolists/zipball/8b9b8cd3d4fd2ace6deac224eb646a0228b9f053",
+                "reference": "8b9b8cd3d4fd2ace6deac224eb646a0228b9f053",
                 "shasum": ""
             },
             "require": {
@@ -1475,11 +1475,11 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2024-07-18T10:43:04+00:00"
+            "time": "2024-07-24T12:10:10+00:00"
         },
         {
             "name": "filament/notifications",
-            "version": "v3.2.95",
+            "version": "v3.2.96",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -1567,17 +1567,64 @@
             "time": "2024-05-27T10:09:06+00:00"
         },
         {
-            "name": "filament/support",
-            "version": "v3.2.95",
+            "name": "filament/spatie-laravel-settings-plugin",
+            "version": "v3.2.96",
             "source": {
                 "type": "git",
-                "url": "https://github.com/filamentphp/support.git",
-                "reference": "cb0ba7fea69d80c2612f22a3cdf29a81722e5fcb"
+                "url": "https://github.com/filamentphp/spatie-laravel-settings-plugin.git",
+                "reference": "bdb75d72cb32545b29f7cf506f18b57730d6a2a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/support/zipball/cb0ba7fea69d80c2612f22a3cdf29a81722e5fcb",
-                "reference": "cb0ba7fea69d80c2612f22a3cdf29a81722e5fcb",
+                "url": "https://api.github.com/repos/filamentphp/spatie-laravel-settings-plugin/zipball/bdb75d72cb32545b29f7cf506f18b57730d6a2a7",
+                "reference": "bdb75d72cb32545b29f7cf506f18b57730d6a2a7",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "self.version",
+                "illuminate/console": "^10.45|^11.0",
+                "illuminate/filesystem": "^10.45|^11.0",
+                "illuminate/support": "^10.45|^11.0",
+                "php": "^8.1",
+                "spatie/laravel-settings": "^2.2|^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Filament\\SpatieLaravelSettingsPluginServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Filament\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Filament support for `spatie/laravel-settings`.",
+            "homepage": "https://github.com/filamentphp/filament",
+            "support": {
+                "issues": "https://github.com/filamentphp/filament/issues",
+                "source": "https://github.com/filamentphp/filament"
+            },
+            "time": "2024-06-05T09:38:32+00:00"
+        },
+        {
+            "name": "filament/support",
+            "version": "v3.2.96",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filamentphp/support.git",
+                "reference": "4cec1377278853882103a09cafdc1b258f995ee4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filamentphp/support/zipball/4cec1377278853882103a09cafdc1b258f995ee4",
+                "reference": "4cec1377278853882103a09cafdc1b258f995ee4",
                 "shasum": ""
             },
             "require": {
@@ -1622,20 +1669,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2024-07-18T10:43:21+00:00"
+            "time": "2024-07-24T12:10:41+00:00"
         },
         {
             "name": "filament/tables",
-            "version": "v3.2.95",
+            "version": "v3.2.96",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
-                "reference": "bee1dea00c0d7fdd1681a8d5991e5a28bc267838"
+                "reference": "5e39c8c37beea164d1c48d95550346471e56361c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/tables/zipball/bee1dea00c0d7fdd1681a8d5991e5a28bc267838",
-                "reference": "bee1dea00c0d7fdd1681a8d5991e5a28bc267838",
+                "url": "https://api.github.com/repos/filamentphp/tables/zipball/5e39c8c37beea164d1c48d95550346471e56361c",
+                "reference": "5e39c8c37beea164d1c48d95550346471e56361c",
                 "shasum": ""
             },
             "require": {
@@ -1675,20 +1722,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2024-07-18T10:43:23+00:00"
+            "time": "2024-07-24T12:10:45+00:00"
         },
         {
             "name": "filament/widgets",
-            "version": "v3.2.95",
+            "version": "v3.2.96",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/widgets.git",
-                "reference": "a7dff041b1d9d36946005d93147307305a7b7722"
+                "reference": "7e35fdb24c576d83518606ef1aa0f0e4bda22e0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/widgets/zipball/a7dff041b1d9d36946005d93147307305a7b7722",
-                "reference": "a7dff041b1d9d36946005d93147307305a7b7722",
+                "url": "https://api.github.com/repos/filamentphp/widgets/zipball/7e35fdb24c576d83518606ef1aa0f0e4bda22e0f",
+                "reference": "7e35fdb24c576d83518606ef1aa0f0e4bda22e0f",
                 "shasum": ""
             },
             "require": {
@@ -1719,7 +1766,7 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2024-07-17T10:41:08+00:00"
+            "time": "2024-07-24T12:10:48+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -1794,24 +1841,24 @@
         },
         {
             "name": "graham-campbell/result-type",
-            "version": "v1.1.2",
+            "version": "v1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Result-Type.git",
-                "reference": "fbd48bce38f73f8a4ec8583362e732e4095e5862"
+                "reference": "3ba905c11371512af9d9bdd27d99b782216b6945"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/fbd48bce38f73f8a4ec8583362e732e4095e5862",
-                "reference": "fbd48bce38f73f8a4ec8583362e732e4095e5862",
+                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/3ba905c11371512af9d9bdd27d99b782216b6945",
+                "reference": "3ba905c11371512af9d9bdd27d99b782216b6945",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2.5 || ^8.0",
-                "phpoption/phpoption": "^1.9.2"
+                "phpoption/phpoption": "^1.9.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.5.34 || ^9.6.13 || ^10.4.2"
+                "phpunit/phpunit": "^8.5.39 || ^9.6.20 || ^10.5.28"
             },
             "type": "library",
             "autoload": {
@@ -1840,7 +1887,7 @@
             ],
             "support": {
                 "issues": "https://github.com/GrahamCampbell/Result-Type/issues",
-                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.1.2"
+                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.1.3"
             },
             "funding": [
                 {
@@ -1852,20 +1899,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-12T22:16:48+00:00"
+            "time": "2024-07-20T21:45:45+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.9.0",
+            "version": "7.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "84ac2b2afc44e40d3e8e658a45d68d6d20437612"
+                "reference": "d281ed313b989f213357e3be1a179f02196ac99b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/84ac2b2afc44e40d3e8e658a45d68d6d20437612",
-                "reference": "84ac2b2afc44e40d3e8e658a45d68d6d20437612",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d281ed313b989f213357e3be1a179f02196ac99b",
+                "reference": "d281ed313b989f213357e3be1a179f02196ac99b",
                 "shasum": ""
             },
             "require": {
@@ -1962,7 +2009,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.9.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.9.2"
             },
             "funding": [
                 {
@@ -1978,7 +2025,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-18T11:52:56+00:00"
+            "time": "2024-07-24T11:22:20+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2329,16 +2376,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.16.0",
+            "version": "v11.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "bd4808aaf103ccb5cb4b00bcee46140c070c0ec4"
+                "reference": "42f505a0c8afc0743f73e70bec08e641e2870bd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/bd4808aaf103ccb5cb4b00bcee46140c070c0ec4",
-                "reference": "bd4808aaf103ccb5cb4b00bcee46140c070c0ec4",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/42f505a0c8afc0743f73e70bec08e641e2870bd6",
+                "reference": "42f505a0c8afc0743f73e70bec08e641e2870bd6",
                 "shasum": ""
             },
             "require": {
@@ -2531,7 +2578,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-07-16T14:33:07+00:00"
+            "time": "2024-07-23T16:33:27+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -2719,16 +2766,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.4.2",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "91c24291965bd6d7c46c46a12ba7492f83b1cadf"
+                "reference": "ac815920de0eff6de947eac0a6a94e5ed0fb147c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/91c24291965bd6d7c46c46a12ba7492f83b1cadf",
-                "reference": "91c24291965bd6d7c46c46a12ba7492f83b1cadf",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/ac815920de0eff6de947eac0a6a94e5ed0fb147c",
+                "reference": "ac815920de0eff6de947eac0a6a94e5ed0fb147c",
                 "shasum": ""
             },
             "require": {
@@ -2741,8 +2788,8 @@
             },
             "require-dev": {
                 "cebe/markdown": "^1.0",
-                "commonmark/cmark": "0.30.3",
-                "commonmark/commonmark.js": "0.30.0",
+                "commonmark/cmark": "0.31.0",
+                "commonmark/commonmark.js": "0.31.0",
                 "composer/package-versions-deprecated": "^1.8",
                 "embed/embed": "^4.4",
                 "erusev/parsedown": "^1.0",
@@ -2764,7 +2811,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "2.5-dev"
+                    "dev-main": "2.6-dev"
                 }
             },
             "autoload": {
@@ -2821,7 +2868,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-02T11:59:32+00:00"
+            "time": "2024-07-24T12:52:09+00:00"
         },
         {
             "name": "league/config",
@@ -4154,16 +4201,16 @@
         },
         {
             "name": "openspout/openspout",
-            "version": "v4.24.3",
+            "version": "v4.24.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openspout/openspout.git",
-                "reference": "27de0c4d4a5b97927ece3e4dcbb7b48cb12e8a34"
+                "reference": "e5f92c5c9e6cc44119918da66bb097a0ffc202b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openspout/openspout/zipball/27de0c4d4a5b97927ece3e4dcbb7b48cb12e8a34",
-                "reference": "27de0c4d4a5b97927ece3e4dcbb7b48cb12e8a34",
+                "url": "https://api.github.com/repos/openspout/openspout/zipball/e5f92c5c9e6cc44119918da66bb097a0ffc202b2",
+                "reference": "e5f92c5c9e6cc44119918da66bb097a0ffc202b2",
                 "shasum": ""
             },
             "require": {
@@ -4231,7 +4278,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openspout/openspout/issues",
-                "source": "https://github.com/openspout/openspout/tree/v4.24.3"
+                "source": "https://github.com/openspout/openspout/tree/v4.24.4"
             },
             "funding": [
                 {
@@ -4243,20 +4290,131 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-12T12:32:17+00:00"
+            "time": "2024-07-22T09:30:54+00:00"
         },
         {
-            "name": "phpoption/phpoption",
-            "version": "1.9.2",
+            "name": "phpdocumentor/reflection-common",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/schmittjoh/php-option.git",
-                "reference": "80735db690fe4fc5c76dfa7f9b770634285fa820"
+                "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
+                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/80735db690fe4fc5c76dfa7f9b770634285fa820",
-                "reference": "80735db690fe4fc5c76dfa7f9b770634285fa820",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/1d01c49d4ed62f25aa84a747ad35d5a16924662b",
+                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\Reflection\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jaap van Otterdijk",
+                    "email": "opensource@ijaap.nl"
+                }
+            ],
+            "description": "Common reflection classes used by phpdocumentor to reflect the code structure",
+            "homepage": "http://www.phpdoc.org",
+            "keywords": [
+                "FQSEN",
+                "phpDocumentor",
+                "phpdoc",
+                "reflection",
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/phpDocumentor/ReflectionCommon/issues",
+                "source": "https://github.com/phpDocumentor/ReflectionCommon/tree/2.x"
+            },
+            "time": "2020-06-27T09:03:43+00:00"
+        },
+        {
+            "name": "phpdocumentor/type-resolver",
+            "version": "1.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/TypeResolver.git",
+                "reference": "153ae662783729388a584b4361f2545e4d841e3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/153ae662783729388a584b4361f2545e4d841e3c",
+                "reference": "153ae662783729388a584b4361f2545e4d841e3c",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/deprecations": "^1.0",
+                "php": "^7.3 || ^8.0",
+                "phpdocumentor/reflection-common": "^2.0",
+                "phpstan/phpdoc-parser": "^1.13"
+            },
+            "require-dev": {
+                "ext-tokenizer": "*",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^1.8",
+                "phpstan/phpstan-phpunit": "^1.1",
+                "phpunit/phpunit": "^9.5",
+                "rector/rector": "^0.13.9",
+                "vimeo/psalm": "^4.25"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\Reflection\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mike van Riel",
+                    "email": "me@mikevanriel.com"
+                }
+            ],
+            "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
+            "support": {
+                "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.8.2"
+            },
+            "time": "2024-02-23T11:10:43+00:00"
+        },
+        {
+            "name": "phpoption/phpoption",
+            "version": "1.9.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/php-option.git",
+                "reference": "e3fac8b24f56113f7cb96af14958c0dd16330f54"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/e3fac8b24f56113f7cb96af14958c0dd16330f54",
+                "reference": "e3fac8b24f56113f7cb96af14958c0dd16330f54",
                 "shasum": ""
             },
             "require": {
@@ -4264,13 +4422,13 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.2",
-                "phpunit/phpunit": "^8.5.34 || ^9.6.13 || ^10.4.2"
+                "phpunit/phpunit": "^8.5.39 || ^9.6.20 || ^10.5.28"
             },
             "type": "library",
             "extra": {
                 "bamarni-bin": {
                     "bin-links": true,
-                    "forward-command": true
+                    "forward-command": false
                 },
                 "branch-alias": {
                     "dev-master": "1.9-dev"
@@ -4306,7 +4464,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/php-option/issues",
-                "source": "https://github.com/schmittjoh/php-option/tree/1.9.2"
+                "source": "https://github.com/schmittjoh/php-option/tree/1.9.3"
             },
             "funding": [
                 {
@@ -4318,7 +4476,54 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-12T21:59:55+00:00"
+            "time": "2024-07-20T21:41:07+00:00"
+        },
+        {
+            "name": "phpstan/phpdoc-parser",
+            "version": "1.29.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpdoc-parser.git",
+                "reference": "fcaefacf2d5c417e928405b71b400d4ce10daaf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fcaefacf2d5c417e928405b71b400d4ce10daaf4",
+                "reference": "fcaefacf2d5c417e928405b71b400d4ce10daaf4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^2.0",
+                "nikic/php-parser": "^4.15",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^1.5",
+                "phpstan/phpstan-phpunit": "^1.1",
+                "phpstan/phpstan-strict-rules": "^1.0",
+                "phpunit/phpunit": "^9.5",
+                "symfony/process": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\PhpDocParser\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPDoc parser with support for nullable, intersection and generic types",
+            "support": {
+                "issues": "https://github.com/phpstan/phpdoc-parser/issues",
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.29.1"
+            },
+            "time": "2024-05-31T08:52:43+00:00"
         },
         {
             "name": "psr/cache",
@@ -5727,6 +5932,93 @@
                 }
             ],
             "time": "2024-03-20T07:29:11+00:00"
+        },
+        {
+            "name": "spatie/laravel-settings",
+            "version": "3.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-settings.git",
+                "reference": "395066797823856638a0a2feb243b396a94e22e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-settings/zipball/395066797823856638a0a2feb243b396a94e22e5",
+                "reference": "395066797823856638a0a2feb243b396a94e22e5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/database": "^8.73|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0",
+                "phpdocumentor/type-resolver": "^1.5",
+                "spatie/temporary-directory": "^1.3|^2.0"
+            },
+            "require-dev": {
+                "ext-redis": "*",
+                "larastan/larastan": "^2.0",
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
+                "pestphp/pest": "^1.21|^2.0",
+                "pestphp/pest-plugin-laravel": "^1.2|^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5|^10.0",
+                "spatie/laravel-data": "^1.0.0|^2.0.0|^4.0.0",
+                "spatie/pest-plugin-snapshots": "^1.1|^2.0",
+                "spatie/phpunit-snapshot-assertions": "^4.2|^5.0",
+                "spatie/ray": "^1.36"
+            },
+            "suggest": {
+                "spatie/data-transfer-object": "Allows for DTO casting to settings. (deprecated)"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\LaravelSettings\\LaravelSettingsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelSettings\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ruben Van Assche",
+                    "email": "ruben@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Store your application settings",
+            "homepage": "https://github.com/spatie/laravel-settings",
+            "keywords": [
+                "laravel-settings",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-settings/issues",
+                "source": "https://github.com/spatie/laravel-settings/tree/3.3.2"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-22T07:50:04+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -8213,23 +8505,23 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v5.6.0",
+            "version": "v5.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4"
+                "reference": "a59a13791077fe3d44f90e7133eb68e7d22eaff2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4",
-                "reference": "2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/a59a13791077fe3d44f90e7133eb68e7d22eaff2",
+                "reference": "a59a13791077fe3d44f90e7133eb68e7d22eaff2",
                 "shasum": ""
             },
             "require": {
                 "ext-pcre": "*",
-                "graham-campbell/result-type": "^1.1.2",
+                "graham-campbell/result-type": "^1.1.3",
                 "php": "^7.2.5 || ^8.0",
-                "phpoption/phpoption": "^1.9.2",
+                "phpoption/phpoption": "^1.9.3",
                 "symfony/polyfill-ctype": "^1.24",
                 "symfony/polyfill-mbstring": "^1.24",
                 "symfony/polyfill-php80": "^1.24"
@@ -8246,7 +8538,7 @@
             "extra": {
                 "bamarni-bin": {
                     "bin-links": true,
-                    "forward-command": true
+                    "forward-command": false
                 },
                 "branch-alias": {
                     "dev-master": "5.6-dev"
@@ -8281,7 +8573,7 @@
             ],
             "support": {
                 "issues": "https://github.com/vlucas/phpdotenv/issues",
-                "source": "https://github.com/vlucas/phpdotenv/tree/v5.6.0"
+                "source": "https://github.com/vlucas/phpdotenv/tree/v5.6.1"
             },
             "funding": [
                 {
@@ -8293,7 +8585,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-12T22:43:29+00:00"
+            "time": "2024-07-20T21:52:34+00:00"
         },
         {
             "name": "voku/portable-ascii",
@@ -9699,59 +9991,6 @@
             "time": "2022-02-21T01:04:05+00:00"
         },
         {
-            "name": "phpdocumentor/reflection-common",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/1d01c49d4ed62f25aa84a747ad35d5a16924662b",
-                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "phpDocumentor\\Reflection\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jaap van Otterdijk",
-                    "email": "opensource@ijaap.nl"
-                }
-            ],
-            "description": "Common reflection classes used by phpdocumentor to reflect the code structure",
-            "homepage": "http://www.phpdoc.org",
-            "keywords": [
-                "FQSEN",
-                "phpDocumentor",
-                "phpdoc",
-                "reflection",
-                "static analysis"
-            ],
-            "support": {
-                "issues": "https://github.com/phpDocumentor/ReflectionCommon/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionCommon/tree/2.x"
-            },
-            "time": "2020-06-27T09:03:43+00:00"
-        },
-        {
             "name": "phpdocumentor/reflection-docblock",
             "version": "5.4.1",
             "source": {
@@ -9814,111 +10053,6 @@
                 "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.4.1"
             },
             "time": "2024-05-21T05:55:05+00:00"
-        },
-        {
-            "name": "phpdocumentor/type-resolver",
-            "version": "1.8.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "153ae662783729388a584b4361f2545e4d841e3c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/153ae662783729388a584b4361f2545e4d841e3c",
-                "reference": "153ae662783729388a584b4361f2545e4d841e3c",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/deprecations": "^1.0",
-                "php": "^7.3 || ^8.0",
-                "phpdocumentor/reflection-common": "^2.0",
-                "phpstan/phpdoc-parser": "^1.13"
-            },
-            "require-dev": {
-                "ext-tokenizer": "*",
-                "phpbench/phpbench": "^1.2",
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^1.8",
-                "phpstan/phpstan-phpunit": "^1.1",
-                "phpunit/phpunit": "^9.5",
-                "rector/rector": "^0.13.9",
-                "vimeo/psalm": "^4.25"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "phpDocumentor\\Reflection\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mike van Riel",
-                    "email": "me@mikevanriel.com"
-                }
-            ],
-            "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "support": {
-                "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.8.2"
-            },
-            "time": "2024-02-23T11:10:43+00:00"
-        },
-        {
-            "name": "phpstan/phpdoc-parser",
-            "version": "1.29.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "fcaefacf2d5c417e928405b71b400d4ce10daaf4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fcaefacf2d5c417e928405b71b400d4ce10daaf4",
-                "reference": "fcaefacf2d5c417e928405b71b400d4ce10daaf4",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0"
-            },
-            "require-dev": {
-                "doctrine/annotations": "^2.0",
-                "nikic/php-parser": "^4.15",
-                "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^1.5",
-                "phpstan/phpstan-phpunit": "^1.1",
-                "phpstan/phpstan-strict-rules": "^1.0",
-                "phpunit/phpunit": "^9.5",
-                "symfony/process": "^5.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PHPStan\\PhpDocParser\\": [
-                        "src/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "PHPDoc parser with support for nullable, intersection and generic types",
-            "support": {
-                "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.29.1"
-            },
-            "time": "2024-05-31T08:52:43+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
