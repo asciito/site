@@ -14,6 +14,7 @@ use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
@@ -27,11 +28,16 @@ class WebtoolsPanelProvider extends PanelProvider
     {
         $settings = app(Site\SiteSettings::class);
 
+        try {
+            $panel->brandName($settings->site_name);
+        } catch (QueryException) {
+            // The table does not exist
+        }
+
         return $panel
             ->default()
             ->id('webtools')
             ->path(config('site.webtools_path'))
-            ->brandName($settings->site_name)
             ->login()
             ->colors([
                 'primary' => '#0000AA',
