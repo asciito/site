@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Site;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -24,10 +25,13 @@ class WebtoolsPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $settings = app(Site\SiteSettings::class);
+
         return $panel
             ->default()
             ->id('webtools')
             ->path(config('site.webtools_path'))
+            ->brandName($settings->site_name)
             ->login()
             ->colors([
                 'primary' => '#0000AA',
@@ -36,8 +40,10 @@ class WebtoolsPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverPages(in: app_path('Site/Filament/Pages'), for: 'App\\Site\\Filament\\Pages\\')
             ->pages([
                 Pages\Dashboard::class,
+                Site\Filament\Pages\SiteSettingsPage::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([

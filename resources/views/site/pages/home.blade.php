@@ -1,9 +1,12 @@
 @php
+use Illuminate\Support\Facades\Storage;
+
+$settings = app(\App\Site\SiteSettings::class);
+
 $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
-    title: config('app.name'),
-    description: 'The web change fast, and no matter your background, ' .
-                 'and if you want to learn about web technologies your\'re ' .
-                 'in the right place',
+    title: $settings->site_name,
+    description: $settings->site_description,
+    image: $settings->site_image ? Storage::disk('public')->url($settings->site_image) : null,
 );
 @endphp
 
