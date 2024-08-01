@@ -47,8 +47,8 @@ class PostResource extends Resource
                                 Forms\Components\TextInput::make('slug')
                                     ->alphaDash()
                                     ->unique(ignoreRecord: true)
-                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, string $operation, ?string $state) {
-                                        if ($operation !== 'create') {
+                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, string $operation, ?Post $record, ?string $state) {
+                                        if ($operation !== 'create' && $record?->isPublished()) {
                                             if ($state !== Str::slug($get('title'))) {
                                                 $set('edited-manually', true);
                                             } else {
@@ -56,6 +56,7 @@ class PostResource extends Resource
                                             }
                                         }
                                     })
+                                    ->disabled(fn (?Post $record) => $record?->isPublished())
                                     ->required(),
                                 Forms\Components\RichEditor::make('content')
                                     ->required()
