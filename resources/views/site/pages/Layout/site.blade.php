@@ -17,7 +17,7 @@
 
     <x-site::navigation/>
 
-    <main class="relative border-b-2 border-slate-400">
+    <main @class(["relative", "border-b-2 border-slate-400" => $showFooter])>
         <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto my-10 p-4">
             <div class="max-w-3xl mx-auto">
                 {{ $slot }}
@@ -25,39 +25,41 @@
         </div>
     </main>
 
-    <footer>
-        <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto flex flex-col justify-between md:flex-row items-center px-4 py-8">
-            <ul class="flex justify-center space-x-4">
-                <li class="w-6">
-                    <a href="https://github.com/{{ $settings->github_handler }}" target="_blank">
-                        <x-site::icons.github class="fill-slate-800 hover:fill-slate-600"/>
-                    </a>
-                </li>
+    @if($showFooter)
+        <footer>
+            <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto flex flex-col justify-between md:flex-row items-center px-4 py-8">
+                <ul class="flex justify-center space-x-4">
+                    <li class="w-6">
+                        <a href="https://github.com/{{ $settings->github_handler }}" target="_blank">
+                            <x-site::icons.github class="fill-slate-800 hover:fill-slate-600"/>
+                        </a>
+                    </li>
 
-                <li class="w-6">
-                    <a href="https://x.com/{{ $settings->twitter_handler }}" target="_blank">
-                        <x-site::icons.x-twitter class="fill-slate-800 hover:fill-slate-600"/>
-                    </a>
-                </li>
+                    <li class="w-6">
+                        <a href="https://x.com/{{ $settings->twitter_handler }}" target="_blank">
+                            <x-site::icons.x-twitter class="fill-slate-800 hover:fill-slate-600"/>
+                        </a>
+                    </li>
 
-                <li class="w-6">
-                    <a href="https://www.instagram.com/{{ $settings->instagram_handler }}" target="_blank">
-                        <x-site::icons.instagram class="fill-slate-800 hover:fill-slate-600"/>
-                    </a>
-                </li>
+                    <li class="w-6">
+                        <a href="https://www.instagram.com/{{ $settings->instagram_handler }}" target="_blank">
+                            <x-site::icons.instagram class="fill-slate-800 hover:fill-slate-600"/>
+                        </a>
+                    </li>
 
-                <li class="w-6">
-                    <a href="https://www.linkedin.com/in/{{ $settings->linkedin_handler }}" target="_blank">
-                        <x-site::icons.linkedin class="fill-slate-800 hover:fill-slate-600"/>
-                    </a>
-                </li>
-            </ul>
+                    <li class="w-6">
+                        <a href="https://www.linkedin.com/in/{{ $settings->linkedin_handler }}" target="_blank">
+                            <x-site::icons.linkedin class="fill-slate-800 hover:fill-slate-600"/>
+                        </a>
+                    </li>
+                </ul>
 
-            <div class="mt-4 md:mt-0">
-                <livewire:download-resume/>
+                <div class="mt-4 md:mt-0">
+                    <livewire:download-resume/>
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    @endif
 
     <div
         x-data="{

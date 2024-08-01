@@ -10,7 +10,7 @@ class Layout extends Component
 {
     public SiteSettings $settings;
 
-    public function __construct(public $page = null)
+    public function __construct(public $page = null, public bool $showFooter = true)
     {
         $this->loadSettings();
     }
