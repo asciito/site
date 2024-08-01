@@ -41,7 +41,7 @@
                 </li>
 
                 <li class="w-6">
-                    <a href="https://www.instagram.com/asciito/" target="_blank">
+                    <a href="https://www.instagram.com/ascii.to/" target="_blank">
                         <x-site::icons.instagram class="fill-slate-800 hover:fill-slate-600"/>
                     </a>
                 </li>
