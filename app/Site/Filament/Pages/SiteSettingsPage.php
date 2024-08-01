@@ -31,6 +31,27 @@ class SiteSettingsPage extends SettingsPage
                         Textarea::make('site_description'),
                         FileUpload::make('site_image'),
                     ]),
+                Section::make('Social Media Links')
+                    ->description('Manage your social media links for the site')
+                    ->aside()
+                    ->schema([
+                        TextInput::make('instagram_handler')
+                            ->label('Instagram')
+                            ->suffixIcon('heroicon-s-globe-alt')
+                            ->prefix('instagram/'),
+                        TextInput::make('linkedin_handler')
+                            ->label('Linked In')
+                            ->suffixIcon('heroicon-s-globe-alt')
+                            ->prefix('linkedin.com/in/'),
+                        TextInput::make('twitter_handler')
+                            ->label('X/Twitter')
+                            ->suffixIcon('heroicon-s-globe-alt')
+                            ->prefix('x.com/'),
+                        TextInput::make('github_handler')
+                            ->label('GitHub')
+                            ->suffixIcon('heroicon-s-globe-alt')
+                            ->prefix('github.com/'),
+                    ]),
             ]);
     }
 }
