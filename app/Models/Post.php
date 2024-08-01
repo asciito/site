@@ -50,6 +50,7 @@ class Post extends Model implements HasMedia
             image: $this->getFirstMedia()?->getUrl(),
             url: route('post', $this),
             enableTitleSuffix: false,
+            robots: ! $this->isPublished() ? 'noindex, nofollow' : config('seo.robots.default')
         );
     }
 
