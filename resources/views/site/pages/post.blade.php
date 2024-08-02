@@ -1,12 +1,13 @@
 <x-site::layout :page="$post">
     <div class="mb-8 space-y-2">
-        <h1
-            @class(["text-4xl text-slate-800", "flex items-center space-x-2" => $post->isDraft()])>
-            <span>{{ \Illuminate\Support\Str::title($post->title) }}</span>
-
+        <h1 class="text-4xl text-slate-800">
             @if($post->isDraft())
-                <span class="text-sm px-2 py-1 bg-slate-200 text-slate-800">{{ $post->status->name }}</span>
+                <div class="flex mb-2">
+                        <span class="text-sm px-2 py-1 bg-slate-200 text-slate-800">{{ $post->status->name }}</span>
+                </div>
             @endif
+
+            <span>{{ \Illuminate\Support\Str::title($post->title) }}</span>
         </h1>
 
         <p class="text-blue-600 text-sm">
