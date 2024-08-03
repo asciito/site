@@ -4,7 +4,7 @@
             <div id="brand" class="p-4">
                 <a href="/">
                     <h1 class="uppercase text-3xl md:text-4xl">
-                        <span>ASCII</span><span class="text-[rgba(51,255,51,1.0)]">.</span><span class="text-slate-500/60">TO</span>
+                        <span>ASCII</span><span class="text-[rgba(51,255,51,1.0)]">.</span><span class="text-slate-500/80">TO</span>
                     </h1>
                 </a>
             </div>
