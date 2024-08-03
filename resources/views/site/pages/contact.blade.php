@@ -7,7 +7,7 @@
 
 <x-site::layout :page="$seoData">
     <div class="text-center mb-10">
-        <h2 class="text-4xl mb-8">Contact Me</h2>
+        <h1 class="text-4xl lg:text-5xl !leading-snug mb-8">Contact Me</h1>
 
         <p>
             Please contact me if you have any inquiry or you want to work with
