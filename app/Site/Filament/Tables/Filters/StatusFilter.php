@@ -11,7 +11,6 @@ class StatusFilter extends TernaryFilter
         return 'status';
     }
 
-
     protected function setUp(): void
     {
         parent::setUp();

@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     /**
      * The SEO model. You can use this setting to override the model used by the package.
