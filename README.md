@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://asciito.coms" target="_blank"><img src="https://raw.githubusercontent.com/asciito/art/master/asciito_site/no_background/banner.png" width="400" alt="Laravel Logo"></a>
+    <a href="https://asciito.com" target="_blank"><img src="https://raw.githubusercontent.com/asciito/art/master/asciito_site/no_background/banner.png" width="400" alt="Laravel Logo"></a>
 </p>
 
 <p align="center">
