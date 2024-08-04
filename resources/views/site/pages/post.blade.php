@@ -25,20 +25,7 @@
 
         <div class="relative z-30 aspect-video">
             @if($media = $post->getFirstMedia())
-                @if ($media->hasGeneratedConversion('feature-image'))
-                    {{
-                        $media
-                            ->img()
-                            ->attributes(['class' => 'w-full h-auto'])
-                            ->conversion('feature-image')
-                    }}
-                @else
-                    {{
-                        $media
-                            ->img()
-                            ->attributes(['class' => 'w-full h-auto'])
-                    }}
-                @endif
+                <x-site::image-media :$media />
             @else
                 <div class="w-full h-full bg-slate-300"></div>
             @endif
