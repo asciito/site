@@ -18,10 +18,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Post extends Model implements HasMedia
 {
     use HasFactory;
-    use InteractsWithMedia;
-    use SoftDeletes;
-    use ModelStatus;
     use HasSEO;
+    use InteractsWithMedia;
+    use ModelStatus;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',

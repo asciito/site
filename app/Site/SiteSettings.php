@@ -6,7 +6,6 @@ use Spatie\LaravelSettings\Settings;
 
 class SiteSettings extends Settings
 {
-
     public string $site_name;
 
     public string $site_description;

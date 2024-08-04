@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\PostResource\Pages;
 
+use App\Filament\Resources\PostResource;
 use App\Site\Enums\Status;
 use Filament\Actions;
-use App\Filament\Resources\PostResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreatePost extends CreateRecord
@@ -19,7 +19,7 @@ class CreatePost extends CreateRecord
                 ->link()
                 ->mutateFormDataUsing(fn (array $data) => [
                     ...$data,
-                    $data['status'] => Status::DRAFT
+                    $data['status'] => Status::DRAFT,
                 ])
                 ->color('gray')
                 ->action('create'),

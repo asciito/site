@@ -85,7 +85,7 @@ class PostResource extends Resource
                                             if ($width > 1920 || $height > 1080) {
                                                 $fail('The :attribute dimensions are not valid');
                                             }
-                                        }
+                                        },
                                     ])
                                     ->responsiveImages(),
                                 Forms\Components\Textarea::make('excerpt')
