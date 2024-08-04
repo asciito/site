@@ -23,9 +23,22 @@
 
         <div class="absolute z-40 top-0 left-0 right-0 bottom-0 bg-slate-600/20 backdrop-blur-md"></div>
 
-        <div class="aspect-video">
+        <div class="relative z-30 aspect-video">
             @if($media = $post->getFirstMedia())
-                {{ $media->img()->attributes(['class' => 'relative z-30 w-full']) }}
+                @if ($media->hasGeneratedConversion('feature-image'))
+                    {{
+                        $media
+                            ->img()
+                            ->attributes(['class' => 'w-full h-auto'])
+                            ->conversion('feature-image')
+                    }}
+                @else
+                    {{
+                        $media
+                            ->img()
+                            ->attributes(['class' => 'w-full h-auto'])
+                    }}
+                @endif
             @else
                 <div class="w-full h-full bg-slate-300"></div>
             @endif
