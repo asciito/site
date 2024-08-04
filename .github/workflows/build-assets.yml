@@ -1,0 +1,32 @@
+name: build-assets
+
+on:
+  pull_request:
+    branches: [main, staging]
+    types:
+      - closed
+
+jobs:
+  build-assets:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: |
+          npm i
+
+      - name: Build assets
+        run: |
+          npm run build
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: >
+            build assets
