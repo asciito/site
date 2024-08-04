@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PostResource extends Resource
 {
@@ -76,6 +77,16 @@ class PostResource extends Resource
                                     ->uploadButtonPosition('left')
                                     ->uploadProgressIndicatorPosition('right')
                                     ->removeUploadedFileButtonPosition('right')
+                                    ->conversion('thumb')
+                                    ->rules([
+                                        fn (): \Closure => function (string $attribute, TemporaryUploadedFile $value, \Closure $fail) {
+                                            [$width, $height] = getimagesize($value->getRealPath());
+
+                                            if ($width > 1920 || $height > 1080) {
+                                                $fail('The :attribute dimensions are not valid');
+                                            }
+                                        }
+                                    ])
                                     ->responsiveImages(),
                                 Forms\Components\Textarea::make('excerpt')
                                     ->live(debounce: 250)

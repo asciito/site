@@ -13,6 +13,7 @@ use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Post extends Model implements HasMedia
 {
@@ -52,6 +53,28 @@ class Post extends Model implements HasMedia
             enableTitleSuffix: false,
             robots: ! $this->isPublished() ? 'noindex, nofollow' : config('seo.robots.default')
         );
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        [$width, $height] = getimagesize($media->getPath());
+
+        $thumb = $this
+            ->addMediaConversion('thumb')
+            ->width(1280)
+            ->height(720);
+
+        $feature = $this
+            ->addMediaConversion('feature-image')
+            ->width(1920)
+            ->height(1080)
+            ->withResponsiveImages();
+
+        if ($width > 1920 || $height > 1080) {
+            $thumb->focalCrop(1920, 1080);
+
+            $feature->focalCrop(1920, 1080);
+        }
     }
 
     public function resolveRouteBinding($value, $field = null)
