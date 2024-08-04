@@ -78,7 +78,7 @@ class WebtoolsPanelProvider extends PanelProvider
 
         FilamentView::registerRenderHook(
             PanelsRenderHook::TOPBAR_START,
-            fn () => Blade::render(<<<HTML
+            fn () => Blade::render(<<<'HTML'
                 <x-filament::link
                     :href="route('home')"
                     icon="heroicon-s-globe-alt"
