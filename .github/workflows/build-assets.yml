@@ -9,10 +9,17 @@ on:
 jobs:
   build-assets:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
     if: github.event.pull_request.merged == true
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }
 
       - name: Setup node
         uses: actions/setup-node@v4
