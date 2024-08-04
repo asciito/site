@@ -75,7 +75,7 @@ new class extends Component {
                     type="button"
                     class="flex items-center space-x-2"
                 >
-                    <x-filament-panels::avatar.user :user/>
+                    <img src="{{ filament()->getUserAvatarUrl($user) }}" class="object-cover object-center rounded-full w-8 h-8"/>
                 </button>
 
                 <!-- Panel -->

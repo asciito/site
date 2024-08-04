@@ -23,14 +23,19 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
 
       - name: Install dependencies
         run: |
-          npm i
+          npm ci
 
       - name: Build assets
         run: |
           npm run build
+
+      - name: Pull changes
+        run: git pull
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
