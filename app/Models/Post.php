@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\ModelStatus;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Site\HtmlContent;
 
 class Post extends Model implements HasMedia
 {
@@ -30,6 +32,11 @@ class Post extends Model implements HasMedia
         'content',
         'excerpt',
     ];
+
+    public function getContent(): Htmlable
+    {
+        return new HtmlContent($this->content);
+    }
 
     public function getExcerpt(): string
     {
