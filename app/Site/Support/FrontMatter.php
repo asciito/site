@@ -23,7 +23,7 @@ class FrontMatter
     /**
      * Class constructor
      *
-     * @param string $content The content to extract YAML
+     * @param  string  $content  The content to extract YAML
      */
     protected function __construct(protected string $content)
     {
@@ -32,9 +32,6 @@ class FrontMatter
 
     /**
      * Load content
-     *
-     * @param string $content
-     * @return static
      */
     public static function load(string $content): static
     {
@@ -44,7 +41,6 @@ class FrontMatter
     /**
      * Load file content
      *
-     * @param string $path
      * @return $this
      */
     public function loadFile(string $path): static
@@ -56,12 +52,10 @@ class FrontMatter
 
     /**
      * Extract YAML from content
-     *
-     * @return void
      */
     public function extractYaml(): void
     {
-        if ($yaml = \Illuminate\Support\Str::match(static::$pattern, $this->content)){
+        if ($yaml = \Illuminate\Support\Str::match(static::$pattern, $this->content)) {
             $this->yaml = $yaml;
             $this->body = static::removeFrontMatter($this->content);
         } else {
@@ -75,7 +69,7 @@ class FrontMatter
      *
      * @throws ParseException if the YAML is not valid
      */
-    public function getData(): array|null
+    public function getData(): ?array
     {
         if (empty($this->yaml)) {
             return null;
@@ -86,9 +80,6 @@ class FrontMatter
 
     /**
      * Remove the YAML from the give content
-     *
-     * @param string $content
-     * @return string
      */
     public static function removeFrontMatter(string $content): string
     {
