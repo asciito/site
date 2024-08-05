@@ -18,7 +18,7 @@ This project is my personal blog, open-sourced, built with [**Laravel**](https:/
 
 ## Installation
 
-This project can be installed in the same way as any other **Laravel** application. After initializing the project, follow the next few steps to set it up completely.
+This project can be installed in the same way as any other **Laravel** application. After initializing the project (migrate, generate key, etc), follow the next few steps to set it up completely.
 
 ### Create a User
 
@@ -50,13 +50,9 @@ Now, every time you want to access the webtools panel, you must go to `example.c
 
 Once all the configuration is done, create a queue worker as required by [spatie/laravel-media-library](https://github.com/spatie/laravel-medialibrary)
 
-## Documentation
+### That's all
 
-_Working on it_...
-
-## Contributing
-
-Thank you for considering contributing to the project! The contribution guide can be found in the Project documentation.
+At this point, you can begin using the project, so feel free to utilize it however you wish.
 
 ## Security Vulnerabilities
 
