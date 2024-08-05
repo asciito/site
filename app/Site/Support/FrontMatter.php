@@ -8,22 +8,45 @@ use Symfony\Component\Yaml\Yaml;
 
 class FrontMatter
 {
+    /**
+     * @var string The YAML string representation
+     */
     protected string $yaml = '';
 
+    /**
+     * @var string The body of the content (without the YAML)
+     */
     protected string $body = '';
 
     protected static string $pattern = '/\A---\s*[\r\n]+(.*?)\s*[\r\n]+---/s';
 
-    public function __construct(protected string $content)
+    /**
+     * Class constructor
+     *
+     * @param string $content The content to extract YAML
+     */
+    protected function __construct(protected string $content)
     {
         $this->extractYaml();
     }
 
+    /**
+     * Load content
+     *
+     * @param string $content
+     * @return static
+     */
     public static function load(string $content): static
     {
         return new static(trim($content));
     }
 
+    /**
+     * Load file content
+     *
+     * @param string $path
+     * @return $this
+     */
     public function loadFile(string $path): static
     {
         return static::load(
@@ -31,6 +54,11 @@ class FrontMatter
         );
     }
 
+    /**
+     * Extract YAML from content
+     *
+     * @return void
+     */
     public function extractYaml(): void
     {
         if ($yaml = \Illuminate\Support\Str::match(static::$pattern, $this->content)){
@@ -43,6 +71,8 @@ class FrontMatter
     }
 
     /**
+     * Get the PHP data representation
+     *
      * @throws ParseException if the YAML is not valid
      */
     public function getData(): array|null
@@ -54,6 +84,12 @@ class FrontMatter
         return Yaml::parse($this->yaml);
     }
 
+    /**
+     * Remove the YAML from the give content
+     *
+     * @param string $content
+     * @return string
+     */
     public static function removeFrontMatter(string $content): string
     {
         return Str::replaceMatches(static::$pattern, '', $content);
