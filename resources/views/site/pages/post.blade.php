@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="mt-4 prose max-w-full prose-figcaption:mt-0 prose-img:has-[figcaption]:mb-2">
+    <div class="mt-4 content">
         {{ $post->getContent() }}
     </div>
 </x-site::layout>
