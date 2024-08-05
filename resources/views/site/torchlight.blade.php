@@ -3,7 +3,7 @@
 <div class="relative">
     <pre class="block whitespace-nowrap rounded-none bg-[#292D3E]">
         <div class="max-h-[30rem]">
-            <x-torchlight-code :language="$language" class="whitespace-pre" :contents="$content"/>
+            <x-torchlight-code :language="$language" class="whitespace-pre" :contents="htmlspecialchars_decode($content)"/>
         </div>
     </pre>
 
