@@ -22,6 +22,8 @@ class HtmlContent implements Htmlable
             try {
                 $data = FrontMatter::load($pre)->getData();
             } catch (ParseException) {
+                Support\Facades\Log::error('Trying to highlight code failed', ['code' => $pre]);
+
                 $data = [];
             }
 
