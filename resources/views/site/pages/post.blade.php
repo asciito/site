@@ -33,26 +33,6 @@
     </div>
 
     <div class="mt-4 prose max-w-full prose-figcaption:mt-0 prose-img:has-[figcaption]:mb-2">
-        @php
-        $content = $post->content;
-
-        $content = \Illuminate\Support\Str::of($content)->replaceMatches('/<pre>(.*?)<\/pre>/s', function ($matches) {
-            // Capture the content between <pre> and </pre>
-            $content = $matches[1];
-
-            return \Illuminate\Support\Facades\Blade::render(
-                <<<'TEMPLATE'
-                <pre class="block whitespace-nowrap rounded-none bg-[#292D3E]">
-                    <div class="max-h-[30rem]">
-                        <x-torchlight-code language="php" class="whitespace-pre" :contents="$content"/>
-                    </div>
-                </pre>
-                TEMPLATE,
-                ["content" => htmlspecialchars_decode($content)]
-            );
-        });
-        @endphp
-
-        {!! $content !!}
+        {{ $post->getContent() }}
     </div>
 </x-site::layout>

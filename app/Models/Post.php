@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Concerns\ModelStatus;
+use App\Site\HtmlContent;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +32,11 @@ class Post extends Model implements HasMedia
         'content',
         'excerpt',
     ];
+
+    public function getContent(): Htmlable
+    {
+        return new HtmlContent($this->content);
+    }
 
     public function getExcerpt(): string
     {
