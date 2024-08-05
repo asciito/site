@@ -44,13 +44,16 @@
     }
 }
 
-
-/*
- Margin and rounding are personal preferences,
- overflow-x-auto is recommended.
-*/
-pre {
-    @apply my-4 rounded overflow-x-auto selection:bg-white/20;
+/** Remove scrollbar elements on Torchlight wrapper **/
+pre > .torchlight-wrapper {
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-corner {
+        width: 0;
+        height: 0;
+        display: none;
+    }
 }
 
 /*
@@ -67,7 +70,7 @@ pre code.torchlight {
  Horizontal line padding.
 */
 pre code.torchlight .line {
-    @apply px-4;
+    @apply mx-4;
 }
 
 /*
