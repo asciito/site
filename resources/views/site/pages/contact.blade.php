@@ -10,9 +10,9 @@
         <h1 class="text-4xl lg:text-5xl !leading-snug mb-8">Contact Me</h1>
 
         <p>
-            Please contact me if you have any inquiry or you want to work with
-            me. If is something related with a project you have in mind, please
-            put as much information you need.
+            Please contact me if you have any questions or if you'd like to work
+            together. If your inquiry is about a project you're considering, please
+            include as much detail as you can.
         </p>
     </div>
 
