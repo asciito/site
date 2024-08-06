@@ -9,6 +9,8 @@
 
     @supports (hanging-punctuation: first) and (font: -apple-system-body) and (-webkit-appearance: none) {
         html, * {
+            @apply selection:bg-harlequin;
+
             & {
                 --bar-color: rgba(51, 255, 51, 1.0);
 
@@ -29,14 +31,29 @@
             }
         }
     }
+
+    .content {
+        @apply max-w-full prose
+            prose-figcaption:mt-0 prose-img:has-[figcaption]:mb-2
+
+            /** anchor **/
+            prose-a:font-semibold prose-a:underline-offset-2 hover:prose-a:text-dark-blue-200 visited:prose-a:text-dark-blue
+
+            /** blockquote **/
+            prose-blockquote:border-s-dark-blue/50 prose-blockquote:text-slate-800/50
+    }
 }
 
-/*
- Margin and rounding are personal preferences,
- overflow-x-auto is recommended.
-*/
-pre {
-    @apply my-4 rounded overflow-x-auto;
+/** Remove scrollbar elements on Torchlight wrapper **/
+pre > .torchlight-wrapper {
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-corner {
+        width: 0;
+        height: 0;
+        display: none;
+    }
 }
 
 /*
@@ -53,7 +70,7 @@ pre code.torchlight {
  Horizontal line padding.
 */
 pre code.torchlight .line {
-    @apply px-4;
+    @apply mx-4;
 }
 
 /*

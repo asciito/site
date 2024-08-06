@@ -113,8 +113,10 @@ class PostResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->limit(50)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
+                    ->limit(50)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->formatStateUsing(fn (Status $state) => $state->name)
