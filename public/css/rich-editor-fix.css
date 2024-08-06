@@ -1,0 +1,1 @@
+.fi-fo-rich-editor-toolbar{position: sticky !important;box-shadow:#A3A3A3 2px -2px 8px}.fi-fo-rich-editor-toolbar > div::-webkit-scrollbar{width: 0;height: 0;display: none}.fi-fo-rich-editor-toolbar + trix-editor{max-height: 35rem;overflow-y: scroll}  .fi-fo-rich-editor-toolbar + trix-editor::-webkit-scrollbar{width: 0;height: 0;display: none}
