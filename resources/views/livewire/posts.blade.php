@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Volt\Component;
 
@@ -44,6 +45,8 @@ new class extends Component {
     <div class="flex flex-wrap space-y-5">
         @forelse($this->posts() as $post)
             @php
+                /** @var Post $post */
+
                 $title = $post->title;
                 $url = route('post', $post);
             @endphp
@@ -65,11 +68,7 @@ new class extends Component {
 
                 <div class="space-y-2">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit. A
-                        adipisci, ipsum labore laudantium neque nobis
-                        rem repudiandae
-                        sunt tenetur voluptate!
+                        {{ $post->getExcerpt() }}
                     </p>
 
                     <x-site::button href="{{ $url }}" size="sm">
@@ -78,7 +77,7 @@ new class extends Component {
                 </div>
             </article>
         @empty
-            <p class="w-full bg-slate-200/70 px-6 py-4 text-slate-800 text-center">There' no more post available</p>
+            <p class="w-full bg-slate-200/70 px-6 py-4 text-slate-800 text-center">There' no post available</p>
         @endforelse
     </div>
 

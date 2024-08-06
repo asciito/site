@@ -38,7 +38,7 @@ class Post extends Model implements HasMedia
         return new HtmlContent($this->content);
     }
 
-    public function getExcerpt(): string
+    public function getExcerpt(string $end = '...'): string
     {
         if (filled($this->excerpt)) {
             return $this->excerpt;
@@ -47,7 +47,7 @@ class Post extends Model implements HasMedia
         $excerpt = Str::of($this->content)->matchAll('/<p>(.*?)<\/p>/');
         $excerpt = trim($excerpt->join(' '));
 
-        return Str::limit(strip_tags($excerpt), 255, '');
+        return Str::limit(strip_tags($excerpt), 255, $end);
     }
 
     public function getDynamicSEOData(): SEOData
