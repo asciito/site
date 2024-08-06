@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\PostResource;
 use App\Site;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -9,6 +10,8 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Assets\Css;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
@@ -87,6 +90,12 @@ class WebtoolsPanelProvider extends PanelProvider
                     Site
                 </x-filament::link>
             HTML)
+        );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::HEAD_END,
+            fn () => '<link href="'.asset('css/rich-editor-fix.css').'" rel="stylesheet" data-navigate-track>',
+            PostResource\Pages\EditPost::class,
         );
     }
 }
