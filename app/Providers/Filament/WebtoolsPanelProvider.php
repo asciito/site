@@ -99,7 +99,7 @@ class WebtoolsPanelProvider extends PanelProvider
         );
     }
 
-    protected function setDefaultSiteImage(string $url): void
+    protected function setDefaultSiteImage(?string $url): void
     {
         app('config')->set(['seo.image.fallback' => $url]);
     }
