@@ -31,6 +31,8 @@ class WebtoolsPanelProvider extends PanelProvider
 
         try {
             $panel->brandName($settings->site_name);
+
+            $this->setDefaultSiteImage($settings->site_image);
         } catch (QueryException) {
             // The table does not exist
         }
@@ -95,5 +97,10 @@ class WebtoolsPanelProvider extends PanelProvider
             fn () => '<link href="'.asset('css/rich-editor-fix.css').'" rel="stylesheet" data-navigate-track>',
             PostResource\Pages\EditPost::class,
         );
+    }
+
+    protected function setDefaultSiteImage(?string $url): void
+    {
+        app('config')->set(['seo.image.fallback' => $url]);
     }
 }

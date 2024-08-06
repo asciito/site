@@ -31,6 +31,7 @@ class Post extends Model implements HasMedia
         'status',
         'content',
         'excerpt',
+        'published_at',
     ];
 
     public function getContent(): Htmlable

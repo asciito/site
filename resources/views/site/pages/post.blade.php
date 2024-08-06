@@ -16,8 +16,12 @@
             </h1>
 
             <p class="text-white font-thin text-sm mt-2">
-                <span>{{ $post->created_at->equalTo($post->updated_at) ? 'Created on' : 'Last updated on' }}</span>
-                <time>{{ $post->updated_at->format('F d, Y') }}</time>
+                @if(! $post->isPublished())
+                    <span>Not Yet Published</span>
+                @else
+                    <span>{{ ! $post->updated_at->greaterThan($post->published_at) ? 'Last updated on' : 'Created on' }}</span>
+                    <time>{{ $post->updated_at->format('F d, Y') }}</time>
+                @endif
             </p>
         </div>
 

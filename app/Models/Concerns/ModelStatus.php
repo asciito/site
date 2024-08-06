@@ -4,6 +4,7 @@ namespace App\Models\Concerns;
 
 use App\Models\Scopes\ModelStatusScope;
 use App\Site\Enums\Status;
+use Illuminate\Support\Carbon;
 
 trait ModelStatus
 {
@@ -23,7 +24,10 @@ trait ModelStatus
     public function initializeModelStatus(): void
     {
         if (! isset($this->casts[$this->getStatusColumn()])) {
-            $this->casts[$this->getStatusColumn()] = Status::class;
+            $this->casts = array_merge($this->casts, [
+                $this->getStatusColumn() => Status::class,
+                $this->getPublishedAtColumn() => 'datetime',
+            ]);
         }
     }
 
@@ -39,7 +43,9 @@ trait ModelStatus
 
     public function publish(): bool
     {
-        return $this->changeStatus(Status::PUBLISHED);
+        return $this
+            ->setPublishedAt($this->freshTimestamp())
+            ->changeStatus(Status::PUBLISHED);
     }
 
     protected function changeStatus(Status $status): bool
@@ -74,8 +80,25 @@ trait ModelStatus
         return defined(static::class.'::STATUS_COLUMN') ? static::STATUS_COLUMN : 'status';
     }
 
+    public function setPublishedAt(Carbon $value): static
+    {
+        $this->{$this->getPublishedAtColumn()} = $value;
+
+        return $this;
+    }
+
+    public function getPublishedAtColumn(): string
+    {
+        return defined(static::class.'::PUBLISHED_AT_COLUMN') ? static::PUBLISHED_AT_COLUMN : 'published_at';
+    }
+
     public function getQualifiedStatusColumn(): string
     {
         return $this->qualifyColumn($this->getStatusColumn());
+    }
+
+    public function getQualifiedPublishedAtColumn(): string
+    {
+        return $this->qualifyColumn($this->getPublishedAtColumn());
     }
 }
