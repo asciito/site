@@ -29,7 +29,7 @@
 
     @if($showFooter)
         <footer>
-            <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto flex flex-col justify-between md:flex-row items-center px-4 py-8">
+            <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto flex flex-col justify-between md:flex-row items-center px-4 py-8 gap-4">
                 <ul class="flex justify-center space-x-4">
                     <li class="w-6">
                         <a href="https://github.com/{{ $settings->github_handler }}" target="_blank">
@@ -60,7 +60,12 @@
                     </li>
                 </ul>
 
-                <div class="mt-4 md:mt-0">
+                <ol class="flex gap-4 text-sm">
+                    <li><a href="{{ route('terms') }}" class="font-semibold underline underline-offset-2 hover:text-dark-blue-200 visited:text-dark-blue">Terms of Use</a></li>
+                    <li><a href="{{ route('privacy') }}" class="font-semibold underline underline-offset-2 hover:text-dark-blue-200 visited:text-dark-blue">Privacy Policy</a></li>
+                </ol>
+
+                <div>
                     <livewire:download-resume/>
                 </div>
             </div>
