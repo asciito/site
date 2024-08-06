@@ -16,4 +16,14 @@ class SiteController extends Controller
     {
         return view('site::pages.contact');
     }
+
+    public function terms(): Request|View
+    {
+        return view('site::pages.terms');
+    }
+
+    public function privacy(): Request|View
+    {
+        return view('site::pages.privacy');
+    }
 }
