@@ -53,7 +53,7 @@ it('can add thumbnail', function () {
         ->fillForm([
             'title' => fake()->sentence(),
             'content' => fake()->randomHtml(),
-            'thumbnail' => $image
+            'thumbnail' => $image,
         ])
         ->call('create')
         ->assertHasNoErrors();
@@ -70,13 +70,13 @@ it('can\'t add over-dimensioned image', function () {
         ->fillForm([
             'title' => fake()->sentence(),
             'content' => fake()->randomHtml(),
-            'thumbnail' => $image
+            'thumbnail' => $image,
         ])
-            ->call('create')
-            ->assertHasFormErrors([
-                'thumbnail' => 'The thumbnail dimensions are not valid',
-            ])
-            ->errors();
+        ->call('create')
+        ->assertHasFormErrors([
+            'thumbnail' => 'The thumbnail dimensions are not valid',
+        ])
+        ->errors();
 
     \Pest\Laravel\assertDatabaseCount('posts', 0);
 });

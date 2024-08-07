@@ -42,7 +42,7 @@ class CreatePost extends CreateRecord
                         $action->cancel();
                     }
                 })
-                ->keyBindings(['mod+s'])
-            ];
+                ->keyBindings(['mod+s']),
+        ];
     }
 }
