@@ -38,23 +38,29 @@ class PostResource extends Resource
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\TextInput::make('title')
-                                    ->live(debounce: 500)
-                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, string $operation, string $state) {
-                                        if ($operation === 'create' && ! $get('edited-manually')) {
-                                            $set('slug', Str::slug($state));
+                                    ->live(debounce: 300)
+                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?Post $record, string $operation, ?string $state) {
+                                        if (! $record?->isPublished()) {
+                                            if ($get('slug') === Str::slug($state) || ! $get('edited_slug')) {
+                                                $set('slug', Str::slug($state));
+                                                $set('edited_slug', false);
+                                            }
                                         }
                                     })
                                     ->required(),
+                                Forms\Components\Hidden::make('editing')
+                                    ->default(false),
                                 Forms\Components\TextInput::make('slug')
-                                    ->alphaDash()
+                                    ->live(debounce: 300)
                                     ->unique(ignoreRecord: true)
-                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, string $operation, ?Post $record, ?string $state) {
-                                        if ($operation !== 'create' && $record?->isPublished()) {
-                                            if ($state !== Str::slug($get('title'))) {
-                                                $set('edited-manually', true);
-                                            } else {
-                                                $set('edited-manually', false);
-                                            }
+                                    ->alphaDash()
+                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?Post $record, ?string $state) {
+                                        $set('slug', Str::slug($state));
+
+                                        if (! $get('edited_slug') || $state === Str::slug($get('title'))) {
+                                            $set('edited_slug', true);
+                                        } else {
+                                            $set('edited_slug', false);
                                         }
                                     })
                                     ->disabled(fn (?Post $record) => $record?->isPublished())
