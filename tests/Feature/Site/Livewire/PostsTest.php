@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Post;
+
 use function Pest\Laravel\get;
 
 it('can render', function () {
