@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Post;
+use App\Site\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -24,5 +26,10 @@ class PostFactory extends Factory
                 ->map(fn (string $p) => "<p>$p</p>")
                 ->join("\n<br>"),
         ];
+    }
+
+    public function published(): static
+    {
+        return $this->afterCreating(fn (Post $post) => $post->publish());
     }
 }

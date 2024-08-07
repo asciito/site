@@ -19,6 +19,7 @@ new class extends Component {
         $this->search = htmlspecialchars($search);
     }
 
+    #[\Livewire\Attributes\Computed]
     public function posts(): \Illuminate\Pagination\LengthAwarePaginator
     {
         return \App\Models\Post::when($this->search, function (Builder $query) {
@@ -43,7 +44,7 @@ new class extends Component {
     </div>
 
     <div class="flex flex-wrap space-y-5">
-        @forelse($this->posts() as $post)
+        @forelse($this->posts as $post)
             @php
                 /** @var Post $post */
 
