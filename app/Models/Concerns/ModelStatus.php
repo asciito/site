@@ -33,12 +33,16 @@ trait ModelStatus
 
     public function draft(): bool
     {
-        return $this->changeStatus(Status::DRAFT);
+        return $this
+            ->setPublishedAt(null)
+            ->changeStatus(Status::DRAFT);
     }
 
     public function archive(): bool
     {
-        return $this->changeStatus(Status::ARCHIVED);
+        return $this
+            ->setPublishedAt(null)
+            ->changeStatus(Status::ARCHIVED);
     }
 
     public function publish(): bool
@@ -80,7 +84,7 @@ trait ModelStatus
         return defined(static::class.'::STATUS_COLUMN') ? static::STATUS_COLUMN : 'status';
     }
 
-    public function setPublishedAt(Carbon $value): static
+    public function setPublishedAt(?Carbon $value): static
     {
         $this->{$this->getPublishedAtColumn()} = $value;
 
