@@ -31,4 +31,9 @@ class PostFactory extends Factory
     {
         return $this->afterCreating(fn (Post $post) => $post->publish());
     }
+
+    public function archived(): static
+    {
+        return $this->trashed();
+    }
 }
