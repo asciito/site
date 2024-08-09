@@ -88,7 +88,7 @@ class Post extends Model implements HasMedia
     public function resolveRouteBinding($value, $field = null)
     {
         return parent::resolveRouteBindingQuery($this, $value, $field)
-            ->when(Auth::check(), fn (Builder $query) => $query->withDrafts())
+            ->when(Auth::check(), fn (Builder $query) => $query->withTrashed()->withDrafts())
             ->first();
     }
 }
