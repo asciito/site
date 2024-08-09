@@ -38,33 +38,42 @@ class PostResource extends Resource
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\TextInput::make('title')
-                                    ->live(debounce: 300)
-                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?Post $record, string $operation, ?string $state) {
-                                        if (! $record?->isPublished()) {
-                                            if ($get('slug') === Str::slug($state) || ! $get('edited_slug')) {
-                                                $set('slug', Str::slug($state));
-                                                $set('edited_slug', false);
-                                            }
+                                    ->live(debounce: 350)
+                                    ->required()
+                                    ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, ?Post $record, string $operation, ?string $state) {
+                                        if ($record?->isPublished()) {
+                                            return;
                                         }
-                                    })
-                                    ->required(),
-                                Forms\Components\Hidden::make('editing')
-                                    ->default(false),
+
+                                        switch ($operation) {
+                                            case 'create':
+                                                if (! $get('editing')) {
+                                                    $set('slug', Str::slug($state));
+                                                }
+
+                                                return;
+                                            case 'edit':
+                                                if (! $get('editing')) {
+                                                    $set('slug', Str::slug($state));
+                                                } else if (Str::startsWith(Str::slug($state), $get('slug'))) {
+                                                    $set('slug', Str::slug($state));
+                                                    $set('editing', false);
+                                                }
+                                                return;
+                                        }
+                                    }),
                                 Forms\Components\TextInput::make('slug')
-                                    ->live(debounce: 300)
+                                    ->live(debounce: 350)
                                     ->unique(ignoreRecord: true)
+                                    ->required()
                                     ->alphaDash()
-                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?Post $record, ?string $state) {
+                                    ->afterStateUpdated(function (Forms\Set $set, ?string $state) {
                                         $set('slug', Str::slug($state));
 
-                                        if (! $get('edited_slug') || $state === Str::slug($get('title'))) {
-                                            $set('edited_slug', true);
-                                        } else {
-                                            $set('edited_slug', false);
-                                        }
-                                    })
-                                    ->disabled(fn (?Post $record) => $record?->isPublished())
-                                    ->required(),
+                                        $set('editing', true);
+                                    }),
+                                Forms\Components\Hidden::make('editing')
+                                    ->default(false),
                                 Forms\Components\RichEditor::make('content')
                                     ->required()
                                     ->columnSpanFull(),

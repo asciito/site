@@ -36,4 +36,9 @@ class PostFactory extends Factory
     {
         return $this->trashed();
     }
+
+    public function dontSyncSlug(): static
+    {
+        return $this->state(fn (array $attributes) => ['slug' => Str::slug(fake()->unique()->sentence())]);
+    }
 }

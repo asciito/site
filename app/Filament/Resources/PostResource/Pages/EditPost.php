@@ -40,4 +40,12 @@ class EditPost extends EditRecord
             ]),
         ];
     }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        return [
+            ...$data,
+            'editing' => $data['slug'] !== \Illuminate\Support\Str::slug($data['title']),
+        ];
+    }
 }
