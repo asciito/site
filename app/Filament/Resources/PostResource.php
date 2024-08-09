@@ -72,7 +72,8 @@ class PostResource extends Resource
                                         $set('slug', Str::slug($state));
 
                                         $set('editing', true);
-                                    }),
+                                    })
+                                    ->disabled(fn (?Post $record) => $record?->isPublished()),
                                 Forms\Components\Hidden::make('editing')
                                     ->default(false),
                                 Forms\Components\RichEditor::make('content')
