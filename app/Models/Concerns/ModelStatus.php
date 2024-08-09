@@ -59,9 +59,7 @@ trait ModelStatus
 
     protected function changeStatus(Status $status): bool
     {
-        return $this->update([
-            $this->getStatusColumn() => $status,
-        ]);
+        return $this->setStatus($status)->update();
     }
 
     public function isDraft(): bool

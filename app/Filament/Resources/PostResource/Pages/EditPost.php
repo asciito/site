@@ -20,9 +20,9 @@ class EditPost extends EditRecord
                 ->visible(fn (Post $record) => $record->isDraft())
                 ->action(function (Actions\Action $action, Post $record) {
                     try {
-                        $record->setStatus(Status::PUBLISHED);
-
                         $this->save(false);
+
+                        $record->publish();
                     } catch (ValidationException $e) {
                         $this->setErrorBag($e->validator->errors());
 
