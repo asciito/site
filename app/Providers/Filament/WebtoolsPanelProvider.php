@@ -94,7 +94,7 @@ class WebtoolsPanelProvider extends PanelProvider
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_END,
             fn () => '<link href="'.asset('css/rich-editor-fix.css').'" rel="stylesheet" data-navigate-track>',
-            PostResource\Pages\EditPost::class,
+            [PostResource\Pages\EditPost::class, PostResource\Pages\CreatePost::class],
         );
     }
 
