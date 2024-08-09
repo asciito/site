@@ -10,12 +10,14 @@ trait ModelStatus
 {
     public static function bootModelStatus(): void
     {
-        static::softDeleted(function ($model) {
-            $model->archive();
+        static::restoring(function ($model) {
+            $model->setStatus(Status::DRAFT);
         });
 
-        static::restored(function ($model) {
-            $model->draft();
+        static::deleting(function ($model) {
+            $model
+                ->setStatus(Status::ARCHIVED)
+                ->setPublishedAt(null);
         });
 
         static::addGlobalScope(ModelStatusScope::class);
@@ -33,12 +35,14 @@ trait ModelStatus
 
     public function draft(): bool
     {
-        return $this->changeStatus(Status::DRAFT);
+        return $this
+            ->setPublishedAt(null)
+            ->changeStatus(Status::DRAFT);
     }
 
     public function archive(): bool
     {
-        return $this->changeStatus(Status::ARCHIVED);
+        return $this->delete();
     }
 
     public function publish(): bool
@@ -46,6 +50,13 @@ trait ModelStatus
         return $this
             ->setPublishedAt($this->freshTimestamp())
             ->changeStatus(Status::PUBLISHED);
+    }
+
+    public function setStatus(Status $status): static
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
     protected function changeStatus(Status $status): bool
@@ -80,7 +91,7 @@ trait ModelStatus
         return defined(static::class.'::STATUS_COLUMN') ? static::STATUS_COLUMN : 'status';
     }
 
-    public function setPublishedAt(Carbon $value): static
+    public function setPublishedAt(?Carbon $value): static
     {
         $this->{$this->getPublishedAtColumn()} = $value;
 

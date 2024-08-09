@@ -46,3 +46,8 @@ function something()
 {
     // ..
 }
+
+function volt(string $component, array $params = []): \Livewire\Features\SupportTesting\Testable
+{
+    return \Livewire\Volt\Volt::test($component, $params);
+}

@@ -4,8 +4,10 @@ namespace App\Filament\Resources\PostResource\Pages;
 
 use App\Filament\Resources\PostResource;
 use App\Models\Post;
+use App\Site\Enums\Status;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Validation\ValidationException;
 
 class EditPost extends EditRecord
 {
@@ -16,10 +18,16 @@ class EditPost extends EditRecord
         return [
             Actions\Action::make('publish')
                 ->visible(fn (Post $record) => $record->isDraft())
-                ->action(function (Post $record) {
-                    $record->publish();
+                ->action(function (Actions\Action $action, Post $record) {
+                    try {
+                        $record->setStatus(Status::PUBLISHED);
 
-                    $this->getSavedNotification()->send();
+                        $this->save(false);
+                    } catch (ValidationException $e) {
+                        $this->setErrorBag($e->validator->errors());
+
+                        $action->close();
+                    }
                 })
                 ->requiresConfirmation(),
             Actions\Action::make('view')
@@ -30,6 +38,14 @@ class EditPost extends EditRecord
                 Actions\ForceDeleteAction::make(),
                 Actions\RestoreAction::make(),
             ]),
+        ];
+    }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        return [
+            ...$data,
+            'editing' => $data['slug'] !== \Illuminate\Support\Str::slug($data['title']),
         ];
     }
 }

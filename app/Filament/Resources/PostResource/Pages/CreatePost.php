@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\PostResource\Pages;
 
 use App\Filament\Resources\PostResource;
-use App\Site\Enums\Status;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Validation\ValidationException;
 
 class CreatePost extends CreateRecord
 {
@@ -17,14 +17,32 @@ class CreatePost extends CreateRecord
             Actions\Action::make('draft')
                 ->label('Save as Draft')
                 ->link()
-                ->mutateFormDataUsing(fn (array $data) => [
-                    ...$data,
-                    $data['status'] => Status::DRAFT,
-                ])
                 ->color('gray')
-                ->action('create'),
+                ->action(function (Actions\Action $action) {
+                    try {
+                        $this->create();
+
+                        $this->getRecord()->draft();
+                    } catch (ValidationException $e) {
+                        $this->setErrorBag($e->validator->errors());
+
+                        $action->cancel();
+                    }
+                }),
             Actions\Action::make('publish')
-                ->requiresConfirmation(),
+                ->requiresConfirmation()
+                ->action(function (Actions\Action $action) {
+                    try {
+                        $this->create();
+
+                        $this->getRecord()->publish();
+                    } catch (ValidationException $e) {
+                        $this->setErrorBag($e->validator->errors());
+
+                        $action->cancel();
+                    }
+                })
+                ->keyBindings(['mod+s']),
         ];
     }
 }

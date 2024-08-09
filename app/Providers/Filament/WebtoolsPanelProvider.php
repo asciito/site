@@ -49,7 +49,6 @@ class WebtoolsPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->discoverPages(in: app_path('Site/Filament/Pages'), for: 'App\\Site\\Filament\\Pages\\')
             ->pages([
                 Pages\Dashboard::class,
                 Site\Filament\Pages\SiteSettingsPage::class,
