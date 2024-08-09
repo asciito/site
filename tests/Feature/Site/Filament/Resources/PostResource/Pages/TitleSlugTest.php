@@ -53,7 +53,7 @@ it('can sync title and slug again after math edited slug with title', function (
         ->assertFormSet(['slug' => \Illuminate\Support\Str::slug($title)])
         ->fillForm(['slug' => $slug = \Illuminate\Support\Str::slug(fake()->sentence)])
         ->assertFormSet(['slug' => $slug])
-        ->fillForm(['title' =>fake()->sentence])
+        ->fillForm(['title' => fake()->sentence])
         ->assertFormSet(['slug' => $slug])
         ->assertSuccessful();
 

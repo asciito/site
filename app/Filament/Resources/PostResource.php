@@ -55,10 +55,11 @@ class PostResource extends Resource
                                             case 'edit':
                                                 if (! $get('editing')) {
                                                     $set('slug', Str::slug($state));
-                                                } else if (Str::startsWith(Str::slug($state), $get('slug'))) {
+                                                } elseif (Str::startsWith(Str::slug($state), $get('slug'))) {
                                                     $set('slug', Str::slug($state));
                                                     $set('editing', false);
                                                 }
+
                                                 return;
                                         }
                                     }),
