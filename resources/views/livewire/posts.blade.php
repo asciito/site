@@ -43,7 +43,7 @@ new class extends Component {
             wire:model.live.debounce.500ms="search"/>
     </div>
 
-    <div class="flex flex-wrap space-y-5">
+    <div class="grid gap-8">
         @forelse($this->posts as $post)
             @php
                 /** @var Post $post */
@@ -51,8 +51,8 @@ new class extends Component {
                 $title = $post->title;
                 $url = route('post', $post);
             @endphp
-            <article class="space-y-2">
-                <header>
+            <article class="grid gap-3">
+                <header class="space-y-1">
                     <h3 @class(["text-2xl", "flex items-center space-x-2" => $post->isDraft()])>
                         <span>{{ $post->title }}</span>
 
