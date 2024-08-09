@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -18,11 +19,28 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $title = fake()->text(random_int(10, 18)),
+            'title' => $title = fake()->unique()->text(random_int(10, 18)),
             'slug' => Str::slug($title),
             'content' => collect(fake()->paragraphs(random_int(3, 5)))
                 ->map(fn (string $p) => "<p>$p</p>")
                 ->join("\n<br>"),
         ];
+    }
+
+    public function published(): static
+    {
+        return $this->afterCreating(fn (Post $post) => $post->publish());
+    }
+
+    public function archived(): static
+    {
+        return $this->afterCreating(function (Post $post) {
+            $post->archive();
+        });
+    }
+
+    public function dontSyncSlug(): static
+    {
+        return $this->state(fn (array $attributes) => ['slug' => Str::slug(fake()->unique()->sentence())]);
     }
 }

@@ -49,7 +49,6 @@ class WebtoolsPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->discoverPages(in: app_path('Site/Filament/Pages'), for: 'App\\Site\\Filament\\Pages\\')
             ->pages([
                 Pages\Dashboard::class,
                 Site\Filament\Pages\SiteSettingsPage::class,
@@ -95,7 +94,7 @@ class WebtoolsPanelProvider extends PanelProvider
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_END,
             fn () => '<link href="'.asset('css/rich-editor-fix.css').'" rel="stylesheet" data-navigate-track>',
-            PostResource\Pages\EditPost::class,
+            [PostResource\Pages\EditPost::class, PostResource\Pages\CreatePost::class],
         );
     }
 

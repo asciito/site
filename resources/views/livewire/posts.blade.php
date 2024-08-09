@@ -19,6 +19,7 @@ new class extends Component {
         $this->search = htmlspecialchars($search);
     }
 
+    #[\Livewire\Attributes\Computed]
     public function posts(): \Illuminate\Pagination\LengthAwarePaginator
     {
         return \App\Models\Post::when($this->search, function (Builder $query) {
@@ -42,16 +43,16 @@ new class extends Component {
             wire:model.live.debounce.500ms="search"/>
     </div>
 
-    <div class="flex flex-wrap space-y-5">
-        @forelse($this->posts() as $post)
+    <div class="grid gap-8">
+        @forelse($this->posts as $post)
             @php
                 /** @var Post $post */
 
                 $title = $post->title;
                 $url = route('post', $post);
             @endphp
-            <article class="space-y-2">
-                <header>
+            <article class="grid gap-3">
+                <header class="space-y-1">
                     <h3 @class(["text-2xl", "flex items-center space-x-2" => $post->isDraft()])>
                         <span>{{ $post->title }}</span>
 
