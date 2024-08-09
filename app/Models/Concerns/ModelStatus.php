@@ -14,10 +14,8 @@ trait ModelStatus
             $model->setStatus(Status::DRAFT);
         });
 
-        static::deleting(function ($model) {
-            $model
-                ->setStatus(Status::ARCHIVED)
-                ->setPublishedAt(null);
+        static::deleted(function ($model) {
+            $model->changeStatus(Status::ARCHIVED);
         });
 
         static::addGlobalScope(ModelStatusScope::class);
