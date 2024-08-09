@@ -147,6 +147,7 @@ class PostResource extends Resource
                     ->label('Last time updated')
                     ->formatStateUsing(fn (Carbon $state) => $state->diffForHumans()),
             ])
+            ->recordUrl(fn (Post $record) => ! $record->isArchived() ? route('filament.webtools.resources.posts.edit', $record) : null)
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
                 \App\Site\Filament\Tables\Filters\StatusFilter::make(),
@@ -154,6 +155,7 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('view')
+                        ->hidden(fn (Post $record) => $record->isArchived())
                         ->icon('heroicon-s-eye')
                         ->url(fn (Post $record) => route('post', $record), true),
                     Tables\Actions\EditAction::make(),

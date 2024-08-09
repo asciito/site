@@ -31,6 +31,7 @@ class EditPost extends EditRecord
                 })
                 ->requiresConfirmation(),
             Actions\Action::make('view')
+                ->hidden(fn (Post $record) => $record->isArchived())
                 ->url(fn (Post $record) => route('post', $record), true)
                 ->color('gray'),
             Actions\ActionGroup::make([
