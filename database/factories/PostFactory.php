@@ -34,7 +34,9 @@ class PostFactory extends Factory
 
     public function archived(): static
     {
-        return $this->trashed();
+        return $this->afterCreating(function (Post $post) {
+            $post->archive();
+        });
     }
 
     public function dontSyncSlug(): static

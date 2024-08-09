@@ -4,7 +4,6 @@ namespace App\Filament\Resources\PostResource\Pages;
 
 use App\Filament\Resources\PostResource;
 use App\Models\Post;
-use App\Site\Enums\Status;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Validation\ValidationException;
@@ -20,9 +19,9 @@ class EditPost extends EditRecord
                 ->visible(fn (Post $record) => $record->isDraft())
                 ->action(function (Actions\Action $action, Post $record) {
                     try {
-                        $record->setStatus(Status::PUBLISHED);
-
                         $this->save(false);
+
+                        $record->publish();
                     } catch (ValidationException $e) {
                         $this->setErrorBag($e->validator->errors());
 
@@ -31,6 +30,7 @@ class EditPost extends EditRecord
                 })
                 ->requiresConfirmation(),
             Actions\Action::make('view')
+                ->hidden(fn (Post $record) => $record->isArchived())
                 ->url(fn (Post $record) => route('post', $record), true)
                 ->color('gray'),
             Actions\ActionGroup::make([

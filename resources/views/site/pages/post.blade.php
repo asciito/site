@@ -1,8 +1,4 @@
 <x-site::layout :page="$post">
-    @php
-
-    @endphp
-
     @if($post->isDraft())
         <div class="flex mb-2">
             <span class="text-sm px-2 py-1 bg-slate-200 text-slate-800">{{ $post->status->name }}</span>

@@ -14,10 +14,8 @@ trait ModelStatus
             $model->setStatus(Status::DRAFT);
         });
 
-        static::deleting(function ($model) {
-            $model
-                ->setStatus(Status::ARCHIVED)
-                ->setPublishedAt(null);
+        static::deleted(function ($model) {
+            $model->changeStatus(Status::ARCHIVED);
         });
 
         static::addGlobalScope(ModelStatusScope::class);
@@ -61,9 +59,7 @@ trait ModelStatus
 
     protected function changeStatus(Status $status): bool
     {
-        return $this->update([
-            $this->getStatusColumn() => $status,
-        ]);
+        return $this->setStatus($status)->update();
     }
 
     public function isDraft(): bool
