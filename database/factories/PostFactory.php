@@ -19,11 +19,13 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $title = fake()->unique()->text(random_int(10, 18)),
+            'title' => $title = fake()->unique()->text(80),
             'slug' => Str::slug($title),
-            'content' => collect(fake()->paragraphs(random_int(3, 5)))
-                ->map(fn (string $p) => "<p>$p</p>")
-                ->join("\n<br>"),
+            'content' => collect(fake()->paragraphs(random_int(5, 20)))
+                ->map(function (string $p) {
+                    return "<p>$p</p>";
+                })
+                ->join("\n"),
         ];
     }
 
