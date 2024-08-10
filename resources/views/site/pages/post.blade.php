@@ -1,20 +1,3 @@
-@php
-if ($post->isPublished()) {
-    if ($post->created_at <= $post->updated_at) {
-        if ($post->published_at && $post->published_at === $post->updated_at) {
-            $post_date = $post->published_at;
-            $post_date_message = 'Published on';
-        } else {
-            $post_date = $post->updated_at;
-            $post_date_message = 'Last time updated on';
-        }
-    }
-} else {
-    $post_date = $post->created_at;
-    $post_date_message = 'Created on';
-}
-@endphp
-
 <x-site::layout :page="$post">
     @if($post->isDraft())
         <div class="flex mb-2">
