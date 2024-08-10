@@ -59,21 +59,21 @@ class Post extends Model implements HasMedia
             if ($this->created_at->equalTo($this->updated_at)) {
                 $date = $this->created_at;
 
-                $message = now()->is($date) ? 'Created Today' : 'Created on '.$date->format('F d, Y');
+                $message = $date->isToday() ? 'Created Today' : 'Created on '.$date->format('F d, Y');
             } else {
                 $date = $this->updated_at;
 
-                $message = now()->is($date) ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
+                $message = $date->isToday() ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
             }
         } else {
             if ($this->updated_at->equalTo($this->published_at)) {
                 $date = $this->published_at;
 
-                $message = now()->is($date) ? 'Published Today' : 'Published on '.$date->format('F d, Y');
+                $message = $date->isToday() ? 'Published Today' : 'Published on '.$date->format('F d, Y');
             } else {
                 $date = $this->updated_at;
 
-                $message = now()->is($date) ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
+                $message = $date->isToday() ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
             }
         }
 
