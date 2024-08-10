@@ -2,22 +2,54 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        if (app()->isProduction()) {
+            return;
+        }
 
-        User::factory()->create([
+        $this->createUser();
+
+        $this->createPosts(50);
+    }
+
+    protected function createUser(): User
+    {
+        if (User::count() !== 0) {
+            return User::first();
+        }
+
+        return User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'user@example.com',
+            'password' => bcrypt('password'),
         ]);
+    }
+
+    protected function createPosts(int $total): Collection
+    {
+        foreach (range(1, $total) as $_) {
+            Carbon::setTestNow(now()->subDays(random_int(1, 50 + $total)));
+
+            tap(random_int(0, 1), function (bool $shouldPublish) {
+                $factory = Post::factory();
+
+                if ($shouldPublish) {
+                    $factory = $factory->published();
+                }
+
+                $factory->create();
+            });
+        }
+
+        return Post::all();
     }
 }
