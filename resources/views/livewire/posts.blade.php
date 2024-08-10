@@ -24,7 +24,7 @@ new class extends Component {
     {
         return \App\Models\Post::when($this->search, function (Builder $query) {
             $query->where('title', 'LIKE', "%{$this->search}%");
-        })->orderBy('updated_at', 'DESC')->paginate(perPage: $this->perPage);
+        })->orderBy('published_at', 'DESC')->paginate(perPage: $this->perPage);
     }
 
     public function loadMorePosts(): void
