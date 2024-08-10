@@ -24,7 +24,7 @@ new class extends Component {
     {
         return \App\Models\Post::when($this->search, function (Builder $query) {
             $query->where('title', 'LIKE', "%{$this->search}%");
-        })->orderBy('updated_at', 'DESC')->paginate(perPage: $this->perPage);
+        })->orderBy('published_at', 'DESC')->paginate(perPage: $this->perPage);
     }
 
     public function loadMorePosts(): void
@@ -62,8 +62,7 @@ new class extends Component {
                     </h3>
 
                     <p class="text-sm text-slate-500">
-                        <span>Publish on</span>
-                        <time datetime="{{ $post->created_at->format('y-m-d') }}">{{ $post->created_at->format('F d, Y') }}</time>
+                        {{ $post->getDate() }}
                     </p>
                 </header>
 
