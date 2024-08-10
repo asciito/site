@@ -63,7 +63,7 @@ new class extends Component {
 
                     <p class="text-sm text-slate-500">
                         <span>Publish on</span>
-                        <time datetime="{{ $post->created_at->format('y-m-d') }}">{{ $post->created_at->format('F d, Y') }}</time>
+                        <time datetime="{{ $post->published_at->format('Y-m-d') }}">{{ $post->published_at->format('F d, Y') }}</time>
                     </p>
                 </header>
 
