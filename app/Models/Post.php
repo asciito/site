@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
@@ -49,6 +51,37 @@ class Post extends Model implements HasMedia
         $excerpt = trim($excerpt->join(' '));
 
         return Str::limit(strip_tags($excerpt), 255, $end);
+    }
+
+    public function getDate(bool $asHtml = true): Htmlable|Carbon
+    {
+        if (! $this->isPublished()) {
+            if ($this->created_at->equalTo($this->updated_at)) {
+                $date = $this->created_at;
+
+                $message = now()->is($date) ? 'Created Today' : 'Created on '.$date->format('F d, Y');
+            } else {
+                $date = $this->updated_at;
+
+                $message = now()->is($date) ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
+            }
+        } else {
+            if ($this->updated_at->equalTo($this->published_at)) {
+                $date = $this->published_at;
+
+                $message = now()->is($date) ? 'Published Today' : 'Published on '.$date->format('F d, Y');
+            } else {
+                $date = $this->updated_at;
+
+                $message = now()->is($date) ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
+            }
+        }
+
+        return $asHtml ? new HtmlString(<<<HTML
+        <time datetime="{$date->format('Y-m-d')}">
+            $message
+        </time>
+        HTML) : $date;
     }
 
     public function getDynamicSEOData(): SEOData
