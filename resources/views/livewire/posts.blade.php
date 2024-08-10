@@ -62,8 +62,7 @@ new class extends Component {
                     </h3>
 
                     <p class="text-sm text-slate-500">
-                        <span>Publish on</span>
-                        <time datetime="{{ $post->published_at->format('Y-m-d') }}">{{ $post->published_at->format('F d, Y') }}</time>
+                        {{ $post->getDate() }}
                     </p>
                 </header>
 
