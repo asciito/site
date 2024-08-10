@@ -77,7 +77,7 @@ trait ModelStatus
         return $this->hasStatus(Status::ARCHIVED);
     }
 
-    protected function hasStatus(Status $status): bool
+    public function hasStatus(Status $status): bool
     {
         return $this->status === $status;
     }

@@ -1,17 +1,3 @@
-@php
-$post_date = $post->created_at;
-$post_date_message = 'Created on';
-
-if ($post->created_at < $post->updated_at) {
-    if ($post->published_at && $post->published_at === $post->updated_at) {
-        $post_date = $post->published_at;
-    } else {
-        $post_date = $post->updated_at;
-        $post_date_message = 'Last time updated on';
-    }
-}
-@endphp
-
 <x-site::layout :page="$post">
     @if($post->isDraft())
         <div class="flex mb-2">
@@ -26,9 +12,7 @@ if ($post->created_at < $post->updated_at) {
             </h1>
 
             <p class="text-white font-thin text-sm mt-2">
-                <time datetime="{{ $post_date->format('Y-m-d') }}">
-                    {{ $post_date->isToday() ? 'Published Today' : "$post_date_message $post_date->format('F d, Y')" }}
-                </time>
+                {{ $post->getDate() }}
             </p>
         </div>
 
