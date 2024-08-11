@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",
+        "pirsch-analytics/laravel-pirsch": "^0.4.9",
         "ralphjsmit/laravel-seo": "^1.6",
         "symfony/yaml": "^7.1",
         "torchlight/torchlight-laravel": "^0.6.0"
