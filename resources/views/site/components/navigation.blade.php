@@ -20,7 +20,7 @@
                     <span class="block w-10 h-1 bg-dark-blue-600"></span>
                 </div>
 
-                <div x-ref="nav" class="md:grid md:grid-cols-subgrid md:col-span-2 items-center hidden absolute z-[100] md:static top-full left-0 bg-slate-50 p-4 md:p-0 md:bg-transparent w-full md:justify-between">
+                <div x-ref="nav" class="md:grid md:grid-cols-subgrid md:col-span-2 items-center hidden absolute z-[100] md:static top-full left-0 bg-slate-50 p-4 md:p-0 md:bg-transparent w-full md:justify-between shadow-md">
                     <nav id="menu" class="p-4 md:block">
                         <ol class="flex flex-col md:flex-row md:flex-wrap justify-center items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 text-xl">
                             <li>
