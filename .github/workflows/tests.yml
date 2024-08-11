@@ -28,4 +28,4 @@ jobs:
 
       - name: Run test
         run: |
-          vendor/bin/pest
+          PIRSCH_TOKEN=${{ secrets.PIRSCH_TOKEN }} vendor/bin/pest
