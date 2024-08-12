@@ -35,51 +35,63 @@ class PostResource extends Resource
                     'md' => 12,
                 ])
                     ->schema([
-                        Forms\Components\Section::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->live(debounce: 350)
-                                    ->required()
-                                    ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, ?Post $record, string $operation, ?string $state) {
-                                        if ($record?->isPublished()) {
-                                            return;
-                                        }
-
-                                        switch ($operation) {
-                                            case 'create':
-                                                if (! $get('editing')) {
-                                                    $set('slug', Str::slug($state));
-                                                }
-
+                        Forms\Components\Section::make([
+                            Forms\Components\Toggle::make('preview')
+                                ->live()
+                                ->afterStateUpdated(fn (Forms\Set $set, Forms\Get $get) => $set('preview', $get('preview', false)))
+                                ->hidden(fn (string $operation) => $operation === 'create'),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\TextInput::make('title')
+                                        ->live(debounce: 350)
+                                        ->required()
+                                        ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, ?Post $record, string $operation, ?string $state) {
+                                            if ($record?->isPublished()) {
                                                 return;
-                                            case 'edit':
-                                                if (! $get('editing')) {
-                                                    $set('slug', Str::slug($state));
-                                                } elseif (Str::startsWith(Str::slug($state), $get('slug'))) {
-                                                    $set('slug', Str::slug($state));
-                                                    $set('editing', false);
-                                                }
+                                            }
 
-                                                return;
-                                        }
-                                    }),
-                                Forms\Components\TextInput::make('slug')
-                                    ->live(debounce: 350)
-                                    ->unique(ignoreRecord: true)
-                                    ->required()
-                                    ->alphaDash()
-                                    ->afterStateUpdated(function (Forms\Set $set, ?string $state) {
-                                        $set('slug', Str::slug($state));
+                                            switch ($operation) {
+                                                case 'create':
+                                                    if (! $get('editing')) {
+                                                        $set('slug', Str::slug($state));
+                                                    }
 
-                                        $set('editing', true);
-                                    })
-                                    ->disabled(fn (?Post $record) => $record?->isPublished()),
-                                Forms\Components\Hidden::make('editing')
-                                    ->default(false),
-                                Forms\Components\MarkdownEditor::make('content')
-                                    ->required()
-                                    ->columnSpanFull(),
-                            ])
+                                                    return;
+                                                case 'edit':
+                                                    if (! $get('editing')) {
+                                                        $set('slug', Str::slug($state));
+                                                    } elseif (Str::startsWith(Str::slug($state), $get('slug'))) {
+                                                        $set('slug', Str::slug($state));
+                                                        $set('editing', false);
+                                                    }
+
+                                                    return;
+                                            }
+                                        }),
+                                    Forms\Components\TextInput::make('slug')
+                                        ->live(debounce: 350)
+                                        ->unique(ignoreRecord: true)
+                                        ->required()
+                                        ->alphaDash()
+                                        ->afterStateUpdated(function (Forms\Set $set, ?string $state) {
+                                            $set('slug', Str::slug($state));
+
+                                            $set('editing', true);
+                                        })
+                                        ->disabled(fn (?Post $record) => $record?->isPublished()),
+                                    Forms\Components\Hidden::make('editing')
+                                        ->default(false),
+                                    Forms\Components\MarkdownEditor::make('content')
+                                        ->required()
+                                        ->columnSpanFull(),
+                                ])
+                                    ->hidden(fn (Forms\Get $get) => $get('preview')),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\View::make('site::forms.fields.preview'),
+                                ])
+                                    ->hidden(fn (Forms\Get $get) => ! $get('preview')),
+                        ])
                             ->columnSpan([
                                 'md' => 9,
                                 'lg' => 8,

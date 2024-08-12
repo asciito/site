@@ -37,9 +37,9 @@ class Post extends Model implements HasMedia
         'published_at',
     ];
 
-    public function getContent(): Htmlable
+    public function getContent(bool $withTorchlight = true): Htmlable
     {
-        return new HtmlContent($this->getRawContent());
+        return new HtmlContent($this->getRawContent(), $withTorchlight);
     }
 
     public function getRawContent(): string
