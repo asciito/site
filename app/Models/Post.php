@@ -44,7 +44,9 @@ class Post extends Model implements HasMedia
 
     public function getRawContent(): string
     {
-        $key = $this->getContentCacheKey();
+        if (empty($key = $this->getContentCacheKey())) {
+            return Markdown::convert($this->content)->getContent();
+        }
 
         return cache()->rememberForever(
             $key,
@@ -52,9 +54,12 @@ class Post extends Model implements HasMedia
         );
     }
 
-    public function getContentCacheKey(): string
+    public function getContentCacheKey(): ?string
     {
-        $key = $this->getCacheKey();
+        if (empty($key = $this->getCacheKey())) {
+            return null;
+        }
+
         $timestamp = $this->updated_at->timestamp;
         $dynamic_key = cache()->get($key);
 
@@ -84,8 +89,12 @@ class Post extends Model implements HasMedia
         cache()->add($key, $value);
     }
 
-    public function getCacheKey(): string
+    public function getCacheKey(): ?string
     {
+        if (empty($this->id)) {
+            return null;
+        }
+
         return "post.{$this->id}";
     }
 
