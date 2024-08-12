@@ -85,12 +85,12 @@ class PostResource extends Resource
                                         ->required()
                                         ->columnSpanFull(),
                                 ])
-                                    ->hidden(fn (Forms\Get $get) => $get('preview')),
+                                ->hidden(fn (Forms\Get $get) => $get('preview')),
                             Forms\Components\Group::make()
                                 ->schema([
                                     Forms\Components\View::make('site::forms.fields.preview'),
                                 ])
-                                    ->hidden(fn (Forms\Get $get) => ! $get('preview')),
+                                ->hidden(fn (Forms\Get $get) => ! $get('preview')),
                         ])
                             ->columnSpan([
                                 'md' => 9,
