@@ -9,14 +9,14 @@ use Symfony\Component\Yaml\Exception\ParseException;
 
 class HtmlContent implements Htmlable
 {
-    public function __construct(protected string $content)
+    public function __construct(protected string $content, protected bool $withTorchlight = true)
     {
         //
     }
 
     protected function replacePreWithTorchlight(): static
     {
-        $this->content = Support\Str::of($this->content)->replaceMatches('/<pre>(.*?)<\/pre>/s', function ($matches) {
+        $this->content = Support\Str::of($this->content)->replaceMatches('/<pre><code>(.*?)<\/code><\/pre>/s', function ($matches) {
             $pre = $matches[1];
 
             try {
@@ -40,7 +40,7 @@ class HtmlContent implements Htmlable
 
     public function toHtml(): string
     {
-        $this->replacePreWithTorchLight();
+        $this->withTorchlight && $this->replacePreWithTorchlight();
 
         return $this->content;
     }
