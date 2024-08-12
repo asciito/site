@@ -76,7 +76,7 @@ class PostResource extends Resource
                                     ->disabled(fn (?Post $record) => $record?->isPublished()),
                                 Forms\Components\Hidden::make('editing')
                                     ->default(false),
-                                Forms\Components\RichEditor::make('content')
+                                Forms\Components\MarkdownEditor::make('content')
                                     ->required()
                                     ->columnSpanFull(),
                             ])

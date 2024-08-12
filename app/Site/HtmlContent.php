@@ -16,7 +16,7 @@ class HtmlContent implements Htmlable
 
     protected function replacePreWithTorchlight(): static
     {
-        $this->content = Support\Str::of($this->content)->replaceMatches('/<pre>(.*?)<\/pre>/s', function ($matches) {
+        $this->content = Support\Str::of($this->content)->replaceMatches('/<pre><code>(.*?)<\/code><\/pre>/s', function ($matches) {
             $pre = $matches[1];
 
             try {

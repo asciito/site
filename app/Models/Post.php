@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\ModelStatus;
 use App\Site\HtmlContent;
+use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,7 +39,54 @@ class Post extends Model implements HasMedia
 
     public function getContent(): Htmlable
     {
-        return new HtmlContent($this->content);
+        return new HtmlContent($this->getRawContent());
+    }
+
+    public function getRawContent(): string
+    {
+        $key = $this->getContentCacheKey();
+
+        return cache()->rememberForever(
+            $key,
+            fn () => Markdown::convert($this->content)->getContent(),
+        );
+    }
+
+    public function getContentCacheKey(): string
+    {
+        $key = $this->getCacheKey();
+        $timestamp = $this->updated_at->timestamp;
+        $dynamic_key = cache()->get($key);
+
+        if ($dynamic_key &&
+            ((int) \Illuminate\Support\Str::afterLast($dynamic_key, '.') !== $timestamp)
+        ) {
+            $dynamic_key = "{$key}.{$timestamp}";
+
+            $this->updateContentCacheKey($key, $dynamic_key);
+        } else {
+            $dynamic_key = "{$key}.{$timestamp}";
+
+            cache()->add($key, $dynamic_key);
+        }
+
+        return $dynamic_key;
+    }
+
+    public function updateContentCacheKey(string $key, string $value): void
+    {
+        $stored_key = cache($key);
+
+        tap(cache())
+            ->forget($key)
+            ->forget($stored_key);
+
+        cache()->add($key, $value);
+    }
+
+    public function getCacheKey(): string
+    {
+        return "post.{$this->id}";
     }
 
     public function getExcerpt(string $end = '...'): string

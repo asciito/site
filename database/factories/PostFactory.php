@@ -21,11 +21,7 @@ class PostFactory extends Factory
         return [
             'title' => $title = fake()->unique()->text(80),
             'slug' => Str::slug($title),
-            'content' => collect(fake()->paragraphs(random_int(5, 20)))
-                ->map(function (string $p) {
-                    return "<p>$p</p>";
-                })
-                ->join("\n"),
+            'content' => collect(fake()->paragraphs(random_int(5, 20)))->join("\n"),
         ];
     }
 
