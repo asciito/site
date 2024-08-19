@@ -27,8 +27,10 @@ uses(TestCase::class, RefreshDatabase::class)->in('Feature');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
+expect()->extend('toMatchArraySubset', function (array $subset) {
+    return $this->toMatchArray(
+        array_intersect_assoc($this->value, [$subset])
+    );
 });
 
 /*
