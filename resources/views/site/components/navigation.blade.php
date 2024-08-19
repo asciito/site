@@ -2,10 +2,8 @@
     <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto">
         <div class="relative grid grid-cols-[minmax(5rem,15rem)_1fr_minmax(5rem,15rem)] items-center">
             <div id="brand" class="p-4">
-                <a href="/">
-                    <h1 class="uppercase text-3xl md:text-4xl">
-                        <span>ASCII</span><span class="text-[rgba(51,255,51,1.0)]">.</span><span class="text-slate-500/80">TO</span>
-                    </h1>
+                <a href="/" class="uppercase text-3xl md:text-4xl">
+                    <span>ASCII</span><span class="text-[rgba(51,255,51,1.0)]">.</span><span class="text-slate-500/80">TO</span>
                 </a>
             </div>
 
