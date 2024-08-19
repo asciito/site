@@ -16,6 +16,7 @@
         "livewire/volt": "^1.0",
         "pirsch-analytics/laravel-pirsch": "^0.4.9",
         "ralphjsmit/laravel-seo": "^1.6",
+        "spatie/laravel-sitemap": "^7.2",
         "symfony/yaml": "^7.1",
         "torchlight/torchlight-laravel": "^0.6.0"
     },
