@@ -19,8 +19,10 @@ use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
-class Post extends Model implements HasMedia
+class Post extends Model implements HasMedia, Sitemapable
 {
     use HasFactory;
     use HasSEO;
@@ -180,5 +182,11 @@ class Post extends Model implements HasMedia
         return parent::resolveRouteBindingQuery($this, $value, $field)
             ->when(Auth::check(), fn (Builder $query) => $query->withDrafts())
             ->first();
+    }
+
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(route('post', $this))
+            ->setLastModificationDate($this->updated_at);
     }
 }
