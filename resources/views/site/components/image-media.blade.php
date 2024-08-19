@@ -5,7 +5,7 @@
 
     $alt = \Illuminate\Support\Str::of($media->name)->slug()->replace('-', ' ')->title();
     [$width, $height] = getimagesize($media->getPath());
-    $src = $media->getPathRelativeToRoot($conversion);
+    $src = $media->getUrl($conversion);
     $srcset = $media->getSrcset($conversion);
 @endphp
 
