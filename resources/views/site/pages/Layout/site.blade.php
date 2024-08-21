@@ -12,12 +12,28 @@
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body @class(['relative pt-16' => \Illuminate\Support\Facades\Auth::user()])>
-    @auth
-        <livewire:adminbar />
-    @endauth
+<body>
+    <x-site::navigation
+        x-bind:class="{ 'sticky top-0 z-[9999] bg-white/50 backdrop-blur-md animate-fade': isSticky }"
+        x-data="{
+            isSticky: false,
+            getScrollPosition: () => document.body.scrollTop || document.documentElement.scrollTop,
+            handleScroll: function () {
+                const currentPosition = this.getScrollPosition();
+                const navigationBarHeight = $el.offsetHeight;
 
-    <x-site::navigation/>
+                if (currentPosition >= navigationBarHeight + 100) {
+                    this.isSticky = true;
+                } else {
+                    if (currentPosition <= 10) {
+                        this.isSticky = false;
+                    }
+                }
+            }
+        }"
+        x-init="handleScroll();"
+        @scroll.window.throttle.50ms="handleScroll()"
+    />
 
     <main @class(["relative", "border-b-2 border-slate-400" => $showFooter])>
         <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto my-10 p-4">
