@@ -1,5 +1,10 @@
-<header class="border-b-2 border-slate-400">
+<header {{ $attributes->class(["border-b-2 border-slate-400"]) }}>
+    @auth
+        <livewire:adminbar />
+    @endauth
+
     <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto">
+
         <div class="relative grid grid-cols-[minmax(5rem,15rem)_1fr_minmax(5rem,15rem)] items-center">
             <div id="brand" class="p-4">
                 <a href="/" class="uppercase text-3xl md:text-4xl">

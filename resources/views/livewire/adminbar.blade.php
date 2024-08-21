@@ -12,7 +12,7 @@ new class extends Component {
     }
 }; ?>
 
-<div class="absolute top-0 left-0 right-0 z-[9999] h-16 bg-white shadow">
+<div class="h-16 bg-white shadow">
     <div class="max-w-7xl mx-auto px-4 h-full">
         <nav class="h-full flex items-center justify-between text-dark-blue-600 text-sm">
             <ul class="flex items-center justify-start gap-6">
@@ -86,11 +86,11 @@ new class extends Component {
                     x-on:click.outside="close($refs.button)"
                     :id="$id('dropdown-button')"
                     style="display: none;"
-                    class="absolute right-0 mt-4 w-40 bg-white text-slate-800 shadow-lg"
+                    class="z-[9999] absolute right-0 mt-4 w-40 bg-white text-slate-800 shadow-lg"
                 >
                     <form
                         action="{{ filament()->getLogoutUrl() }}" method="POST"
-                        class="w-full px-4 py-2.5 text-left text-sm hover:bg-dark-blue hover:text-slate-50 disabled:text-gray-500"
+                        class="w-full px-4 py-2.5 text-left text-sm hover:bg-dark-blue hover:text-slate-50 disabled:text-gray-500 border-2 border-slate-100"
                     >
                         @csrf
 
