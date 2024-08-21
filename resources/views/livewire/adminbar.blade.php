@@ -90,7 +90,7 @@ new class extends Component {
                 >
                     <form
                         action="{{ filament()->getLogoutUrl() }}" method="POST"
-                        class="w-full px-4 py-2.5 text-left text-sm hover:bg-dark-blue hover:text-slate-50 disabled:text-gray-500"
+                        class="w-full px-4 py-2.5 text-left text-sm hover:bg-dark-blue hover:text-slate-50 disabled:text-gray-500 border-2 border-slate-100"
                     >
                         @csrf
 
