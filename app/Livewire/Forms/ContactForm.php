@@ -32,7 +32,6 @@ class ContactForm extends Form
             ]);
         }
 
-
         $this->sendMessage();
 
         $this->reset();
