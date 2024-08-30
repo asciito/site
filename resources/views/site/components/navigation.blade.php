@@ -1,3 +1,5 @@
+@inject('facade', '\Illuminate\Support\Facades\Route')
+
 <header {{ $attributes->class(["border-b-2 border-slate-400"]) }}>
     @auth
         <livewire:adminbar />
@@ -32,8 +34,33 @@
                                     <span @class([
                                         "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
                                         "w-full h-full",
-                                        "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! \Illuminate\Support\Facades\Route::is('home'),
+                                        "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! $facade::is('home'),
                                         "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
+                                        "transition duration-100",
+                                    ])></span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    @if($facade::is('home'))
+                                        x-data="{
+                                            handleScroll: () => {
+                                                let selector = new URL($el.href).hash;
+
+                                                $nextTick(() => document.getElementById(selector.replace('#', '')).scrollIntoView({ behavior: 'smooth' }));
+                                            }
+                                        }"
+                                        x-on:click.prevent="handleScroll"
+                                    @endif
+                                    href="{{ $facade::is('home') ? '#about-me' : route('home', ['#about-me']) }}"
+                                    class="relative group p-1"
+                                >
+                                    <span class="relative z-[100]">ABOUT ME</span>
+                                    <span @class([
+                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                        "w-full h-full",
+                                        "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]",
                                         "transition duration-100",
                                     ])></span>
                                 </a>
@@ -45,7 +72,7 @@
                                     <span @class([
                                         "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
                                         "w-full h-full",
-                                        "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! \Illuminate\Support\Facades\Route::is('contact'),
+                                        "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! $facade::is('contact'),
                                         "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
                                         "transition duration-100",
                                     ])></span>

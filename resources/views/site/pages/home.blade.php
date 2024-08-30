@@ -26,7 +26,9 @@ $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
 
     <livewire:posts />
 
-    <section id="about-me" role="region" aria-labelby="region-heading" class="mt-18 sm:mt-24">
+    <section role="region" aria-labelby="region-heading">
+        <div id="about-me" class="mb-18 sm:mb-24" style="height: 1px"></div>
+
         <h3 id="region-heading" class="text-3xl mb-8 text-center">Ayax Córdova</h3>
 
        <div class="prose prose-pre:ring-1 prose-pre:ring-black/5 prose-pre:shadow max-w-none mt-8">
