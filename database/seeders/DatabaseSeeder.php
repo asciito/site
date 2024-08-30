@@ -21,34 +21,34 @@ class DatabaseSeeder extends Seeder
         $this->createPosts(50);
     }
 
-    protected function createUser(): User
+    protected function createUser(): void
     {
         if (User::count() !== 0) {
-            return User::first();
+            $this->command->error('There\'s already a user, you cannot another');
+
+            return;
         }
 
-        return User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'user@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $this->command->call('make:filament-user');
     }
 
     protected function createPosts(int $total): Collection
     {
-        foreach (range(1, $total) as $_) {
-            Carbon::setTestNow(now()->subDays(random_int(1, 50 + $total)));
+        \Livewire\invade($this->command)->components->task('Creating Posts', function () use ($total) {
+            foreach (range(1, $total) as $_) {
+                Carbon::setTestNow(now()->subDays(random_int(1, 50 + $total)));
 
-            tap(random_int(0, 1), function (bool $shouldPublish) {
-                $factory = Post::factory();
+                tap(random_int(0, 1), function (bool $shouldPublish) {
+                    $factory = Post::factory();
 
-                if ($shouldPublish) {
-                    $factory = $factory->published();
-                }
+                    if ($shouldPublish) {
+                        $factory = $factory->published();
+                    }
 
-                $factory->create();
-            });
-        }
+                    $factory->create();
+                });
+            }
+        });
 
         return Post::all();
     }

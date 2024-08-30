@@ -106,10 +106,12 @@ class Post extends Model implements HasMedia, Sitemapable
             return $this->excerpt;
         }
 
-        $excerpt = Str::of($this->content)->matchAll('/<p>(.*?)<\/p>/');
-        $excerpt = trim($excerpt->join(' '));
+        $excerpt = Str::of($this->content)
+            ->matchAll('/^[A-Za-z].*(?:\n[A-Za-z].*)*/m')
+            ->map(fn (string $paragraph) => trim($paragraph))
+            ->join(' ');
 
-        return Str::limit(strip_tags($excerpt), 255, $end);
+        return Str::limit($excerpt, 255, $end);
     }
 
     public function getDate(bool $asHtml = true): Htmlable|Carbon

@@ -21,8 +21,6 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site')] class extends Comp
             ]);
         }
 
-        $this->validate();
-
         $this->form->contact();
 
         $this->messageSend = true;

@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Events\Contacted;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -23,6 +24,14 @@ class ContactForm extends Form
 
     public function contact(): void
     {
+        $this->validate();
+
+        if (in_array(Str::lower($this->email), config('site.allowed_emails'))) {
+            throw ValidationException::withMessages([
+                "{$this->getPropertyName()}.email" => 'AHA! nice try',
+            ]);
+        }
+
         $this->sendMessage();
 
         $this->reset();
