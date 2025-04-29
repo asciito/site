@@ -2,10 +2,8 @@
 
 namespace App\Site;
 
-use App\Site\Support\FrontMatter;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support;
-use Symfony\Component\Yaml\Exception\ParseException;
 
 class HtmlContent implements Htmlable
 {
@@ -16,24 +14,14 @@ class HtmlContent implements Htmlable
 
     protected function replacePreWithTorchlight(): static
     {
-        $this->content = Support\Str::of($this->content)->replaceMatches('/<pre><code>(.*?)<\/code><\/pre>/s', function ($matches) {
-            $pre = $matches[1];
-
-            try {
-                $data = FrontMatter::load($pre)->getData();
-            } catch (ParseException) {
-                Support\Facades\Log::error('Trying to highlight code failed', ['code' => $pre]);
-
-                $data = [];
-            }
-
-            $pre = FrontMatter::removeFrontMatter($pre);
-
-            return view('site::torchlight', [
-                'content' => trim($pre),
-                'language' => $data['language'] ?? 'php',
-            ]);
-        });
+        $this->content = Support\Str::of($this->content)
+            ->replaceMatches(
+                '/<pre><code(?: class="language-([^"]+)")?>(.*?)<\/code><\/pre>/s',
+                fn (array $matches) => view('site::torchlight', [
+                    'content' => trim($matches[2]),
+                    'language' => $matches[1] ?? 'text', // Si no hay language, usar 'text'
+                ])
+            );
 
         return $this;
     }
