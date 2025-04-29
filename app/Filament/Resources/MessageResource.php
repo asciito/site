@@ -32,7 +32,8 @@ class MessageResource extends Resource
                             ->formatStateUsing(fn (User $state) => "{$state->email} ({$state->name})")
                             ->label('From')
                             ->url(fn (User $state) => "mailto:{$state->email}"),
-                        Infolists\Components\TextEntry::make('message'),
+                        Infolists\Components\TextEntry::make('message')
+                            ->words(50),
                     ])
                         ->columnSpan(8),
                     Infolists\Components\Section::make([

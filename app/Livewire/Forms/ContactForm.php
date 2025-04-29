@@ -39,10 +39,17 @@ class ContactForm extends Form
 
     public function sendMessage(): void
     {
+        $this->sanitizeMessage();
+
         Contacted::dispatch(
             $this->resolveUser(),
             $this->message,
         );
+    }
+
+    public function sanitizeMessage(): void
+    {
+        $this->message = strip_tags($this->message);
     }
 
     public function resolveUser(): \App\Models\User
