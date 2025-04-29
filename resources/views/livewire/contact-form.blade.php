@@ -57,21 +57,19 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site')] class extends Comp
         </div>
     @endif
 
-    @if ($messageSend)
-        <div
-            class="col-span-full bg-dark-blue-200 p-4"
-            x-data="{ open: true }"
-            x-show="open"
-            x-init="setTimeout(() => open = false, 5000)"
-            x-transition:leave="transition ease-in duration-300"
-            x-transition:leave-start="opacity-100 scale-100"
-            x-transition:leave-end="opacity-0 scale-90"
-        >
-            <div class="flex justify-center">
-                <p class="uppercase font-bold font-mono text-dark-blue-200 text-2xl px-4 py-0 bg-gray-300">MESSAGE SEND</p>
-            </div>
+    <div
+        class="col-span-full bg-dark-blue-200 p-4"
+        x-cloak
+        x-show="$wire.messageSend"
+        x-effect="$wire.messageSend && setTimeout(() => $wire.messageSend = false, 3500)"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-90"
+    >
+        <div class="flex justify-center">
+            <p class="uppercase font-bold font-mono text-dark-blue-200 text-2xl px-4 py-0 bg-gray-300">MESSAGE SEND</p>
         </div>
-    @endif
+    </div>
 
     <div class="col-span-full grid grid-cols-subgrid space-y-4 md:space-y-0 md:space-x-4">
         <x-site::input name="name" type="text" class="col-span-1" wire:model="form.name"/>
