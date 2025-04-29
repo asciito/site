@@ -17,12 +17,11 @@ class HtmlContent implements Htmlable
         $this->content = Support\Str::of($this->content)
             ->replaceMatches(
                 '/<pre><code(?: class="language-([^"]+)")?>(.*?)<\/code><\/pre>/s',
-                function (array $matches) {
-                    return view('site::torchlight', [
+                fn (array $matches) =>
+                    view('site::torchlight', [
                         'content' => trim($matches[2]),
                         'language' => $matches[1] ?? 'text', // Si no hay language, usar 'text'
-                    ]);
-                }
+                    ])
         );
 
         return $this;
