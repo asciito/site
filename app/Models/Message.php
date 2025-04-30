@@ -25,9 +25,9 @@ class Message extends Model
         ];
     }
 
-    public function user(): BelongsTo
+    public function contact(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Contact::class);
     }
 
     public function markAsRead(): bool
