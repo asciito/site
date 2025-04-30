@@ -13,43 +13,30 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         if (app()->isProduction()) {
+            $this->command->error('You cannot run this command in production');
+
             return;
         }
 
         $this->createUser();
 
-        $this->createPosts(50);
+        $this->call([
+            PostSeeder::class,
+        ]);
     }
 
     protected function createUser(): void
     {
         if (User::count() !== 0) {
-            $this->command->error('There\'s already a user, you cannot another');
+            $this->command->warn('User already exists.');
 
             return;
         }
 
-        $this->command->call('make:filament-user');
-    }
-
-    protected function createPosts(int $total): Collection
-    {
-        \Livewire\invade($this->command)->components->task('Creating Posts', function () use ($total) {
-            foreach (range(1, $total) as $_) {
-                Carbon::setTestNow(now()->subDays(random_int(1, 50 + $total)));
-
-                tap(random_int(0, 1), function (bool $shouldPublish) {
-                    $factory = Post::factory();
-
-                    if ($shouldPublish) {
-                        $factory = $factory->published();
-                    }
-
-                    $factory->create();
-                });
-            }
-        });
-
-        return Post::all();
+        $this->command->call('make:filament-user', [
+            '--name' => 'Test User',
+            '--email' => 'example@test.com',
+            '--password' => 'password',
+        ]);
     }
 }
