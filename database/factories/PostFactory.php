@@ -36,19 +36,19 @@ class PostFactory extends Factory
             $paragraphs = fake()->paragraphs(random_int(1, 5));
 
             foreach ($paragraphs as $paragraph) {
-                $content .= "\n\n" . $paragraph;
+                $content .= "\n\n".$paragraph;
             }
 
             if (fake()->boolean()) {
 
                 foreach (range(1, random_int(1, 7)) as $_) {
-                    $content .= "\n\n" . fake()->randomElement(['*', '-', '+']) . ' ' . fake()->sentence(random_int(5, 8));
+                    $content .= "\n\n".fake()->randomElement(['*', '-', '+']).' '.fake()->sentence(random_int(5, 8));
                 }
             }
 
-            $content .= "\n\n" . fake()->randomElement(['###', '####']) . ' ' . fake()->sentence(random_int(5, 8));
+            $content .= "\n\n".fake()->randomElement(['###', '####']).' '.fake()->sentence(random_int(5, 8));
 
-            $content .= "\n\n" . fake()->paragraph(1);
+            $content .= "\n\n".fake()->paragraph(1);
         }
 
         return $content;

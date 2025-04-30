@@ -5,7 +5,6 @@ namespace App\Livewire\Forms;
 use App\Events\Contacted;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class ContactForm extends Form

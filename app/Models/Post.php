@@ -50,7 +50,7 @@ class Post extends Model implements HasMedia, Sitemapable
         if (app()->isProduction()) {
             $key = $this->calculateCacheKey('content', $this->updated_at->timestamp);
 
-            return cache()->rememberForever($key, function () use ($key) {
+            return cache()->rememberForever($key, function () {
                 return Markdown::convert($this->content)->getContent();
             });
         }
@@ -158,7 +158,7 @@ class Post extends Model implements HasMedia, Sitemapable
         return $callback;
     }
 
-    public function calculateCacheKey(string... $key): string
+    public function calculateCacheKey(string ...$key): string
     {
         $calculateCacheKeyUsing = static::calculateCacheKeyUsing();
 
@@ -166,7 +166,7 @@ class Post extends Model implements HasMedia, Sitemapable
             $calculateCacheKeyUsing
                 ? $calculateCacheKeyUsing()
                 : function (self $post, ...$key): string {
-                    return class_basename($post) . '::' . $post->id . '.' . Arr::join($key, '.');
+                    return class_basename($post).'::'.$post->id.'.'.Arr::join($key, '.');
                 }
         )($this, ...$key);
     }
