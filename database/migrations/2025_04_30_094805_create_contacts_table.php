@@ -39,7 +39,7 @@ return new class extends Migration
         }
 
         Schema::table('messages', function (Blueprint $table) {
-           $table->dropColumn((new \App\Models\User)->getForeignKey());
+            $table->dropColumn((new \App\Models\User)->getForeignKey());
         });
 
         $users->each->delete();
