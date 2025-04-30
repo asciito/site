@@ -5,14 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\MessageResource\Pages;
 use App\MessageStatusEnum;
 use App\Models\Message;
-use App\Models\User;
+use App\Models\Contact;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 
 class MessageResource extends Resource
 {
@@ -28,10 +27,10 @@ class MessageResource extends Resource
             ->schema([
                 Infolists\Components\Split::make([
                     Infolists\Components\Section::make([
-                        Infolists\Components\TextEntry::make('user')
-                            ->formatStateUsing(fn (User $state) => "{$state->email} ({$state->name})")
+                        Infolists\Components\TextEntry::make('contact')
+                            ->formatStateUsing(fn (Contact $state) => "{$state->email} ({$state->name})")
                             ->label('From')
-                            ->url(fn (User $state) => "mailto:{$state->email}"),
+                            ->url(fn (Contact $state) => "mailto:{$state->email}"),
                         Infolists\Components\TextEntry::make('message')
                             ->words(50),
                     ])
@@ -65,8 +64,7 @@ class MessageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->formatStateUsing(fn (string $state) => Str::title($state)),
+                Tables\Columns\TextColumn::make('contact.name'),
                 Tables\Columns\TextColumn::make('message')
                     ->wrap()
                     ->limit(80),
