@@ -29,9 +29,7 @@ class DatabaseSeeder extends Seeder
     protected function createUser(): void
     {
         if (User::count() !== 0) {
-            $this->command->warn('User already exists.');
-
-            $this->command->newLine();
+            \Livewire\invade($this->command)->components->warn('Attempting to create a user failed because a user already exists.');
 
             return;
         }
