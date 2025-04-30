@@ -11,7 +11,8 @@
             {{ $attributes->class([
                 'w-full bg-transparent p-0 text-2xl',
                 'focus:outline-none',
-                'placeholder:text-slate-600 uppercase focus:placeholder:text-slate-600/50'
+                'placeholder:text-slate-600 uppercase focus:placeholder:text-slate-600/50',
+                'read-only:opacity-50',
             ]) }}
         ></textarea>
     </div>
