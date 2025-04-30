@@ -18,11 +18,40 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
             'title' => $title = fake()->unique()->text(80),
             'slug' => Str::slug($title),
-            'content' => collect(fake()->paragraphs(random_int(5, 20)))->join("\n"),
+            'content' => $this->fakeMarkdown(),
         ];
+    }
+
+    protected function fakeMarkdown(): string
+    {
+        $content = '';
+
+        $content .= '## '.fake()->sentence(random_int(5, 8));
+
+        foreach (range(1, random_int(2, 10)) as $_) {
+            $paragraphs = fake()->paragraphs(random_int(1, 5));
+
+            foreach ($paragraphs as $paragraph) {
+                $content .= "\n\n" . $paragraph;
+            }
+
+            if (fake()->boolean()) {
+
+                foreach (range(1, random_int(1, 7)) as $_) {
+                    $content .= "\n\n" . fake()->randomElement(['*', '-', '+']) . ' ' . fake()->sentence(random_int(5, 8));
+                }
+            }
+
+            $content .= "\n\n" . fake()->randomElement(['###', '####']) . ' ' . fake()->sentence(random_int(5, 8));
+
+            $content .= "\n\n" . fake()->paragraph(1);
+        }
+
+        return $content;
     }
 
     public function published(): static
