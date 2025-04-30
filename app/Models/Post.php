@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
@@ -46,58 +47,15 @@ class Post extends Model implements HasMedia, Sitemapable
 
     public function getRawContent(): string
     {
-        if (empty($key = $this->getContentCacheKey())) {
-            return Markdown::convert($this->content)->getContent();
+        if (app()->isProduction()) {
+            $key = $this->calculateCacheKey('content', $this->updated_at->timestamp);
+
+            return cache()->rememberForever($key, function () use ($key) {
+                return Markdown::convert($this->content)->getContent();
+            });
         }
 
-        return cache()->rememberForever(
-            $key,
-            fn () => Markdown::convert($this->content)->getContent(),
-        );
-    }
-
-    public function getContentCacheKey(): ?string
-    {
-        if (empty($key = $this->getCacheKey())) {
-            return null;
-        }
-
-        $timestamp = $this->updated_at->timestamp;
-        $dynamic_key = cache()->get($key);
-
-        if ($dynamic_key &&
-            ((int) \Illuminate\Support\Str::afterLast($dynamic_key, '.') !== $timestamp)
-        ) {
-            $dynamic_key = "{$key}.{$timestamp}";
-
-            $this->updateContentCacheKey($key, $dynamic_key);
-        } else {
-            $dynamic_key = "{$key}.{$timestamp}";
-
-            cache()->add($key, $dynamic_key);
-        }
-
-        return $dynamic_key;
-    }
-
-    public function updateContentCacheKey(string $key, string $value): void
-    {
-        $stored_key = cache($key);
-
-        tap(cache())
-            ->forget($key)
-            ->forget($stored_key);
-
-        cache()->add($key, $value);
-    }
-
-    public function getCacheKey(): ?string
-    {
-        if (empty($this->id)) {
-            return null;
-        }
-
-        return "post.{$this->id}";
+        return Markdown::convert($this->content)->getContent();
     }
 
     public function getExcerpt(string $end = '...'): string
@@ -190,5 +148,46 @@ class Post extends Model implements HasMedia, Sitemapable
     {
         return Url::create(route('post', $this))
             ->setLastModificationDate($this->updated_at);
+    }
+
+    public static function calculateCacheKeyUsing(?callable $callback = null): ?callable
+    {
+        return $callback;
+    }
+
+    public function calculateCacheKey(string... $key): string
+    {
+        $calculateCacheKeyUsing = static::calculateCacheKeyUsing();
+
+        return (
+            $calculateCacheKeyUsing
+                ? $calculateCacheKeyUsing()
+                : function (self $post, ...$key): string {
+                    return class_basename($post) . '::' . $post->id . '.' . Arr::join($key, '.');
+                }
+        )($this, ...$key);
+    }
+
+    protected static function booted(): void
+    {
+        if (app()->isProduction()) {
+            static::updating(function (Post $post) {
+                $oldKey = $post->calculateCacheKey('content', $post->getOriginal('updated_at')->timestamp);
+
+                cache()->forget($oldKey);
+            });
+
+            static::deleted(function (Post $post) {
+                $key = $post->calculateCacheKey('content', $post->updated_at->timestamp);
+
+                cache()->forget($key);
+            });
+
+            static::restored(function (Post $post) {
+                $key = $post->calculateCacheKey('content', $post->updated_at->timestamp);
+
+                cache()->forget($key);
+            });
+        }
     }
 }
