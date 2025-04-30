@@ -20,7 +20,7 @@ class PostFactory extends Factory
     {
 
         return [
-            'title' => $title = fake()->unique()->text(80),
+            'title' => $title = fake()->unique()->realText(80),
             'slug' => Str::slug($title),
             'content' => $this->fakeMarkdown(),
         ];
