@@ -5,7 +5,7 @@ namespace App\Site;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support;
 
-class HtmlContent implements Htmlable
+class HtmlContent implements Htmlable, \Stringable
 {
     public function __construct(protected string $content, protected bool $withTorchlight = true)
     {
@@ -31,5 +31,10 @@ class HtmlContent implements Htmlable
         $this->withTorchlight && $this->replacePreWithTorchlight();
 
         return $this->content;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toHtml();
     }
 }
