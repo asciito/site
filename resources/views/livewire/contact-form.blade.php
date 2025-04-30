@@ -88,6 +88,7 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site')] class extends Comp
             type="submit"
             class="col-span-full"
             position="end"
+            show-loading-indicator
         >Submit</x-site::button>
     </div>
 </form>
