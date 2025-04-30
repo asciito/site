@@ -38,7 +38,7 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site')] class extends Comp
 }; ?>
 
 <form
-    wire:submit.prevent="submit"
+    wire:submit="submit"
     @class(["relative grid md:grid-cols-2 space-y-4"])
 >
     @if ($errors->isNotEmpty())
