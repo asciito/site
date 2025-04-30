@@ -106,7 +106,7 @@ class Post extends Model implements HasMedia, Sitemapable
             return $this->excerpt;
         }
 
-        $dom = new \DOMDocument();
+        $dom = new \DOMDocument;
         libxml_use_internal_errors(true);
         $dom->loadHTML(mb_convert_encoding($this->getContent(false), 'HTML-ENTITIES', 'UTF-8'));
         libxml_clear_errors();
