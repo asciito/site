@@ -106,12 +106,15 @@ class Post extends Model implements HasMedia, Sitemapable
             return $this->excerpt;
         }
 
-        $excerpt = Str::of($this->content)
-            ->matchAll('/^[A-Za-z].*(?:\n[A-Za-z].*)*/m')
-            ->map(fn (string $paragraph) => trim($paragraph))
-            ->join(' ');
+        $dom = new \DOMDocument;
+        libxml_use_internal_errors(true);
+        $dom->loadHTML(mb_convert_encoding($this->getContent(false), 'HTML-ENTITIES', 'UTF-8'));
+        libxml_clear_errors();
 
-        return Str::limit($excerpt, 255, $end);
+        $text = collect($dom->getElementsByTagName('p'))
+            ->reduce(fn (string $text, \DOMElement $p) => $text.' '.trim(strip_tags($p->textContent)), '');
+
+        return Str::of($text)->trim()->limit(255, $end);
     }
 
     public function getDate(bool $asHtml = true): Htmlable|Carbon

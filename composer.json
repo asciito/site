@@ -18,7 +18,9 @@
         "ralphjsmit/laravel-seo": "^1.6",
         "spatie/laravel-sitemap": "^7.2",
         "symfony/yaml": "^7.1",
-        "torchlight/torchlight-laravel": "^0.6.0"
+        "torchlight/torchlight-laravel": "^0.6.0",
+        "ext-dom": "*",
+        "ext-libxml": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
