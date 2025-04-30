@@ -10,27 +10,37 @@ use Livewire\Form;
 
 class ContactForm extends Form
 {
-    #[Validate('required|min:2', as: '`NAME`')]
     public string $name = '';
 
-    #[Validate('required|min:2', as: '`LAST NAME`')]
     public string $lastName = '';
 
-    #[Validate('required|email', as: '`EMAIL`')]
     public string $email = '';
 
-    #[Validate('required|min:6|max:1024', as: '`MESSAGE`')]
     public string $message = '';
+
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|min:2',
+            'lastName' => 'required|min:2',
+            'email' => 'required|email',
+            'message' => 'required|min:32|max:512',
+        ];
+    }
+
+    public function validationAttributes(): array
+    {
+        return [
+            'name' => '`NAME`',
+            'lastName' => '`LAST NAME`',
+            'email' => '`EMAIL`',
+            'message' => '`MESSAGE`',
+        ];
+    }
 
     public function contact(): void
     {
         $this->validate();
-
-        if (in_array(Str::lower($this->email), config('site.allowed_emails'))) {
-            throw ValidationException::withMessages([
-                "{$this->getPropertyName()}.email" => 'AHA! nice try',
-            ]);
-        }
 
         $this->sendMessage();
 
@@ -61,5 +71,18 @@ class ContactForm extends Form
                 'password' => bcrypt(Str::random(32)),
             ]
         );
+    }
+
+    public function boot(): void
+    {
+        $this->withValidator(function ($validator) {
+            $validator->after(function () {
+                if (in_array(Str::lower($this->email), config('site.allowed_emails'))) {
+                    throw ValidationException::withMessages([
+                        "{$this->getPropertyName()}.email" => 'AHA! nice try',
+                    ]);
+                }
+            });
+        });
     }
 }

@@ -12,7 +12,8 @@
             {{ $attributes->class([
                 'w-full text-2xl',
                 'bg-transparent focus:outline-none',
-                'placeholder:text-slate-600 uppercase focus:placeholder:text-slate-600/50'
+                'placeholder:text-slate-600 uppercase focus:placeholder:text-slate-600/50',
+                'read-only:opacity-50',
             ]) }}
         >
     </div>
