@@ -17,7 +17,7 @@ it('can render posts', function () {
 
     volt('posts')
         ->assertDontSeeText("There' no post available", false)
-        ->assertSeeText($posts->pluck('title')->toArray(), false);
+        ->assertSeeText($posts->pluck('title')->toArray());
 });
 
 test('no posts available', function () {
