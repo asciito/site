@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use function Pest\Laravel\options;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,6 +30,8 @@ class DatabaseSeeder extends Seeder
     {
         if (User::count() !== 0) {
             $this->command->warn('User already exists.');
+
+            $this->command->newLine();
 
             return;
         }
