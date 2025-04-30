@@ -42,12 +42,6 @@ class ContactForm extends Form
     {
         $this->validate();
 
-        if (in_array(Str::lower($this->email), config('site.allowed_emails'))) {
-            throw ValidationException::withMessages([
-                "{$this->getPropertyName()}.email" => 'AHA! nice try',
-            ]);
-        }
-
         $this->sendMessage();
 
         $this->reset();
@@ -77,5 +71,18 @@ class ContactForm extends Form
                 'password' => bcrypt(Str::random(32)),
             ]
         );
+    }
+
+    public function boot(): void
+    {
+        $this->withValidator(function ($validator) {
+            $validator->after(function () {
+                if (in_array(Str::lower($this->email), config('site.allowed_emails'))) {
+                    throw ValidationException::withMessages([
+                        "{$this->getPropertyName()}.email" => 'AHA! nice try',
+                    ]);
+                }
+            });
+        });
     }
 }
