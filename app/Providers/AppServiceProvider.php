@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Site;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->setDefaultSiteImage(app(Site\SiteSettings::class)->site_image);
+    }
+
+    protected function setDefaultSiteImage(?string $url): void
+    {
+        app('config')->set(['seo.image.fallback' => $url]);
     }
 }

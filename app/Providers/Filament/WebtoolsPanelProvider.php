@@ -26,17 +26,10 @@ class WebtoolsPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        $settings = app(Site\SiteSettings::class);
-
-        try {
-            $panel->brandName($settings->site_name);
-
-            $this->setDefaultSiteImage($settings->site_image);
-        } catch (QueryException) {
-            // The table does not exist
-        }
-
         return $panel
+            ->brandName(function (Site\SiteSettings $settings) {
+                return $settings->site_name;
+            })
             ->default()
             ->id('webtools')
             ->path(config('site.webtools_path'))
@@ -91,8 +84,4 @@ class WebtoolsPanelProvider extends PanelProvider
         );
     }
 
-    protected function setDefaultSiteImage(?string $url): void
-    {
-        app('config')->set(['seo.image.fallback' => $url]);
-    }
 }
