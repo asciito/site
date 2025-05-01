@@ -1,5 +1,4 @@
 @props([
-    'href' => null,
     'size' => 'md',
     'position' => 'left',
     'shouldExpand' => false,
@@ -7,6 +6,8 @@
 ])
 
 @php
+    $type = $attributes->has('href') ? 'a' : 'button';
+
     $sizeClasses = match ($size) {
         default => ($showLoadingIndicator ? 'px-12' : 'px-6').' py-4 text-md',
         'sm' => ($showLoadingIndicator ? 'px-10' : 'px-4').' py-4 text-sm',
@@ -21,57 +22,34 @@
 
     $attributes = $attributes->class([
         $sizeClasses,
-        'select-none',
-        'text-slate-800',
-        'px-6 py-2 bg-harlequin',
-        'cursor-pointer',
+        'text-slate-800 bg-harlequin cursor-pointer',
+        'disabled:opacity-80 disabled:cursor-not-allowed hover:bg-harlequin-600 active:bg-harlequin-400',
+        'flex justify-center leading-none',
         'w-full' => $shouldExpand,
     ]);
 
 @endphp
 
-<div @class(['w-full flex flex-wrap leading-none', $positionClass])>
-    @isset($href)
-        <a
-            href="{{ $href }}"
-            {{ $attributes->class([
-                'enabled',
-                '[&.disabled]:opacity-80 [&.disabled]:cursor-not-allowed',
-                '[&.enabled]:hover:bg-harlequin-600 [&.enabled]:active:bg-harlequin-400',
-            ]) }}
-            wire:loading.class="disabled"
-            wire:loading.class.remove="enabled"
-        >
-            {{ $slot }}
-        </a>
-    @else
-        <button
-            {{ $attributes->class([
-                'disabled:opacity-80 disabled:cursor-not-allowed',
-                'enabled:hover:bg-harlequin-600 enabled:active:bg-harlequin-400',
-                'text-center',
-            ]) }}
-            wire:loading.attr="disabled"
-        >
-            <span class="relative flex items-center">
-                {{ $slot }}
+<div @class(['w-full flex flex-wrap', $positionClass])>
+    <{{ $type }} {{ $attributes }}>
+        <span class="relative flex items-center">
+            <span>{{ $slot }}</span>
 
-                @if ($showLoadingIndicator)
-                    <div wire:loading.flex class="absolute -right-8">
-                        <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-                            <rect class="fill-white stroke-white" stroke-width="4" width="40" height="40" x="25" y="85">
-                                <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate>
-                            </rect>
-                            <rect class="fill-white stroke-white" stroke-width="4" width="40" height="40" x="85" y="85">
-                                <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate>
-                            </rect>
-                            <rect class="fill-white stroke-white" stroke-width="4" width="40" height="40" x="145" y="85">
-                                <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate>
-                            </rect>
-                        </svg>
-                    </div>
-                @endif
-            </span>
-        </button>
-    @endisset
+            @if ($showLoadingIndicator)
+                <div wire:loading.flex class="absolute -right-8">
+                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                        <rect class="fill-slate-800 stroke-slate-800" stroke-width="4" width="40" height="40" x="25" y="85">
+                            <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate>
+                        </rect>
+                        <rect class="fill-slate-800 stroke-slate-800" stroke-width="4" width="40" height="40" x="85" y="85">
+                            <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate>
+                        </rect>
+                        <rect class="fill-slate-800 stroke-slate-800" stroke-width="4" width="40" height="40" x="145" y="85">
+                            <animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate>
+                        </rect>
+                    </svg>
+                </div>
+            @endif
+        </span>
+    </{{ $type }}>
 </div>

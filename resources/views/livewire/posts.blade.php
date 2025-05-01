@@ -85,9 +85,10 @@ new class extends Component {
         <x-site::button
             class="mt-5"
             position="center"
+            show-loading-indicator
             wire:click.throttle.500ms="loadMorePosts()"
         >
-            LOAD MORE...
+            LOAD MORE
         </x-site::button>
     @endif
 </section>
