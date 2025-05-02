@@ -3,10 +3,12 @@ use Illuminate\Support\Facades\Storage;
 
 $settings = app(\App\Site\SiteSettings::class);
 
+dump($settings->all());
+
 $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
-    title: $settings->site_name,
-    description: $settings->site_description,
-    image: $settings->site_image ? Storage::disk('public')->url($settings->site_image) : null,
+    title: $settings->name,
+    description: $settings->description,
+    image: $settings->image ? Storage::disk('public')->url($settings->image) : null,
 );
 @endphp
 
