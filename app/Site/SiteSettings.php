@@ -2,23 +2,27 @@
 
 namespace App\Site;
 
-use Spatie\LaravelSettings\Settings;
+use App\Settings\Settings;
 
 class SiteSettings extends Settings
 {
-    public string $site_name;
+    public ?string $name = null;
 
-    public string $site_description;
+    public ?string $description = null;
 
-    public ?string $site_image;
+    public ?string $favicon = null;
 
-    public ?string $instagram_handler;
+    public ?string $image = null;
 
-    public ?string $linkedin_handler;
+    public ?string $twitter_handler = null;
 
-    public ?string $twitter_handler;
+    public ?string $facebook_handler = null;
 
-    public ?string $github_handler;
+    public ?string $instagram_handler = null;
+
+    public ?string $linkedin_handler = null;
+
+    public ?string $github_handler = null;
 
     public static function group(): string
     {
