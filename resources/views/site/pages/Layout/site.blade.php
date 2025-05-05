@@ -13,7 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <x-site::navigation
+    <div
         x-bind:class="{ 'sticky top-0 z-[9999] bg-white/50 backdrop-blur-md animate-fade': isSticky }"
         x-data="{
             isSticky: false,
@@ -33,7 +33,15 @@
         }"
         x-init="handleScroll();"
         @scroll.window.throttle.50ms="handleScroll()"
-    />
+    >
+        @auth
+            <livewire:adminbar />
+        @endauth
+
+        @if ($shouldShowNavigation)
+            <x-site::navigation />
+        @endif
+    </div>
 
     <main @class(["relative", "border-b-2 border-slate-400" => $showFooter])>
         <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto my-10 p-4">
