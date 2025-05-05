@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "ext-dom": "*",
+        "ext-libxml": "*",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "graham-campbell/markdown": "^15.2",
@@ -13,13 +15,12 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",
+        "owenvoke/blade-fontawesome": "^2.9",
         "pirsch-analytics/laravel-pirsch": "^0.4.9",
         "ralphjsmit/laravel-seo": "^1.6",
         "spatie/laravel-sitemap": "^7.2",
         "symfony/yaml": "^7.1",
-        "torchlight/torchlight-laravel": "^0.6.0",
-        "ext-dom": "*",
-        "ext-libxml": "*"
+        "torchlight/torchlight-laravel": "^0.6.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
