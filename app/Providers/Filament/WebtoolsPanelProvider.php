@@ -29,7 +29,7 @@ class WebtoolsPanelProvider extends PanelProvider
             ->brandName(function (Site\SiteSettings $settings) {
                 return $settings->name;
             })
-            ->profile()
+            ->profile(Site\Filament\Pages\ProfilePage::class)
             ->userMenuItems([
                 \Filament\Navigation\MenuItem::make()
                     ->label('Settings')

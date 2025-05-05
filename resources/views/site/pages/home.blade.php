@@ -27,34 +27,16 @@ $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
     <livewire:posts />
 
     <section>
-        <div id="about-me" class="mb-20 sm:mb-28 h-[1px]"></div>
+        <div class="mb-20 sm:mb-28 h-[1px]"></div>
 
-        <h3 class="text-3xl mb-8 text-center">Ayax Córdova</h3>
+        <h3 class="text-3xl mb-8 text-center">{{ $user?->name ?? 'User not created' }}</h3>
 
-       <div class="prose prose-pre:ring-1 prose-pre:ring-black/5 prose-pre:shadow max-w-none mt-8">
-            <div>
-                <div class="w-full flex justify-center sm:w-auto sm:inline sm:float-end">
-                    <img src="{{ asset('img/profile_image.jpg') }}" width="400" height="400" class="m-0 md:ml-2 rounded-full w-full max-w-56 sm:max-w-40 shadow" alt="Profile Image of Ayax Córdova">
-                </div>
-
-                <p>Hi! I'm Ayax Córdova. I'm from Mexico, a beautiful place known for its amazing food, like tacos (I absolutely love tacos, especially real tacos from <strong>Mi México lindo</strong>). I am a <strong>Software Engineer with over 6 years of experience</strong>. I graduated in <time datetime="2018-12">December 2018</time> as a <strong>Technical Artist</strong>, a unique combination of Software Engineering and Graphic Design.</p>
+        @empty($user)
+            <p class="text-center">User not yet created</p>
+        @else
+            <div class="prose prose-pre:ring-1 prose-pre:ring-black/5 prose-pre:shadow max-w-none mt-8">
+                {!! str($user->description)->markdown()->sanitizeHtml() !!}
             </div>
-
-            <div>
-                <p>Currently, I am dedicated to <strong>building my own small business</strong> called <a rel="nofollow noopener" target="_blank" href="https://coyotito.com.mx">COYOTITO</a>, focusing on creating SaaS products to address the needs of individuals and small businesses here in Mexico.</p>
-
-                <p>Here are my main goals:</p>
-
-                <ol>
-                    <li>Continue learning and improving my skills in PHP, Python, and JavaScript.</li>
-                    <li>Support the Open Source projects that I use.</li>
-                    <li>Develop accessible software for people with disabilities.</li>
-                    <li>Hire individuals from minority groups and teach them how to code.</li>
-                </ol>
-
-                <p>These are my primary goals, but another important goal is to <strong>have more free time to spend with my family</strong>. My vision is to move away from the current system (capitalism) and help build a better system where everyone can benefit.</p>
-            </div>
-        </div>
-
+        @endempty
     </section>
 </x-site::layout>
