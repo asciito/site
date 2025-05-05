@@ -35,7 +35,7 @@ final class Setting extends Model
 
     public function unlock(): void
     {
-        if (!$this->isLocked()) {
+        if (! $this->isLocked()) {
             return;
         }
 
@@ -57,8 +57,8 @@ final class Setting extends Model
     /**
      * Check if the setting is locked and throw an exception if it is.
      *
-     * @param Setting $setting The setting to check
-     * @return void
+     * @param  Setting  $setting  The setting to check
+     *
      * @throws LockedSettingException if the setting is locked
      */
     public static function verifiedIsLocked(self $setting): void

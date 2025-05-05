@@ -42,7 +42,7 @@ class SettingRepository
         $whereBindings = [];
 
         foreach ($settings as $name => $payload) {
-            $cases[] = "WHEN ? THEN ?";
+            $cases[] = 'WHEN ? THEN ?';
             $bindings[] = $name;
             $bindings[] = $payload ? json_encode($payload) : null;
             $whereBindings[] = $name;

@@ -13,7 +13,7 @@ class SettingsProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind('settings.schema', function () {
-            return new Builder();
+            return new Builder;
         });
 
         $this->bindSettingClasses();

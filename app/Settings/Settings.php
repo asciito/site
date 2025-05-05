@@ -123,6 +123,6 @@ abstract class Settings
             return static::$initialSettings[$name];
         }
 
-        throw new \BadMethodCallException('Undefined property: ' . static::class . '::$' . $name);
+        throw new \BadMethodCallException('Undefined property: '.static::class.'::$'.$name);
     }
 }

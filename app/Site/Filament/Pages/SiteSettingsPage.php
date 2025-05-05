@@ -19,9 +19,9 @@ use Filament\Support\Facades\FilamentView;
  */
 class SiteSettingsPage extends Page
 {
-    use InteractsWithFormActions;
     use CanUseDatabaseTransactions;
     use HasUnsavedDataChangesAlert;
+    use InteractsWithFormActions;
 
     protected static ?string $title = 'Settings';
 
@@ -186,7 +186,7 @@ class SiteSettingsPage extends Page
                                 ->required()
                                 ->prefix('https://github.com/')
                                 ->label(__('GitHub Handler')),
-                        ])
+                        ]),
                     ])
                     ->aside(),
             ])

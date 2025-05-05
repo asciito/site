@@ -82,5 +82,4 @@ class WebtoolsPanelProvider extends PanelProvider
             HTML)
         );
     }
-
 }
