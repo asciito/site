@@ -37,31 +37,17 @@ class SettingRepository
             return;
         }
 
-        $cases = [];
-        $bindings = [];
-        $whereBindings = [];
+        $data = [];
 
         foreach ($settings as $name => $payload) {
-            $cases[] = 'WHEN ? THEN ?';
-            $bindings[] = $name;
-            $bindings[] = $payload ? json_encode($payload) : null;
-            $whereBindings[] = $name;
+            $data[] = [
+                'name' => $name,
+                'group' => $this->getGroup(),
+                'payload' => $payload ? json_encode($payload) : null,
+            ];
         }
 
-        $cases = implode("\n", $cases);
-        $table = (new $this->model)->getTable();
-        $inClause = implode(',', array_fill(0, count($whereBindings), '?'));
-
-        $sql = <<<SQL
-        UPDATE $table
-        SET payload = CASE `name`
-            $cases
-            ELSE payload
-        END
-        WHERE `name` IN ($inClause)
-        SQL;
-
-        DB::update($sql, array_merge($bindings, $whereBindings));
+        $this->query()->upsert($data, ['group', 'name'], ['payload']);
     }
 
     public function delete(string $name): void
