@@ -5,6 +5,7 @@
         <x-filament-panels::form.actions
             :actions="$this->getCachedFormActions()"
             :full-width="$this->hasFullWidthFormActions()"
+            :alignment="\Filament\Support\Enums\Alignment::End"
         />
     </x-filament-panels::form>
 
