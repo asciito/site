@@ -167,25 +167,25 @@ class SiteSettingsPage extends Page
                         // TODO: Add logo, media and favicon uploaders
                         Forms\Components\Group::make([
                             Forms\Components\TextInput::make('twitter_handler')
+                                ->label('X/Twitter')
                                 ->required()
-                                ->prefix('https://x.com/')
-                                ->label(__('Twitter Handler')),
+                                ->prefixIcon('fab-x-twitter'),
                             Forms\Components\TextInput::make('facebook_handler')
+                                ->label('Facebook')
                                 ->required()
-                                ->prefix('https://facebook.com/')
-                                ->label(__('Facebook Handler')),
+                                ->prefixIcon('fab-facebook-f'),
                             Forms\Components\TextInput::make('instagram_handler')
+                                ->label('Instagram')
                                 ->required()
-                                ->prefix('https://instagram.com/')
-                                ->label(__('Instagram Handler')),
+                                ->prefixIcon('fab-instagram'),
                             Forms\Components\TextInput::make('linkedin_handler')
+                                ->label('LinkedIn')
                                 ->required()
-                                ->prefix('https://linkedin.com/in/')
-                                ->label(__('LinkedIn Handler')),
+                                ->prefixIcon('fab-linkedin'),
                             Forms\Components\TextInput::make('github_handler')
+                                ->label('Github')
                                 ->required()
-                                ->prefix('https://github.com/')
-                                ->label(__('GitHub Handler')),
+                                ->prefixIcon('fab-github'),
                         ]),
                     ])
                     ->aside(),
