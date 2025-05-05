@@ -11,7 +11,9 @@ class Layout extends Component
     public function __construct(
         public $page = null,
         public bool $showFooter = true,
-        public ?SiteSettings $settings = null)
+        public ?SiteSettings $settings = null,
+        public bool $shouldShowNavigation = true,
+    )
     {
         if (empty($this->settings)) {
             $this->settings = app(SiteSettings::class);
