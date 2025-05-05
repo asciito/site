@@ -31,7 +31,7 @@ class SiteSettingsPage extends Page
 
     protected static string $view = 'site.pages.settings';
 
-    protected static ?string $navigationGroup = 'Configuration';
+    protected static bool $shouldRegisterNavigation = false;
 
     public array $data = [];
 
