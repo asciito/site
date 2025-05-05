@@ -29,6 +29,7 @@ class WebtoolsPanelProvider extends PanelProvider
             ->brandName(function (Site\SiteSettings $settings) {
                 return $settings->name;
             })
+            ->profile()
             ->default()
             ->id('webtools')
             ->path(config('site.webtools_path'))
