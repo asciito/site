@@ -6,6 +6,7 @@ namespace App\Settings\Repositories;
 
 use App\Models\Setting;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class SettingRepository
 {
@@ -27,14 +28,40 @@ class SettingRepository
 
     public function set(string $name, mixed $value): void
     {
-        $this->query()->updateOrCreate(['name' => $name, 'group' => $this->getGroup()], ['payload' => $value]);
+        $this->query()->updateOrCreate(['name' => $name, 'group' => $this->getGroup()], ['payload' => $value])->save();
     }
 
     public function setMany(array $settings): void
     {
-        foreach ($settings as $name => $value) {
-            $this->set($name, $value);
+        if (empty($settings)) {
+            return;
         }
+
+        $cases = [];
+        $bindings = [];
+        $whereBindings = [];
+
+        foreach ($settings as $name => $payload) {
+            $cases[] = "WHEN ? THEN ?";
+            $bindings[] = $name;
+            $bindings[] = $payload ? json_encode($payload) : null;
+            $whereBindings[] = $name;
+        }
+
+        $cases = implode("\n", $cases);
+        $table = (new $this->model)->getTable();
+        $inClause = implode(',', array_fill(0, count($whereBindings), '?'));
+
+        $sql = <<<SQL
+        UPDATE $table
+        SET payload = CASE `name`
+            $cases
+            ELSE payload
+        END
+        WHERE `name` IN ($inClause)
+        SQL;
+
+        DB::update($sql, array_merge($bindings, $whereBindings));
     }
 
     public function delete(string $name): void

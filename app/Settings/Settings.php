@@ -8,7 +8,11 @@ use App\Settings\Repositories\SettingRepository;
 
 abstract class Settings
 {
-    protected static array $settings = [];
+    protected static array $newSettings = [];
+
+    protected static array $oldSettings = [];
+
+    protected static array $initialSettings = [];
 
     public function __construct(protected SettingRepository $repository)
     {
@@ -19,18 +23,28 @@ abstract class Settings
 
     public function get(string $name, mixed $default = null): mixed
     {
-        if (array_key_exists($name, static::$settings)) {
-            return static::$settings[$name];
+        if (array_key_exists($name, static::$newSettings)) {
+            return static::$newSettings[$name];
         }
 
-        return $this->repository->get($name, $default);
+        return static::$initialSettings[$name];
     }
 
     public function set(string $name, mixed $value): static
     {
-        $this->repository->set($name, $value);
+        if (! array_key_exists($name, static::$initialSettings)) {
+            return $this;
+        }
 
-        static::$settings[$name] = $value;
+        static::$oldSettings[$name] = static::$newSettings[$name] ?? static::$initialSettings[$name];
+
+        if ($value === static::$oldSettings[$name]) {
+            unset(static::$oldSettings[$name]);
+
+            return $this;
+        }
+
+        static::$newSettings[$name] = $value;
 
         return $this;
     }
@@ -43,24 +57,45 @@ abstract class Settings
             $name = $property->getName();
 
             if (array_key_exists($name, $data)) {
-                $property->setValue($this, $data[$name] ?? null);
+                $this->$name = $data[$name] ?? null;
+
+                static::$initialSettings[$name] = $data[$name];
             }
         }
 
         return $this;
     }
 
-    public function all(): array
+    public function update(array $data): static
     {
-        if (filled(static::$settings)) {
-            return static::$settings;
+        foreach ($data as $name => $value) {
+            $this->set($name, $value);
         }
 
-        $properties = (new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+        return $this;
+    }
 
-        return static::$settings = collect($properties)
-            ->map(fn (\ReflectionProperty $property) => $property->getValue($this))
+    public function save(): void
+    {
+        $this->repository->setMany($this->newSettings());
+    }
+
+    public function all(): array
+    {
+        return collect(static::$initialSettings)
+            ->merge(static::$newSettings)
+            ->mapWithKeys(fn (mixed $payload, string $setting) => [$setting => $payload])
             ->all();
+    }
+
+    public function newSettings(): array
+    {
+        return static::$newSettings;
+    }
+
+    public function oldSettings(): array
+    {
+        return static::$oldSettings;
     }
 
     protected function setupGroup(): void
@@ -80,8 +115,12 @@ abstract class Settings
 
     public function __get(string $name): mixed
     {
-        if (array_key_exists($name, static::$settings)) {
-            return static::$settings[$name];
+        if (array_key_exists($name, static::$newSettings)) {
+            return static::$newSettings[$name];
+        }
+
+        if (array_key_exists($name, static::$initialSettings)) {
+            return static::$initialSettings[$name];
         }
 
         throw new \BadMethodCallException('Undefined property: ' . static::class . '::$' . $name);
