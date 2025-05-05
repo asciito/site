@@ -8,16 +8,14 @@ use Illuminate\View\Component;
 
 class Layout extends Component
 {
-    public SiteSettings $settings;
-
-    public function __construct(public $page = null, public bool $showFooter = true)
+    public function __construct(
+        public $page = null,
+        public bool $showFooter = true,
+        public ?SiteSettings $settings = null)
     {
-        $this->loadSettings();
-    }
-
-    public function loadSettings(): void
-    {
-        $this->settings = app(SiteSettings::class);
+        if (empty($this->settings)) {
+            $this->settings = app(SiteSettings::class);
+        }
     }
 
     public function render(): View

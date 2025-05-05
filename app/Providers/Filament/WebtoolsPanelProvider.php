@@ -14,7 +14,6 @@ use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
@@ -28,7 +27,7 @@ class WebtoolsPanelProvider extends PanelProvider
     {
         return $panel
             ->brandName(function (Site\SiteSettings $settings) {
-                return $settings->site_name;
+                return $settings->name;
             })
             ->default()
             ->id('webtools')
@@ -43,7 +42,7 @@ class WebtoolsPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-                Site\Filament\Pages\SiteSettingsPage::class,
+                \App\Site\Filament\Pages\SiteSettingsPage::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
