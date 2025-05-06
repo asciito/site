@@ -27,7 +27,7 @@ $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
     <livewire:posts />
 
     <section>
-        <div class="mb-20 sm:mb-28 h-[1px]"></div>
+        <div id="about-me" class="mb-20 sm:mb-28 h-[1px]"></div>
 
         <h3 class="text-3xl mb-8 text-center">{{ $user?->name ?? 'User not created' }}</h3>
 
