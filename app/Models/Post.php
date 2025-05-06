@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
@@ -120,7 +121,7 @@ class Post extends Model implements HasMedia, Sitemapable
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        [$width, $height] = getimagesize($media->getPath());
+        [$width, $height] = static::getImageDimensions($media);
 
         $thumb = $this
             ->addMediaConversion('thumb')
@@ -192,5 +193,12 @@ class Post extends Model implements HasMedia, Sitemapable
                 cache()->forget($key);
             });
         }
+    }
+
+    public static function getImageDimensions(Media $media): ?array
+    {
+        $content = Storage::disk($media->disk)->get($media->getPath());
+
+        return getimagesizefromstring($content) ?: null;
     }
 }
