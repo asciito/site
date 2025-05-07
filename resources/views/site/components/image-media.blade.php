@@ -3,10 +3,8 @@
 @php
     /** @var \Spatie\MediaLibrary\MediaCollections\Models\Media $media */
 
-    $alt = \Illuminate\Support\Str::of($media->name)->slug()->replace('-', ' ')->title();
-    [$width, $height] = getimagesize($media->getPath());
-    $src = $media->getUrl($conversion);
+    $src = $media->getPath($conversion);
     $srcset = $media->getSrcset($conversion);
 @endphp
 
-<x-image :$src :$srcset :$width :$height :$alt/>
+<x-image :$src :$srcset {{ $attributes }}/>
