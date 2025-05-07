@@ -121,7 +121,7 @@ class Post extends Model implements HasMedia, Sitemapable
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $dimensions = static::getImageDimensions($media);
+        $dimensions = filled($media) ? \App\Helpers\getImageDimensions($media) : null;
 
         $thumb = $this
             ->addMediaConversion('thumb')
@@ -193,12 +193,5 @@ class Post extends Model implements HasMedia, Sitemapable
                 cache()->forget($key);
             });
         }
-    }
-
-    public static function getImageDimensions(Media $media): ?array
-    {
-        $content = Storage::disk($media->disk)->get($media->getPath());
-
-        return @getimagesizefromstring($content) ?: null;
     }
 }
