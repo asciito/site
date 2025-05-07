@@ -4,6 +4,7 @@ namespace App\Site\Filament\Pages;
 
 use Filament\Forms;
 use Filament\Pages\Auth\EditProfile;
+use Illuminate\Support\Facades\Storage;
 
 class ProfilePage extends EditProfile
 {
@@ -24,6 +25,7 @@ class ProfilePage extends EditProfile
                             $this->getEmailFormComponent(),
                             $this->getPasswordFormComponent(),
                             $this->getPasswordConfirmationFormComponent(),
+                            $this->getResumeFormComponent(),
                             $this->getDescriptionFormComponent(),
                         ])
                         ->aside()
@@ -49,5 +51,31 @@ class ProfilePage extends EditProfile
                 'undo',
             ])
             ->grow();
+    }
+
+    protected function getResumeFormComponent(): \Filament\Forms\Components\Component
+    {
+        return \Filament\Forms\Components\FileUpload::make('resume')
+            ->label(__('Resume'))
+            ->acceptedFileTypes(['application/pdf'])
+            ->formatStateUsing(fn () => Storage::exists('resume.pdf') ? ['resume.pdf'] : [])
+            ->saveUploadedFileUsing(function (Forms\Components\Component $component, \Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file) {
+                $filename = 'resume.pdf';
+
+                if (Storage::exists($filename)) {
+                    Storage::delete($filename);
+                }
+
+                Storage::putFileAs("/", $file, $filename);
+
+                return $file;
+            })
+            ->deleteUploadedFileUsing(function (Forms\Components\Component $component) {
+                $filename = 'resume.pdf';
+
+                if (Storage::exists($filename)) {
+                    Storage::delete($filename);
+                }
+            });
     }
 }
