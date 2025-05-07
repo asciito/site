@@ -47,6 +47,8 @@ it('can be published', function () {
 });
 
 it('can add thumbnail', function () {
+    Storage::fake();
+
     $image = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 1920, 1080);
 
     \Pest\Livewire\livewire(Pages\CreatePost::class)

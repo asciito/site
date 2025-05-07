@@ -121,7 +121,7 @@ class Post extends Model implements HasMedia, Sitemapable
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        [$width, $height] = static::getImageDimensions($media);
+        $dimensions = static::getImageDimensions($media);
 
         $thumb = $this
             ->addMediaConversion('thumb')
@@ -134,7 +134,7 @@ class Post extends Model implements HasMedia, Sitemapable
             ->height(1080)
             ->withResponsiveImages();
 
-        if ($width > 1920 || $height > 1080) {
+        if (filled($dimensions) && ($dimensions[0] > 1920 || $dimensions[1] > 1080)) {
             $thumb->focalCrop(1920, 1080);
 
             $feature->focalCrop(1920, 1080);
@@ -199,6 +199,6 @@ class Post extends Model implements HasMedia, Sitemapable
     {
         $content = Storage::disk($media->disk)->get($media->getPath());
 
-        return getimagesizefromstring($content) ?: null;
+        return @getimagesizefromstring($content) ?: null;
     }
 }
