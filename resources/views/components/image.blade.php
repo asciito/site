@@ -1,19 +1,15 @@
-@props(['src', 'srcset' => null, 'width' => null, 'height' => null])
+@props(['src', 'srcset' => null])
 
 @php
-    if (file_exists(public_path($src))) {
-        if (! $height || ! $width) {
-            [$width, $height] = getimagesize($src);
-        }
-
-        $src = asset($src);
+    if (! \Str::isUrl($src)) {
+        [$width, $height] = \App\Helpers\getImageDimensions($src);
     }
 @endphp
 
 <img
     src="{{ $src }}"
     @if($srcset) srcset="{{ $srcset }}" @endif
-    @if($width) width="{{ $width }}" @endif
-    @if($height) height="{{ $height }}" @endif
+    @isset($width) width="{{ $width }}" @endisset
+    @isset($height) height="{{ $height }}" @endisset
     {{ $attributes->class(['w-full h-auto']) }}
 />
