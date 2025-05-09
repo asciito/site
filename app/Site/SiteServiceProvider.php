@@ -3,6 +3,7 @@
 namespace App\Site;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class SiteServiceProvider extends ServiceProvider
@@ -23,6 +24,6 @@ class SiteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::share('settings', app(SiteSettings::class));
     }
 }

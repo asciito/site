@@ -1,6 +1,6 @@
 @php
     $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
-        title: 'Contact',
+        title: 'Contact'.' | '.($settings->name ?? config('app.name')),
         description: 'You have a project in mind? talk with me',
     );
 @endphp
