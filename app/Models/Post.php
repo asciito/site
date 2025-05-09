@@ -121,7 +121,7 @@ class Post extends Model implements HasMedia, Sitemapable
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $dimensions = filled($media) ? \App\Helpers\getImageDimensions($media) : null;
+        $dimensions = filled($media) ? \App\Helpers\getMediaImageDimensions($media) : null;
 
         $thumb = $this
             ->addMediaConversion('thumb')
