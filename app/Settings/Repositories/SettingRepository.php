@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Settings\Repositories;
 
 use App\Models\Setting;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
 class SettingRepository
 {
@@ -15,12 +15,12 @@ class SettingRepository
     /**
      * @var class-string The Setting model class name
      */
-    protected string $model = \App\Models\Setting::class;
+    protected string $model = Setting::class;
 
     public function get(string $name, mixed $default = null): mixed
     {
         try {
-            return $this->query()->where('name', $name)->firstOrFail();
+            return $this->withGroup()->where('name', $name)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $default;
         }
@@ -52,26 +52,28 @@ class SettingRepository
 
     public function delete(string $name): void
     {
-        $this->query()->where('name', $name)->delete();
+        $this->withGroup()->where('name', $name)->delete();
     }
 
-    public function deleteMany(array $names): void
+    public function deleteMany(array $names): int
     {
-        foreach ($names as $name) {
-            $this->delete($name);
+        if (empty($names)) {
+            return 0;
         }
+
+        return (int) $this->withGroup()->whereIn('name', $names)->delete();
     }
 
     public function getAll(): array
     {
-        return $this->query()->get()->mapWithKeys(function (Setting $item) {
+        return $this->withGroup()->get()->mapWithKeys(function (Setting $item) {
             return [$item->name => $item->payload];
         })->all();
     }
 
-    public function query(): \Illuminate\Database\Eloquent\Builder
+    public function query(): Builder
     {
-        return $this->model::query()->byGroup($this->getGroup());
+        return $this->model::query();
     }
 
     public function getGroup(): string
@@ -82,5 +84,10 @@ class SettingRepository
     public function setGroup(string $group): void
     {
         $this->group = $group;
+    }
+
+    public function withGroup(): Builder
+    {
+        return $this->query()->byGroup($this->getGroup());
     }
 }
