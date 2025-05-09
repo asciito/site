@@ -20,7 +20,7 @@
 
         <div class="relative z-30 aspect-video">
             @if($media = $post->getFirstMedia())
-                <x-site::image-media :$media />
+                <x-image :src="$media" :srcset="$media->getSrcset()"/>
             @else
                 <div class="w-full h-full bg-slate-300"></div>
             @endif

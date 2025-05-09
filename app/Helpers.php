@@ -11,15 +11,21 @@ namespace App\Helpers {
      * Get the dimensions of an image.
      *
      * @param Media|string $path
-     * @return array{0: int, 1: int} Where index 0 is the width and 1 is the height
+     * @return ?array{0: int, 1: int} Where index 0 is the width and 1 is the height, or null if the image cannot be found.
      */
-    function getImageDimensions(Media|string $path): array
+    function getMediaImageDimensions(Media|string $path): ?array
     {
         if ($path instanceof Media) {
-            $path = $path->getPath();
+            $content = stream_get_contents($path->stream()) ?: null;
+        } else {
+            $content = Storage::get($path);
         }
 
-        $dimensions = getimagesize($path);
+        if ($content === null) {
+            return null;
+        }
+
+        $dimensions = getimagesizefromstring($content);
 
         return [
             $dimensions[0],
