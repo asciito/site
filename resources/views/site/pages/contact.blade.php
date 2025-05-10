@@ -1,4 +1,6 @@
 @php
+    $settings = \App\Helpers\app_settings();
+
     $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
         title: 'Contact'.' | '.($settings->name ?? config('app.name')),
         description: 'You have a project in mind? talk with me',
