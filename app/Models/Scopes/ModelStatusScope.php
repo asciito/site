@@ -2,7 +2,7 @@
 
 namespace App\Models\Scopes;
 
-use App\Site\Enums\Status;
+use App\Blog\Enums\Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
