@@ -15,7 +15,7 @@ class Layout extends Component
         public ?Settings $settings = null,
     ) {
         if (empty($this->settings)) {
-            $this->settings = app(\App\Settings::class);
+            $this->settings = app(\App\AppSettings::class);
         }
     }
 

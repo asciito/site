@@ -2,7 +2,7 @@
 
 namespace App;
 
-class Settings extends \App\Settings\Settings
+class AppSettings extends \App\Settings\Settings
 {
     public ?string $name = null;
 
@@ -21,9 +21,4 @@ class Settings extends \App\Settings\Settings
     public ?string $linkedin_handler = null;
 
     public ?string $github_handler = null;
-
-    public static function group(): string
-    {
-        return 'site';
-    }
 }
