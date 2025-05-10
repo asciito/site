@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Settings;
 
-use App\Settings\Repositories\SettingRepository;
+use App\Settings\Repositories\EloquentRepository;
 
 abstract class Settings
 {
@@ -14,7 +14,7 @@ abstract class Settings
 
     protected static array $initialSettings = [];
 
-    public function __construct(protected SettingRepository $repository)
+    public function __construct(protected EloquentRepository $repository)
     {
         $this->setupGroup();
 

@@ -1,11 +1,9 @@
-@inject('settings', '\App\Site\SiteSettings')
-
 @php
     $url = route('home');
     $site_url_without_http = preg_replace("/https?:\/\/(www\.)?/i", "", $url);
 
     $seo = new \RalphJSmit\Laravel\SEO\Support\SEOData(
-        title: 'Terms of Use',
+        title: 'Terms of Use'.' | '.($settings->name ?? config('app.name')),
         description: "Read the Terms of Use for Asciito's blog to understand the rules and regulations governing the use of our website. Learn about our policies on intellectual property, acceptable use, and more. Stay informed and safe while navigating $site_url_without_http.",
     );
 @endphp

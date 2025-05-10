@@ -3,7 +3,7 @@
     $site_url_without_http = preg_replace("/https?:\/\/(www\.)?/i", "", $url);
 
     $seo = new \RalphJSmit\Laravel\SEO\Support\SEOData(
-        title: 'Privacy Policy',
+        title: 'Privacy Policy'.' | '.($settings->name ?? config('app.name')),
         description: "Read asciito's Privacy Policy to learn how we protect your personal information. Understand our data collection, usage, and sharing practices. Your privacy and security are our top priorities at asciito.",
     );
 @endphp

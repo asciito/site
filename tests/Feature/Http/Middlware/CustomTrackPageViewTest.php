@@ -10,7 +10,7 @@ dataset('routes', fn () => [
     'privacy',
 ]);
 
-dataset('draft posts', fn () => \App\Models\Post::factory(10)->create());
+dataset('draft posts', fn () => \App\Blog\Models\Post::factory(10)->create());
 
 it('track page visited by non-login user', function (string $route) {
     $fake = \Illuminate\Support\Facades\Http::fake();
