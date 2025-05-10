@@ -21,6 +21,6 @@ class Layout extends Component
 
     public function render(): View
     {
-        return view('site::pages.Layout.site');
+        return view('site::pages.layout.site');
     }
 }
