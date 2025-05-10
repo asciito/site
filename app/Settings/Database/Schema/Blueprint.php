@@ -38,7 +38,7 @@ class Blueprint
 
     protected function deleteSettings(array $settings): void
     {
-        $this->repository->query()->whereIn('name', $settings)->delete();
+        $this->repository->deleteMany($settings);
     }
 
     public function __destruct()
