@@ -1,8 +1,7 @@
 <?php
 
-namespace App\View\Site\Components;
+namespace App\Site\View\Components;
 
-use App\Settings;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use RalphJSmit\Laravel\SEO\Support\SEOData;

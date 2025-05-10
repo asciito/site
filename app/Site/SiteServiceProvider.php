@@ -15,7 +15,7 @@ class SiteServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(resource_path('views/site'), 'site');
 
-        Blade::componentNamespace('App\\View\\Site\\Components', 'site');
+        Blade::componentNamespace('App\\Site\\View\\Components', 'site');
     }
 
     /**
