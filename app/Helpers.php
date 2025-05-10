@@ -3,7 +3,11 @@
 declare(strict_types=1);
 
 namespace App\Helpers {
+
+    use App\Settings\Settings;
     use Illuminate\Support\Facades\Storage;
+    use Psr\Container\ContainerExceptionInterface;
+    use Psr\Container\NotFoundExceptionInterface;
     use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
     /**
@@ -29,5 +33,24 @@ namespace App\Helpers {
             $dimensions[0],
             $dimensions[1],
         ];
+    }
+
+    /**
+     * Get the application setting.
+     *
+     * This function is a wrapper around the AppSettings class to provide a convenient way to access application settings.
+     *
+     * @param string|null $key
+     * @param $default
+     */
+    function app_settings(string $key = null, $default = null): mixed
+    {
+        $settings = app()->make(\App\AppSettings::class);
+
+        if (func_num_args() === 0) {
+            return $settings;
+        }
+
+        return $settings->get($key, $default);
     }
 }
