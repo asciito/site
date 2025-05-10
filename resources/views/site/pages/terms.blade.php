@@ -1,5 +1,3 @@
-@inject('settings', '\App\Site\SiteSettings')
-
 @php
     $url = route('home');
     $site_url_without_http = preg_replace("/https?:\/\/(www\.)?/i", "", $url);

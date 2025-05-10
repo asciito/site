@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App\Settings\Repositories;
 
-use App\Models\Setting;
+use App\Settings\Models\Setting;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class SettingRepository
+class EloquentRepository implements Contracts\Repository
 {
-    protected string $group;
-
-    /**
-     * @var class-string The Setting model class name
-     */
-    protected string $model = Setting::class;
+    public function __construct(protected string $model, protected ?string $group = null)
+    {
+        //
+    }
 
     public function get(string $name, mixed $default = null): mixed
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Settings\Models;
 
 use App\Models\Exceptions\LockedSettingException;
 use Illuminate\Database\Eloquent\Builder;
