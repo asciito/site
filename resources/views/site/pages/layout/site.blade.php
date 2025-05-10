@@ -1,3 +1,7 @@
+@php
+    $settings = \App\Helpers\app_settings();
+@endphp
+
 <!doctype html>
 <html lang="en">
 <head>
