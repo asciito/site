@@ -1,4 +1,4 @@
-<x-site::layout :$page :show-footer="false" :should-show-navigation="false">
+<x-site::layout :$page :$showFooter :$shouldShowNavigation>
     <div class="relative flex items-top justify-center min-h-[calc(100vh-13.2rem)] sm:items-center sm:pt-0">
         <div class="max-w-xl mx-auto">
             <div class="flex flex-col gap-8 items-center pt-8 sm:justify-start sm:pt-0 text-center">

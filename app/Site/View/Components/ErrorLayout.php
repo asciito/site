@@ -3,22 +3,21 @@
 namespace App\Site\View\Components;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\View\Component;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
-class ErrorLayout extends Component
+class ErrorLayout extends Layout
 {
     public function __construct(public string $title, public int $code)
     {
-        //
+        parent::__construct(
+            page: new SEOData(robots: 'noindex, nofollow'),
+            showFooter: false,
+            shouldShowNavigation: false,
+        );
     }
 
     public function render(): View
     {
-        return view('site::pages.Layout.error', [
-            'page' => new SEOData(
-                robots: 'noindex, nofollow',
-            )
-        ]);
+        return view('site::pages.Layout.error');
     }
 }
