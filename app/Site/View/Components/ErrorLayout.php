@@ -18,6 +18,6 @@ class ErrorLayout extends Layout
 
     public function render(): View
     {
-        return view('site::pages.Layout.error');
+        return view('site::pages.layout.error');
     }
 }
