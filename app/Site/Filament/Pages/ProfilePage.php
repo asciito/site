@@ -19,17 +19,17 @@ class ProfilePage extends EditProfile
 
         return [
             'form' => $form->schema([
-                    Forms\Components\Section::make('Profile Information')
-                        ->schema([
-                            $this->getNameFormComponent(),
-                            $this->getEmailFormComponent(),
-                            $this->getPasswordFormComponent(),
-                            $this->getPasswordConfirmationFormComponent(),
-                            $this->getResumeFormComponent(),
-                            $this->getDescriptionFormComponent(),
-                        ])
-                        ->aside()
-                ])
+                Forms\Components\Section::make('Profile Information')
+                    ->schema([
+                        $this->getNameFormComponent(),
+                        $this->getEmailFormComponent(),
+                        $this->getPasswordFormComponent(),
+                        $this->getPasswordConfirmationFormComponent(),
+                        $this->getResumeFormComponent(),
+                        $this->getDescriptionFormComponent(),
+                    ])
+                    ->aside(),
+            ])
                 ->inlineLabel(false),
         ];
     }
@@ -66,7 +66,7 @@ class ProfilePage extends EditProfile
                     Storage::delete($filename);
                 }
 
-                Storage::putFileAs("/", $file, $filename);
+                Storage::putFileAs('/', $file, $filename);
 
                 return $file;
             })

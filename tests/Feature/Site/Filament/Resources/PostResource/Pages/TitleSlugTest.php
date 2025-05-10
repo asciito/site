@@ -1,7 +1,5 @@
 <?php
 
-use App\Filament\Resources\PostResource\Pages;
-
 dataset('titles', function () {
     foreach (range(1, 10) as $_) {
         $title = fake()->unique()->sentence();

@@ -1,7 +1,5 @@
 <?php
 
-use App\Filament\Resources\PostResource\Pages;
-
 it('can render', function () {
     \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\ListPosts::class)
         ->assertSuccessful();

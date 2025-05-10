@@ -32,25 +32,25 @@ class PostFactory extends Factory
     {
         $content = '';
 
-        $content .= '## ' . fake()->sentence(random_int(5, 8));
+        $content .= '## '.fake()->sentence(random_int(5, 8));
 
         foreach (range(1, random_int(2, 10)) as $_) {
             $paragraphs = fake()->paragraphs(random_int(1, 5));
 
             foreach ($paragraphs as $paragraph) {
-                $content .= "\n\n" . $paragraph;
+                $content .= "\n\n".$paragraph;
             }
 
             if (fake()->boolean()) {
 
                 foreach (range(1, random_int(1, 7)) as $_) {
-                    $content .= "\n\n" . fake()->randomElement(['*', '-', '+']) . ' ' . fake()->sentence(random_int(5, 8));
+                    $content .= "\n\n".fake()->randomElement(['*', '-', '+']).' '.fake()->sentence(random_int(5, 8));
                 }
             }
 
-            $content .= "\n\n" . fake()->randomElement(['###', '####']) . ' ' . fake()->sentence(random_int(5, 8));
+            $content .= "\n\n".fake()->randomElement(['###', '####']).' '.fake()->sentence(random_int(5, 8));
 
-            $content .= "\n\n" . fake()->paragraph(1);
+            $content .= "\n\n".fake()->paragraph(1);
         }
 
         return $content;
@@ -58,7 +58,7 @@ class PostFactory extends Factory
 
     public function published(): static
     {
-        return $this->afterCreating(fn(Post $post) => $post->publish());
+        return $this->afterCreating(fn (Post $post) => $post->publish());
     }
 
     public function archived(): static
@@ -70,6 +70,6 @@ class PostFactory extends Factory
 
     public function dontSyncSlug(): static
     {
-        return $this->state(fn(array $attributes) => ['slug' => Str::slug(fake()->unique()->sentence())]);
+        return $this->state(fn (array $attributes) => ['slug' => Str::slug(fake()->unique()->sentence())]);
     }
 }

@@ -13,8 +13,7 @@ class Layout extends Component
         public bool $showFooter = true,
         public ?SiteSettings $settings = null,
         public bool $shouldShowNavigation = true,
-    )
-    {
+    ) {
         if (empty($this->settings)) {
             $this->settings = app(SiteSettings::class);
         }

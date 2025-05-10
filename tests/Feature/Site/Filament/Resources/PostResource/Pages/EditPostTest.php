@@ -1,7 +1,5 @@
 <?php
 
-use App\Filament\Resources\PostResource\Pages;
-
 it('can render', function () {
     $post = \App\Blog\Models\Post::factory()->create();
 
