@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Site\Filament\Pages;
+namespace App\Filament\Pages;
 
-use App\Site\SiteSettings;
+use App\Settings;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Forms;
@@ -17,7 +17,7 @@ use Filament\Support\Facades\FilamentView;
 /**
  * @property Form $form
  */
-class SiteSettingsPage extends Page
+class SettingsPage extends Page
 {
     use CanUseDatabaseTransactions;
     use HasUnsavedDataChangesAlert;
@@ -27,7 +27,7 @@ class SiteSettingsPage extends Page
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static ?string $settings = SiteSettings::class;
+    protected static ?string $settings = Settings::class;
 
     protected static string $view = 'site.pages.settings';
 

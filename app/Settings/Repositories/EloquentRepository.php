@@ -79,6 +79,16 @@ class EloquentRepository implements Contracts\Repository
         $this->group = $group;
     }
 
+    public function deleteAll(): void
+    {
+        $this->withGroup()->delete();
+    }
+
+    public function renameGroup($newGroup): void
+    {
+        $this->withGroup()->update(['group' => $newGroup]);
+    }
+
     protected function query(): Builder
     {
         return $this->model::query();

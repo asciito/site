@@ -8,6 +8,8 @@ use App\Settings\Repositories\EloquentRepository;
 
 class Builder
 {
+    const string DEFAULT_GROUP = 'default';
+
     protected EloquentRepository $repo;
 
     public function __construct()
@@ -25,7 +27,7 @@ class Builder
 
     public function default(\Closure $callback): void
     {
-        $repo = tap($this->repo, fn ($repo) => $repo->setGroup('default'));
+        $repo = tap($this->repo, fn ($repo) => $repo->setGroup(static::DEFAULT_GROUP));
         $blueprint = new Blueprint($repo);
 
         $callback($blueprint);
@@ -35,6 +37,13 @@ class Builder
     {
         $repo = tap($this->repo, fn ($repo) => $repo->setGroup($group));
 
-        $repo->query()->delete();
+        $repo->deleteAll();
+    }
+
+    public function renameGroup(string $oldGroup, string $newGroup): void
+    {
+        $repo = tap($this->repo, fn ($repo) => $repo->setGroup($oldGroup));
+
+        $repo->renameGroup($newGroup);
     }
 }

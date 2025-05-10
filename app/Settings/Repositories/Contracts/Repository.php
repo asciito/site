@@ -21,4 +21,8 @@ interface Repository
     public function getGroup(): string;
 
     public function setGroup(string $group): void;
+
+    public function deleteAll(): void;
+
+    public function renameGroup($newGroup): void;
 }

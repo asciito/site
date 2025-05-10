@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Site;
+namespace App;
 
-use App\Settings\Settings;
-
-class SiteSettings extends Settings
+class Settings extends \App\Settings\Settings
 {
     public ?string $name = null;
 

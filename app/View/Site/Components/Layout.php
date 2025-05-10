@@ -2,20 +2,20 @@
 
 namespace App\View\Site\Components;
 
-use App\Site\SiteSettings;
+use App\Settings;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class Layout extends Component
 {
     public function __construct(
-        public $page = null,
-        public bool $showFooter = true,
-        public ?SiteSettings $settings = null,
-        public bool $shouldShowNavigation = true,
+        public           $page = null,
+        public bool      $showFooter = true,
+        public ?Settings $settings = null,
+        public bool      $shouldShowNavigation = true,
     ) {
         if (empty($this->settings)) {
-            $this->settings = app(SiteSettings::class);
+            $this->settings = app(Settings::class);
         }
     }
 
