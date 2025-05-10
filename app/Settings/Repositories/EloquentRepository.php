@@ -24,6 +24,13 @@ class EloquentRepository implements Contracts\Repository
         }
     }
 
+    public function getAll(): array
+    {
+        return $this->withGroup()->get()->mapWithKeys(function (Setting $item) {
+            return [$item->name => $item->payload];
+        })->all();
+    }
+
     public function set(string $name, mixed $value): void
     {
         $this->query()->updateOrCreate(['name' => $name, 'group' => $this->getGroup()], ['payload' => $value])->save();
@@ -62,18 +69,6 @@ class EloquentRepository implements Contracts\Repository
         return (int) $this->withGroup()->whereIn('name', $names)->delete();
     }
 
-    public function getAll(): array
-    {
-        return $this->withGroup()->get()->mapWithKeys(function (Setting $item) {
-            return [$item->name => $item->payload];
-        })->all();
-    }
-
-    public function query(): Builder
-    {
-        return $this->model::query();
-    }
-
     public function getGroup(): string
     {
         return $this->group;
@@ -84,7 +79,12 @@ class EloquentRepository implements Contracts\Repository
         $this->group = $group;
     }
 
-    public function withGroup(): Builder
+    protected function query(): Builder
+    {
+        return $this->model::query();
+    }
+
+    protected function withGroup(): Builder
     {
         return $this->query()->byGroup($this->getGroup());
     }
