@@ -24,6 +24,8 @@ class SiteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::share('settings', app(SiteSettings::class));
+        app()->afterLoadingEnvironment(function () {
+            View::share('settings', config('site.settings'));
+        });
     }
 }
