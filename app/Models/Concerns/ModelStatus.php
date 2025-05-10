@@ -2,8 +2,8 @@
 
 namespace App\Models\Concerns;
 
+use App\Blog\Enums\Status;
 use App\Models\Scopes\ModelStatusScope;
-use App\Site\Enums\Status;
 use Illuminate\Support\Carbon;
 
 trait ModelStatus

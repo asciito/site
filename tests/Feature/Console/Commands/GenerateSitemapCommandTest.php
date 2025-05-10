@@ -64,7 +64,7 @@ it('generate site map with posts', function () {
     $titles = ['fake-title-one', 'fake-title-two'];
 
     foreach ($titles as $title) {
-        \App\Models\Post::factory()->published()->create([
+        \App\Blog\Models\Post::factory()->published()->create([
             'slug' => $title,
         ]);
     }

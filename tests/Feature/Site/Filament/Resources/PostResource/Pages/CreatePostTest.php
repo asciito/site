@@ -1,14 +1,12 @@
 <?php
 
-use App\Filament\Resources\PostResource\Pages;
-
 it('can render', function () {
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->assertSuccessful();
 });
 
 it('can create post', function () {
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -23,12 +21,12 @@ it('can create post', function () {
     \Pest\Laravel\assertDatabaseHas('posts', [
         'title' => $title,
         'slug' => $slug,
-        'status' => \App\Site\Enums\Status::DRAFT,
+        'status' => \App\Blog\Enums\Status::DRAFT,
     ]);
 });
 
 it('can be published', function () {
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -38,11 +36,11 @@ it('can be published', function () {
         ])
         ->callAction('publish')
         ->assertHasNoErrors()
-        ->assertRedirectToRoute(Pages\EditPost::getRouteName(), ['record' => 1]);
+        ->assertRedirectToRoute(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::getRouteName(), ['record' => 1]);
 
     \Pest\Laravel\assertDatabaseHas('posts', [
         'title' => $title,
-        'status' => \App\Site\Enums\Status::PUBLISHED,
+        'status' => \App\Blog\Enums\Status::PUBLISHED,
     ]);
 });
 
@@ -51,7 +49,7 @@ it('can add thumbnail', function () {
 
     $image = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 1920, 1080);
 
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->fillForm([
             'title' => fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -60,7 +58,7 @@ it('can add thumbnail', function () {
         ->call('create')
         ->assertHasNoErrors();
 
-    expect(\App\Models\Post::withDrafts()->first())
+    expect(\App\Blog\Models\Post::withDrafts()->first())
         ->getMedia()
         ->toHaveCount(1);
 });
@@ -68,7 +66,7 @@ it('can add thumbnail', function () {
 it('can\'t add over-dimensioned image', function () {
     $image = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 2640, 1485);
 
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->fillForm([
             'title' => fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -84,7 +82,7 @@ it('can\'t add over-dimensioned image', function () {
 });
 
 it('can add excerpt', function () {
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),

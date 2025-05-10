@@ -9,7 +9,7 @@ it('can render home page', function () {
 });
 
 test('home can render posts', function () {
-    \App\Models\Post::factory(10)
+    \App\Blog\Models\Post::factory(10)
         ->create()
         ->each
         ->publish();

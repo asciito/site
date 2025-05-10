@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Settings\Database\Schema;
 
-use App\Settings\Repositories\SettingRepository;
+use App\Settings\Repositories\EloquentRepository;
 
 class Blueprint
 {
@@ -12,7 +12,7 @@ class Blueprint
 
     protected array $settingsToDelete = [];
 
-    public function __construct(protected SettingRepository $repository)
+    public function __construct(protected EloquentRepository $repository)
     {
         //
     }
@@ -38,7 +38,7 @@ class Blueprint
 
     protected function deleteSettings(array $settings): void
     {
-        $this->repository->query()->whereIn('name', $settings)->delete();
+        $this->repository->deleteMany($settings);
     }
 
     public function __destruct()
