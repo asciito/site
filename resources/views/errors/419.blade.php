@@ -1,5 +1,5 @@
-<x-site-errors::minimal :code="419" :title="__('Page Expired')">
+<x-site::error-layout :code="419" :title="__('Page Expired')">
     <x-slot:message>
         {{ __('Page Expired') }}
     </x-slot:message>
-</x-site-errors::minimal>
+</x-site::error-layout>

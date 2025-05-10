@@ -1,11 +1,3 @@
-@props(['title', 'code'])
-
-@php
-    $page = new \RalphJSmit\Laravel\SEO\Support\SEOData(
-        robots: 'noindex, nofollow',
-    );
-@endphp
-
 <x-site::layout :$page :show-footer="false" :should-show-navigation="false">
     <div class="relative flex items-top justify-center min-h-[calc(100vh-13.2rem)] sm:items-center sm:pt-0">
         <div class="max-w-xl mx-auto">

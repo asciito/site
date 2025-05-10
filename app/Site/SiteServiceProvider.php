@@ -16,7 +16,6 @@ class SiteServiceProvider extends ServiceProvider
         $this->loadViewsFrom(resource_path('views/site'), 'site');
 
         Blade::componentNamespace('App\\View\\Site\\Components', 'site');
-        Blade::anonymousComponentPath(resource_path('views/site/errors'), 'site-errors');
     }
 
     /**
