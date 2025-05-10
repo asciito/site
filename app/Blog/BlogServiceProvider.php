@@ -17,7 +17,7 @@ class BlogServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Volt::mount([
-            resource_path('views/blog/livewire')
+            resource_path('views/blog/livewire'),
         ]);
     }
 }
