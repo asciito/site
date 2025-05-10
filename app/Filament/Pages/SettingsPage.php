@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Settings;
+use App\AppSettings;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Forms;
@@ -27,7 +27,7 @@ class SettingsPage extends Page
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static ?string $settings = Settings::class;
+    protected static ?string $settings = AppSettings::class;
 
     protected static string $view = 'site.pages.settings';
 
