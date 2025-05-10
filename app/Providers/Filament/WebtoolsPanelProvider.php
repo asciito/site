@@ -25,7 +25,7 @@ class WebtoolsPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->brandName(function (\App\Settings $settings) {
+            ->brandName(function (\App\AppSettings $settings) {
                 return $settings->name;
             })
             ->profile(\App\Filament\Pages\ProfilePage::class)

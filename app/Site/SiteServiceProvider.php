@@ -2,7 +2,7 @@
 
 namespace App\Site;
 
-use App\Settings;
+use App\AppSettings;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;

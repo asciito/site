@@ -1,7 +1,7 @@
 @php
     use Illuminate\Support\Facades\Storage;
 
-    $settings = app(App\Settings::class);
+    $settings = app(App\AppSettings::class);
 
     $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
         title: $settings->name,
