@@ -5,4 +5,5 @@ return [
     App\Providers\Filament\WebtoolsPanelProvider::class,
     App\Providers\VoltServiceProvider::class,
     App\Site\SiteServiceProvider::class,
+    App\Blog\BlogServiceProvider::class,
 ];

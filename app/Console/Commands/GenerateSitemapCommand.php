@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Post;
+use App\Blog\Models\Post;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;

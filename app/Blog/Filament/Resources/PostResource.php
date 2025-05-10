@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Blog\Filament\Resources;
 
-use App\Filament\Resources\PostResource\Pages;
-use App\Models\Post;
+use App\Blog\Enums\Status;
+use App\Blog\Filament\Resources\PostResource\Pages;
+use App\Blog\Models\Post;
 use App\Models\Scopes\ModelStatusScope;
-use App\Site\Enums\Status;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -162,7 +162,7 @@ class PostResource extends Resource
             ->recordUrl(fn (Post $record) => ! $record->isArchived() ? route('filament.webtools.resources.posts.edit', $record) : null)
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                \App\Site\Filament\Tables\Filters\StatusFilter::make(),
+                \App\Blog\Filament\Tables\Filters\StatusFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Site;
+namespace App\Blog;
 
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support;

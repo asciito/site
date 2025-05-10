@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\PostResource\Pages;
+namespace App\Blog\Filament\Resources\PostResource\Pages;
 
-use App\Filament\Resources\PostResource;
-use App\Models\Post;
+use App\Blog\Filament\Resources\PostResource;
+use App\Blog\Models\Post;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Validation\ValidationException;

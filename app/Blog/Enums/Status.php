@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Site\Enums;
+namespace App\Blog\Enums;
 
 use Illuminate\Support\Collection;
 

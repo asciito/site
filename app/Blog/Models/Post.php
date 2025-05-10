@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Blog\Models;
 
+use App\Blog\HtmlContent;
 use App\Models\Concerns\ModelStatus;
-use App\Site\HtmlContent;
 use App\Site\SiteSettings;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Contracts\Support\Htmlable;
@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
@@ -194,5 +193,10 @@ class Post extends Model implements HasMedia, Sitemapable
                 cache()->forget($key);
             });
         }
+    }
+
+    protected static function newFactory(): \Database\Factories\PostFactory
+    {
+        return \Database\Factories\PostFactory::new();
     }
 }

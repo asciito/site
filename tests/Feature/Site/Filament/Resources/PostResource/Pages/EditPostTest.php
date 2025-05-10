@@ -3,16 +3,16 @@
 use App\Filament\Resources\PostResource\Pages;
 
 it('can render', function () {
-    $post = \App\Models\Post::factory()->create();
+    $post = \App\Blog\Models\Post::factory()->create();
 
-    \Pest\Livewire\livewire(Pages\EditPost::class, ['record' => $post->id])
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
         ->assertSuccessful();
 });
 
 it('can fill edit form', function () {
-    $post = \App\Models\Post::factory()->create();
+    $post = \App\Blog\Models\Post::factory()->create();
 
-    \Pest\Livewire\livewire(Pages\EditPost::class, ['record' => $post->id])
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
         ->fillForm([
             'title' => $title = 'This is a new title',
             'slug' => $slug = 'just-a-new-slug',
@@ -28,7 +28,7 @@ it('can fill edit form', function () {
         ->assertSuccessful();
 
     expect($post)
-        ->not->toBe(\App\Models\Post::first());
+        ->not->toBe(\App\Blog\Models\Post::first());
 });
 
 it('can add missing thumbnail', function () {
@@ -36,9 +36,9 @@ it('can add missing thumbnail', function () {
 
     $newImage = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 1920, 1080);
 
-    $post = \App\Models\Post::factory()->create();
+    $post = \App\Blog\Models\Post::factory()->create();
 
-    \Pest\Livewire\livewire(Pages\EditPost::class, ['record' => $post->id])
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
         ->fillForm([
             'thumbnail' => $newImage,
         ])

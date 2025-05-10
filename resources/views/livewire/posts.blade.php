@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Post;
+use App\Blog\Models\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Volt\Component;
 
@@ -22,7 +22,7 @@ new class extends Component {
     #[\Livewire\Attributes\Computed]
     public function posts(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return \App\Models\Post::when($this->search, function (Builder $query) {
+        return \App\Blog\Models\Post::when($this->search, function (Builder $query) {
             $query->where('title', 'LIKE', "%{$this->search}%");
         })->orderBy('published_at', 'DESC')->paginate(perPage: $this->perPage);
     }

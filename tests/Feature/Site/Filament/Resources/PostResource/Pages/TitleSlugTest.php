@@ -13,7 +13,7 @@ dataset('titles', function () {
 });
 
 it('can render', function (string $title) {
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->assertFormFieldExists('title')
         ->assertFormFieldExists('slug')
         ->fillForm([
@@ -28,7 +28,7 @@ it('can render', function (string $title) {
 })->with('titles');
 
 it('can sync title and slug', function (string $title) {
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->fillForm(['title' => $title])
         ->assertFormSet(['slug' => \Illuminate\Support\Str::slug($title)])
         ->fillForm(['slug' => $slug = \Illuminate\Support\Str::slug(fake()->sentence)])
@@ -37,7 +37,7 @@ it('can sync title and slug', function (string $title) {
 })->with('titles');
 
 it('can edit slug and update title without sync slug with title', function (string $title) {
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->fillForm(['title' => $title])
         ->assertFormSet(['slug' => \Illuminate\Support\Str::slug($title)])
         ->fillForm(['slug' => $slug = \Illuminate\Support\Str::slug(fake()->sentence())])
@@ -48,7 +48,7 @@ it('can edit slug and update title without sync slug with title', function (stri
 })->with('titles');
 
 it('can sync title and slug again after math edited slug with title', function (string $title) {
-    \Pest\Livewire\livewire(Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
         ->fillForm(['title' => $title])
         ->assertFormSet(['slug' => \Illuminate\Support\Str::slug($title)])
         ->fillForm(['slug' => $slug = \Illuminate\Support\Str::slug(fake()->sentence)])
@@ -57,12 +57,12 @@ it('can sync title and slug again after math edited slug with title', function (
         ->assertFormSet(['slug' => $slug])
         ->assertSuccessful();
 
-    $post = \App\Models\Post::factory()->create([
+    $post = \App\Blog\Models\Post::factory()->create([
         'title' => $title,
         'slug' => $slug = \Illuminate\Support\Str::slug(fake()->unique()->sentence),
     ]);
 
-    \Pest\Livewire\livewire(Pages\EditPost::class, ['record' => $post->id])
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
         ->fillForm(['title' => $title])
         ->assertFormSet(['slug' => $slug])
         ->fillForm(['title' => \Illuminate\Support\Str::of($slug)->replace('-', ' ')->title()])
@@ -71,12 +71,12 @@ it('can sync title and slug again after math edited slug with title', function (
 })->with('titles');
 
 it('must prevent edit slug if post is published', function (string $title) {
-    $post = \App\Models\Post::factory()
+    $post = \App\Blog\Models\Post::factory()
         ->published()
         ->dontSyncSlug()
         ->create();
 
-    \Pest\Livewire\livewire(Pages\EditPost::class, ['record' => $post->id])
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
         ->fillForm(['title' => $title])
         ->assertFormSet(function (array $state) use ($title) {
             expect($state['slug'])->not->toBe(\Illuminate\Support\Str::slug($title));

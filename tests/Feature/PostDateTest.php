@@ -8,7 +8,7 @@ beforeEach(function () {
     Pest\Laravel\actingAs(\App\Models\User::factory()->create());
 });
 
-function visit(\App\Models\Post $post): \Pest\Expectation
+function visit(\App\Blog\Models\Post $post): \Pest\Expectation
 {
     $response = get(route('post', $post))->assertOk();
 
@@ -31,7 +31,7 @@ function visit(\App\Models\Post $post): \Pest\Expectation
 }
 
 it('`Created Today`', function () {
-    $post = \App\Models\Post::factory()->create();
+    $post = \App\Blog\Models\Post::factory()->create();
 
     visit($post)
         ->isPublished()->toBeFalse()
@@ -46,7 +46,7 @@ it('`Created Today`', function () {
 });
 
 it('`Created on`', function () {
-    $post = \App\Models\Post::factory()->create();
+    $post = \App\Blog\Models\Post::factory()->create();
 
     \Spatie\TestTime\TestTime::addDay();
 
@@ -62,7 +62,7 @@ it('`Created on`', function () {
 });
 
 it('`Updated Today`', function () {
-    $post = \App\Models\Post::factory()->create();
+    $post = \App\Blog\Models\Post::factory()->create();
 
     \Spatie\TestTime\TestTime::addDay();
 
@@ -80,7 +80,7 @@ it('`Updated Today`', function () {
 });
 
 it('`Updated on`', function () {
-    $post = \App\Models\Post::factory()->create();
+    $post = \App\Blog\Models\Post::factory()->create();
 
     \Spatie\TestTime\TestTime::addDay();
 
@@ -102,7 +102,7 @@ it('`Updated on`', function () {
 });
 
 it('`Published Today`', function () {
-    $post = \App\Models\Post::factory()->published()->create();
+    $post = \App\Blog\Models\Post::factory()->published()->create();
 
     visit($post)
         ->isPublished()
@@ -118,7 +118,7 @@ it('`Published Today`', function () {
 });
 
 it('`Published on`', function () {
-    $post = \App\Models\Post::factory()->published()->create();
+    $post = \App\Blog\Models\Post::factory()->published()->create();
 
     \Spatie\TestTime\TestTime::addDay();
 
@@ -136,7 +136,7 @@ it('`Published on`', function () {
 });
 
 it('Published but updated', function () {
-    $post = \App\Models\Post::factory()->published()->create();
+    $post = \App\Blog\Models\Post::factory()->published()->create();
 
     \Spatie\TestTime\TestTime::addDay();
 
