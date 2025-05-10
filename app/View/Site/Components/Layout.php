@@ -9,10 +9,10 @@ use Illuminate\View\Component;
 class Layout extends Component
 {
     public function __construct(
-        public           $page = null,
-        public bool      $showFooter = true,
+        public $page = null,
+        public bool $showFooter = true,
         public ?Settings $settings = null,
-        public bool      $shouldShowNavigation = true,
+        public bool $shouldShowNavigation = true,
     ) {
         if (empty($this->settings)) {
             $this->settings = app(Settings::class);

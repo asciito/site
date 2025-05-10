@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        \App\Settings\Database\Schema\Settings::renameGroup('site', static::DEFAULT_GROUP);
+        \App\Settings\Database\Schema\Settings::renameGroup('site', self::DEFAULT_GROUP);
     }
 
     /**
@@ -19,6 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        \App\Settings\Database\Schema\Settings::renameGroup(static::DEFAULT_GROUP, 'site');
+        \App\Settings\Database\Schema\Settings::renameGroup(self::DEFAULT_GROUP, 'site');
     }
 };
