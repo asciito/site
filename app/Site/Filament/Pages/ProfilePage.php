@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Pages;
+namespace App\Site\Filament\Pages;
 
 use Filament\Forms;
 use Filament\Pages\Auth\EditProfile;

@@ -5,7 +5,7 @@ namespace App\Blog\Filament\Resources;
 use App\Blog\Enums\Status;
 use App\Blog\Filament\Resources\PostResource\Pages;
 use App\Blog\Models\Post;
-use App\Models\Scopes\ModelStatusScope;
+use App\Site\Models\Scopes\ModelStatusScope;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;

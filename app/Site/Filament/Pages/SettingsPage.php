@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Pages;
+namespace App\Site\Filament\Pages;
 
 use App\AppSettings;
 use Filament\Actions\Action;

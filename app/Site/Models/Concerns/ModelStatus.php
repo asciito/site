@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models\Concerns;
+namespace App\Site\Models\Concerns;
 
 use App\Blog\Enums\Status;
-use App\Models\Scopes\ModelStatusScope;
+use App\Site\Models\Scopes\ModelStatusScope;
 use Illuminate\Support\Carbon;
 
 trait ModelStatus
