@@ -51,13 +51,13 @@ abstract class Settings
 
     public function fill(array $data): static
     {
-        $properties = array_keys($this->getCachedPropertyNames());
+        $properties = $this->getCachedPropertyNames();
 
-        foreach ($properties as $prop) {
-            if (array_key_exists($prop, $data)) {
-                $this->$prop = $data[$prop] ?? null;
+        foreach ($properties as $name => $type) {
+            if (array_key_exists($name, $data)) {
+                $this->$name = filled($data[$name]) ? $this->castValue($data[$name], $type) : null;
 
-                $this->initialSettings[$prop] = $data[$prop];
+                $this->initialSettings[$name] = $data[$name];
             }
         }
 
@@ -114,9 +114,29 @@ abstract class Settings
     protected function getCachedPropertyNames(): array
     {
         if (empty($this->cachedPublicPropertyNames)) {
-            $this->cachedPublicPropertyNames = get_class_vars(static::class);
+            $properties = (new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+
+            $this->cachedPublicPropertyNames = collect($properties)
+                ->mapWithKeys(fn (\ReflectionProperty $property) => [$property->name => $property->getType()])
+                ->all();
         }
 
         return $this->cachedPublicPropertyNames;
+    }
+
+    protected function castValue(string $value, \ReflectionNamedType $type): mixed
+    {
+        if ($type->allowsNull() && ($value === 'null' || $value === '')) {
+            return null;
+        }
+
+        return match ($type->getName()) {
+            'array' => json_decode($value, true),
+            'int' => (int) $value,
+            'float' => (float) $value,
+            'bool' => filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false,
+            'string' => $value,
+            default => throw new \InvalidArgumentException("Unsupported type casting: {$type->getName()}"),
+        };
     }
 }
