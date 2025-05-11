@@ -38,7 +38,7 @@ abstract class Settings
 
 
 
-    public function getUpdatedSettings(): array
+    public function getUpdated(): array
     {
         $properties = $this->getCachedPropertyNames();
         $updatedSettings = [];
@@ -123,7 +123,7 @@ abstract class Settings
 
     public function save(): void
     {
-        $updatedSettings = $this->getUpdatedSettings();
+        $updatedSettings = $this->getUpdated()();
 
         if (filled($updatedSettings)) {
             $this->repository->setMany($updatedSettings);
@@ -141,7 +141,7 @@ abstract class Settings
     public function all(): array
     {
         return collect($this->initialSettings)
-            ->merge($this->getUpdatedSettings())
+            ->merge($this->getUpdated()())
             ->mapWithKeys(fn (mixed $payload, string $setting) => [$setting => $payload])
             ->all();
     }
