@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Site\Models;
 
 use App\MessageStatusEnum;
 use Illuminate\Database\Eloquent\Model;

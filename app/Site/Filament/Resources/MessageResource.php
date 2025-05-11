@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Site\Filament\Resources;
 
 use App\Filament\Resources\MessageResource\Pages;
 use App\MessageStatusEnum;
-use App\Models\Contact;
-use App\Models\Message;
+use App\Site\Models\Contact;
+use App\Site\Models\Message;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -107,8 +107,8 @@ class MessageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMessages::route('/'),
-            'view' => Pages\ViewMessage::route('/{record}'),
+            'index' => \App\Site\Filament\Resources\MessageResource\Pages\ListMessages::route('/'),
+            'view' => \App\Site\Filament\Resources\MessageResource\Pages\ViewMessage::route('/{record}'),
         ];
     }
 }
