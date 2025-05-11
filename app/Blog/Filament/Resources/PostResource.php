@@ -88,7 +88,7 @@ class PostResource extends Resource
                                 ->hidden(fn (Forms\Get $get) => $get('preview')),
                             Forms\Components\Group::make()
                                 ->schema([
-                                    Forms\Components\View::make('site::forms.fields.preview'),
+                                    Forms\Components\View::make('blog::filament.forms.fields.preview'),
                                 ])
                                 ->hidden(fn (Forms\Get $get) => ! $get('preview')),
                         ])
