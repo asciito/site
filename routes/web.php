@@ -1,7 +1,7 @@
 <?php
 
 use App\Blog\Models\Post;
-use App\Http\Controllers\SiteController;
+use App\Site\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['track'])->group(function () {
