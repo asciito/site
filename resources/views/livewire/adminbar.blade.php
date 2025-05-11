@@ -4,12 +4,7 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Volt\Component;
 
 new class extends Component {
-    public \App\Models\User $user;
-
-    public function mount(): void
-    {
-        $this->user = \Illuminate\Support\Facades\Auth::user();
-    }
+    //
 }; ?>
 
 <div class="relative h-16 bg-white shadow z-[9999] overflow-x-clip">
