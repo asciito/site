@@ -2,11 +2,10 @@ name: fix-code-style
 
 on:
   push:
-    branches: [develop]
+    branches: [staging, develop]
 
 jobs:
   fix-code-style:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     permissions:
