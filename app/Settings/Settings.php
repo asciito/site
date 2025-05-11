@@ -14,6 +14,8 @@ abstract class Settings
 
     protected array $initialSettings = [];
 
+    protected array $cachedPublicPropertyNames = [];
+
     public function __construct(protected EloquentRepository $repository)
     {
         $this->setupGroup();
@@ -51,15 +53,13 @@ abstract class Settings
 
     public function fill(array $data): static
     {
-        $properties = (new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+        $properties = array_keys($this->getCachedPropertyNames());
 
-        foreach ($properties as $property) {
-            $name = $property->getName();
+        foreach ($properties as $prop) {
+            if (array_key_exists($prop, $data)) {
+                $this->$prop = $data[$prop] ?? null;
 
-            if (array_key_exists($name, $data)) {
-                $this->$name = $data[$name] ?? null;
-
-                $this->initialSettings[$name] = $data[$name];
+                $this->initialSettings[$prop] = $data[$prop];
             }
         }
 
@@ -111,5 +111,14 @@ abstract class Settings
         } catch (\ReflectionException $e) {
             $this->repository->setGroup('default');
         }
+    }
+
+    protected function getCachedPropertyNames(): array
+    {
+        if (empty($this->cachedPublicPropertyNames)) {
+            $this->cachedPublicPropertyNames = get_class_vars(static::class);
+        }
+
+        return $this->cachedPublicPropertyNames;
     }
 }
