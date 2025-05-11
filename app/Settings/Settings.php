@@ -112,17 +112,4 @@ abstract class Settings
             $this->repository->setGroup('default');
         }
     }
-
-    public function __get(string $name): mixed
-    {
-        if (array_key_exists($name, $this->newSettings)) {
-            return $this->newSettings[$name];
-        }
-
-        if (array_key_exists($name, $this->initialSettings)) {
-            return $this->initialSettings[$name];
-        }
-
-        throw new \BadMethodCallException('Undefined property: '.static::class.'::$'.$name);
-    }
 }
