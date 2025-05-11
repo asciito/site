@@ -2,7 +2,6 @@
 
 namespace App\Site\Filament\Resources;
 
-use App\Filament\Resources\MessageResource\Pages;
 use App\MessageStatusEnum;
 use App\Site\Models\Contact;
 use App\Site\Models\Message;
