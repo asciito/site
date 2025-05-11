@@ -12,9 +12,9 @@ new class extends Component {
     }
 }; ?>
 
-<div class="h-16 bg-white shadow">
-    <div class="max-w-7xl mx-auto px-4 h-full">
-        <nav class="h-full flex items-center justify-between text-dark-blue-600 text-sm">
+<div class="relative h-16 bg-white shadow z-[9999] overflow-x-clip">
+    <div class="mx-auto h-full">
+        <nav class="h-full flex items-center justify-between text-dark-blue-600 text-sm md:px-6 lg:px-8">
             <ul class="flex items-center justify-start gap-6">
                 <li>
                     <a
@@ -41,69 +41,7 @@ new class extends Component {
                 @endif
             </ul>
 
-            <div
-                x-data="{
-                open: false,
-                toggle() {
-                    if (this.open) {
-                        return this.close()
-                    }
-
-                    this.$refs.button.focus()
-
-                    this.open = true
-                },
-                close(focusAfter) {
-                    if (! this.open) return
-
-                    this.open = false
-
-                    focusAfter && focusAfter.focus()
-                }
-            }"
-                x-on:keydown.escape.prevent.stop="close($refs.button)"
-                x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                x-id="['dropdown-button']"
-                class="relative py-1"
-            >
-                <!-- Button -->
-                <button
-                    x-ref="button"
-                    x-on:click="toggle()"
-                    :aria-expanded="open"
-                    :aria-controls="$id('dropdown-button')"
-                    type="button"
-                    class="flex items-center space-x-2"
-                >
-                    <img src="{{ filament()->getUserAvatarUrl($user) }}" class="object-cover object-center rounded-full w-8 h-8"/>
-                </button>
-
-                <!-- Panel -->
-                <div
-                    x-ref="panel"
-                    x-show="open"
-                    x-transition.origin.top.right
-                    x-on:click.outside="close($refs.button)"
-                    :id="$id('dropdown-button')"
-                    style="display: none;"
-                    class="z-[9999] absolute right-0 mt-4 w-40 bg-white text-slate-800 shadow-lg"
-                >
-                    <form
-                        action="{{ filament()->getLogoutUrl() }}" method="POST"
-                        class="w-full px-4 py-2.5 text-left text-sm hover:bg-dark-blue hover:text-slate-50 disabled:text-gray-500 border-2 border-slate-100"
-                    >
-                        @csrf
-
-                        <button
-                            type="submit"
-                            class="w-full flex space-x-1"
-                        >
-                            <x-icon name="heroicon-s-arrow-left-end-on-rectangle" class="w-5"/>
-                            <span>{{ $logoutItem?->getLabel() ?? __('filament-panels::layout.actions.logout.label') }}</span>
-                        </button>
-                    </form>
-                </div>
-            </div
+            <x-filament-panels::user-menu />
         </nav>
     </div>
 </div>
