@@ -8,11 +8,11 @@ use App\Settings\Repositories\EloquentRepository;
 
 abstract class Settings
 {
-    protected static array $newSettings = [];
+    protected array $newSettings = [];
 
-    protected static array $oldSettings = [];
+    protected array $oldSettings = [];
 
-    protected static array $initialSettings = [];
+    protected array $initialSettings = [];
 
     public function __construct(protected EloquentRepository $repository)
     {
@@ -23,28 +23,28 @@ abstract class Settings
 
     public function get(string $name, mixed $default = null): mixed
     {
-        if (array_key_exists($name, static::$newSettings)) {
-            return static::$newSettings[$name];
+        if (array_key_exists($name, $this->newSettings)) {
+            return $this->newSettings[$name];
         }
 
-        return static::$initialSettings[$name];
+        return $this->initialSettings[$name];
     }
 
     public function set(string $name, mixed $value): static
     {
-        if (! array_key_exists($name, static::$initialSettings)) {
+        if (! array_key_exists($name, $this->initialSettings)) {
             return $this;
         }
 
-        static::$oldSettings[$name] = static::$newSettings[$name] ?? static::$initialSettings[$name];
+        $this->oldSettings[$name] = $this->newSettings[$name] ?? $this->initialSettings[$name];
 
-        if ($value === static::$oldSettings[$name]) {
-            unset(static::$oldSettings[$name]);
+        if ($value === $this->oldSettings[$name]) {
+            unset($this->oldSettings[$name]);
 
             return $this;
         }
 
-        static::$newSettings[$name] = $value;
+        $this->newSettings[$name] = $value;
 
         return $this;
     }
@@ -59,7 +59,7 @@ abstract class Settings
             if (array_key_exists($name, $data)) {
                 $this->$name = $data[$name] ?? null;
 
-                static::$initialSettings[$name] = $data[$name];
+                $this->initialSettings[$name] = $data[$name];
             }
         }
 
@@ -82,20 +82,20 @@ abstract class Settings
 
     public function all(): array
     {
-        return collect(static::$initialSettings)
-            ->merge(static::$newSettings)
+        return collect($this->initialSettings)
+            ->merge($this->newSettings)
             ->mapWithKeys(fn (mixed $payload, string $setting) => [$setting => $payload])
             ->all();
     }
 
     public function newSettings(): array
     {
-        return static::$newSettings;
+        return $this->newSettings;
     }
 
     public function oldSettings(): array
     {
-        return static::$oldSettings;
+        return $this->oldSettings;
     }
 
     protected function setupGroup(): void
@@ -115,12 +115,12 @@ abstract class Settings
 
     public function __get(string $name): mixed
     {
-        if (array_key_exists($name, static::$newSettings)) {
-            return static::$newSettings[$name];
+        if (array_key_exists($name, $this->newSettings)) {
+            return $this->newSettings[$name];
         }
 
-        if (array_key_exists($name, static::$initialSettings)) {
-            return static::$initialSettings[$name];
+        if (array_key_exists($name, $this->initialSettings)) {
+            return $this->initialSettings[$name];
         }
 
         throw new \BadMethodCallException('Undefined property: '.static::class.'::$'.$name);
