@@ -2,7 +2,11 @@
 
 namespace App;
 
+<<<<<<<< HEAD:app/AppSettings.php
 class AppSettings extends \App\Settings\Settings
+========
+class Settings extends \App\Settings\Settings
+>>>>>>>> staging:app/Settings.php
 {
     public ?string $name = null;
 
