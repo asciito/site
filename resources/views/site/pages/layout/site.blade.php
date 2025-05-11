@@ -13,12 +13,12 @@
 
     {!! seo($page ?? null) !!}
 
-    @livewireStyles
+    @filamentStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <div
-        x-bind:class="{ 'sticky top-0 z-[9999] bg-white/50 backdrop-blur-md animate-fade': isSticky }"
+        x-bind:class="{ 'sticky top-0 z-[100] bg-white/50 backdrop-blur-md animate-fade': isSticky }"
         x-data="{
             isSticky: false,
             getScrollPosition: () => document.body.scrollTop || document.documentElement.scrollTop,
@@ -124,6 +124,6 @@
             </x-site::button>
     </div>
 
-    @livewireScripts
+    @filamentScripts
 </body>
 </html>
