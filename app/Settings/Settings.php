@@ -36,22 +36,6 @@ abstract class Settings
         return $this;
     }
 
-    public function save(): void
-    {
-        $updatedSettings = $this->getUpdatedSettings();
-
-        if (filled($updatedSettings)) {
-            $this->repository->setMany($updatedSettings);
-
-            foreach ($updatedSettings as $name => $value) {
-                // save the old settings
-                $this->oldSettings[$name] = $this->initialSettings[$name];
-
-                // update the initial settings
-                $this->initialSettings[$name] = $value;
-            }
-        }
-    }
 
 
     public function getUpdatedSettings(): array
@@ -68,14 +52,6 @@ abstract class Settings
         }
 
         return $updatedSettings;
-    }
-
-    public function all(): array
-    {
-        return collect($this->initialSettings)
-            ->merge($this->getUpdatedSettings())
-            ->mapWithKeys(fn (mixed $payload, string $setting) => [$setting => $payload])
-            ->all();
     }
 
     protected function setupGroup(): void
@@ -143,5 +119,30 @@ abstract class Settings
             'string' => $value,
             default => throw new \InvalidArgumentException("Unsupported type casting: {$type->getName()}"),
         };
+    }
+
+    public function save(): void
+    {
+        $updatedSettings = $this->getUpdatedSettings();
+
+        if (filled($updatedSettings)) {
+            $this->repository->setMany($updatedSettings);
+
+            foreach ($updatedSettings as $name => $value) {
+                // save the old settings
+                $this->oldSettings[$name] = $this->initialSettings[$name];
+
+                // update the initial settings
+                $this->initialSettings[$name] = $value;
+            }
+        }
+    }
+
+    public function all(): array
+    {
+        return collect($this->initialSettings)
+            ->merge($this->getUpdatedSettings())
+            ->mapWithKeys(fn (mixed $payload, string $setting) => [$setting => $payload])
+            ->all();
     }
 }
