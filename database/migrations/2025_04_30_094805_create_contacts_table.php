@@ -20,7 +20,7 @@ return new class extends Migration
         });
 
         Schema::table('messages', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\Contact::class)->after((new \App\Models\User)->getForeignKey())->nullable();
+            $table->foreignIdFor(\App\Site\Models\Contact::class)->after((new \App\Models\User)->getForeignKey())->nullable();
         });
 
         $users = \App\Models\User::with('messages')
@@ -28,7 +28,7 @@ return new class extends Migration
             ->get();
 
         foreach ($users as $user) {
-            $contact = \App\Models\Contact::create([
+            $contact = \App\Site\Models\Contact::create([
                 'name' => $user->name,
                 'email' => $user->email,
             ]);
@@ -51,10 +51,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\User::class)->after((new \App\Models\Contact)->getForeignKey())->nullable();
+            $table->foreignIdFor(\App\Models\User::class)->after((new \App\Site\Models\Contact)->getForeignKey())->nullable();
         });
 
-        $contacts = \App\Models\Contact::with('messages')->get();
+        $contacts = \App\Site\Models\Contact::with('messages')->get();
 
         foreach ($contacts as $contact) {
             $user = \App\Models\User::create([
@@ -69,7 +69,7 @@ return new class extends Migration
         }
 
         Schema::table('messages', function (Blueprint $table) {
-            $table->dropColumn((new \App\Models\Contact)->getForeignKey());
+            $table->dropColumn((new \App\Site\Models\Contact)->getForeignKey());
         });
 
         Schema::dropIfExists('contacts');

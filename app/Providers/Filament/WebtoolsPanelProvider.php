@@ -28,11 +28,11 @@ class WebtoolsPanelProvider extends PanelProvider
             ->brandName(function (\App\AppSettings $settings) {
                 return $settings->name;
             })
-            ->profile(\App\Filament\Pages\ProfilePage::class)
+            ->profile(\App\Site\Filament\Pages\ProfilePage::class)
             ->userMenuItems([
                 \Filament\Navigation\MenuItem::make()
                     ->label('Settings')
-                    ->url(fn () => \App\Filament\Pages\SettingsPage::getUrl())
+                    ->url(fn () => \App\Site\Filament\Pages\SettingsPage::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
             ->default()
@@ -44,9 +44,8 @@ class WebtoolsPanelProvider extends PanelProvider
                 'secondary' => '#33FF33',
                 'success' => '#33FF33',
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverResources(in: app_path('Site/Filament/Resources'), for: 'App\\Site\\Filament\\Resources')
             ->discoverResources(in: app_path('Blog/Filament/Resources'), for: 'App\\Blog\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverPages(in: app_path('Site/Filament/Pages'), for: 'App\\Site\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,

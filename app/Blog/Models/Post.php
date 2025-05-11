@@ -4,7 +4,7 @@ namespace App\Blog\Models;
 
 use App\AppSettings;
 use App\Blog\HtmlContent;
-use App\Models\Concerns\ModelStatus;
+use App\Site\Models\Concerns\ModelStatus;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
