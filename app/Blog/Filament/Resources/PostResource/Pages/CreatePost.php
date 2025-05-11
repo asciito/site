@@ -28,7 +28,8 @@ class CreatePost extends CreateRecord
 
                         $action->cancel();
                     }
-                }),
+                })
+                ->keyBindings(['mod+s']),
             Actions\Action::make('publish')
                 ->requiresConfirmation()
                 ->action(function (Actions\Action $action) {
@@ -42,7 +43,7 @@ class CreatePost extends CreateRecord
                         $action->cancel();
                     }
                 })
-                ->keyBindings(['mod+s']),
+                ->keyBindings(['mod+p']),
         ];
     }
 }

@@ -28,7 +28,8 @@ class EditPost extends EditRecord
                         $action->close();
                     }
                 })
-                ->requiresConfirmation(),
+                ->requiresConfirmation()
+                ->keyBindings(['mod+p']),
             Actions\Action::make('view')
                 ->hidden(fn (Post $record) => $record->isArchived())
                 ->url(fn (Post $record) => route('post', $record), true)
