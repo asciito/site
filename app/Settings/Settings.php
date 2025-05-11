@@ -14,6 +14,8 @@ abstract class Settings
 
     protected array $initialSettings = [];
 
+    protected array $cachedPublicPropertyNames = [];
+
     public function __construct(protected EloquentRepository $repository)
     {
         $this->setupGroup();
@@ -49,15 +51,13 @@ abstract class Settings
 
     public function fill(array $data): static
     {
-        $properties = (new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+        $properties = array_keys($this->getCachedPropertyNames());
 
-        foreach ($properties as $property) {
-            $name = $property->getName();
+        foreach ($properties as $prop) {
+            if (array_key_exists($prop, $data)) {
+                $this->$prop = $data[$prop] ?? null;
 
-            if (array_key_exists($name, $data)) {
-                $this->$name = $data[$name] ?? null;
-
-                $this->initialSettings[$name] = $data[$name];
+                $this->initialSettings[$prop] = $data[$prop];
             }
         }
 
@@ -111,16 +111,12 @@ abstract class Settings
         }
     }
 
-    public function __get(string $name): mixed
+    protected function getCachedPropertyNames(): array
     {
-        if (array_key_exists($name, $this->newSettings)) {
-            return $this->newSettings[$name];
+        if (empty($this->cachedPublicPropertyNames)) {
+            $this->cachedPublicPropertyNames = get_class_vars(static::class);
         }
 
-        if (array_key_exists($name, $this->initialSettings)) {
-            return $this->initialSettings[$name];
-        }
-
-        throw new \BadMethodCallException('Undefined property: '.static::class.'::$'.$name);
+        return $this->cachedPublicPropertyNames;
     }
 }
