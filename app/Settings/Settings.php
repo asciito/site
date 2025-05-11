@@ -23,11 +23,9 @@ abstract class Settings
 
     public function get(string $name, mixed $default = null): mixed
     {
-        if (array_key_exists($name, $this->newSettings)) {
-            return $this->newSettings[$name];
-        }
-
-        return $this->initialSettings[$name];
+        return $this->newSettings[$name]
+            ?? $this->initialSettings[$name]
+            ?? $default;
     }
 
     public function set(string $name, mixed $value): static
