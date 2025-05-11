@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models\Exceptions;
+namespace App\Settings\Models\Exceptions;
 
 class LockedSettingException extends \Exception
 {
