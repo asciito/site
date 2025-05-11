@@ -139,7 +139,7 @@ abstract class Settings
     public function all(): array
     {
         return collect($this->initialSettings)
-            ->merge($this->getUpdated()())
+            ->merge($this->getUpdated())
             ->mapWithKeys(fn (mixed $payload, string $setting) => [$setting => $payload])
             ->all();
     }
