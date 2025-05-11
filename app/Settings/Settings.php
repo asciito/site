@@ -145,4 +145,9 @@ abstract class Settings
             ->mapWithKeys(fn (mixed $payload, string $setting) => [$setting => $payload])
             ->all();
     }
+
+    public function toArray(): array
+    {
+        return $this->all();
+    }
 }
