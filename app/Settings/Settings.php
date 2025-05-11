@@ -36,8 +36,6 @@ abstract class Settings
         return $this;
     }
 
-
-
     public function getUpdated(): array
     {
         $properties = $this->getCachedPropertyNames();
@@ -45,7 +43,7 @@ abstract class Settings
 
         foreach ($properties as $name => $type) {
             if (array_key_exists($name, $this->initialSettings)) {
-                if ($this->$name !== $this->initialSettings[$name]) {
+                if ($this->initialSettings[$name] !== $this->$name) {
                     $updatedSettings[$name] = $this->$name;
                 }
             }
@@ -87,7 +85,7 @@ abstract class Settings
         return $this->cachedPublicPropertyNames;
     }
 
-    protected function castValue(string $value,  null|\ReflectionIntersectionType|\ReflectionNamedType|\ReflectionUnionType $type): mixed
+    protected function castValue(string $value, null|\ReflectionIntersectionType|\ReflectionNamedType|\ReflectionUnionType $type): mixed
     {
         if ($type === null) {
             return $value;
