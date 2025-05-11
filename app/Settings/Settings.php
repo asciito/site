@@ -27,7 +27,7 @@ abstract class Settings
             return $this->newSettings[$name];
         }
 
-        return $this->initialSettings[$name];
+        return $this->initialSettings[$name] ?? $default;
     }
 
     public function set(string $name, mixed $value): static
