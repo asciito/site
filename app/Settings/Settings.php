@@ -8,8 +8,6 @@ use App\Settings\Repositories\EloquentRepository;
 
 abstract class Settings
 {
-    protected array $newSettings = [];
-
     protected array $oldSettings = [];
 
     protected array $initialSettings = [];
@@ -23,32 +21,6 @@ abstract class Settings
         $this->fill($this->repository->getAll());
     }
 
-    public function get(string $name, mixed $default = null): mixed
-    {
-        return $this->newSettings[$name]
-            ?? $this->initialSettings[$name]
-            ?? $default;
-    }
-
-    public function set(string $name, mixed $value): static
-    {
-        if (! array_key_exists($name, $this->initialSettings)) {
-            return $this;
-        }
-
-        $this->oldSettings[$name] = $this->newSettings[$name] ?? $this->initialSettings[$name];
-
-        if ($value === $this->oldSettings[$name]) {
-            unset($this->oldSettings[$name]);
-
-            return $this;
-        }
-
-        $this->newSettings[$name] = $value;
-
-        return $this;
-    }
-
     public function fill(array $data): static
     {
         $properties = $this->getCachedPropertyNames();
@@ -57,17 +29,8 @@ abstract class Settings
             if (array_key_exists($name, $data)) {
                 $this->$name = filled($data[$name]) ? $this->castValue($data[$name], $type) : null;
 
-                $this->initialSettings[$name] = $data[$name];
+                $this->initialSettings[$name] = $this->$name;
             }
-        }
-
-        return $this;
-    }
-
-    public function update(array $data): static
-    {
-        foreach ($data as $name => $value) {
-            $this->set($name, $value);
         }
 
         return $this;
@@ -75,25 +38,44 @@ abstract class Settings
 
     public function save(): void
     {
-        $this->repository->setMany($this->newSettings());
+        $updatedSettings = $this->getUpdatedSettings();
+
+        if (filled($updatedSettings)) {
+            $this->repository->setMany($updatedSettings);
+
+            foreach ($updatedSettings as $name => $value) {
+                // save the old settings
+                $this->oldSettings[$name] = $this->initialSettings[$name];
+
+                // update the initial settings
+                $this->initialSettings[$name] = $value;
+            }
+        }
+    }
+
+
+    public function getUpdatedSettings(): array
+    {
+        $properties = $this->getCachedPropertyNames();
+        $updatedSettings = [];
+
+        foreach ($properties as $name => $type) {
+            if (array_key_exists($name, $this->initialSettings)) {
+                if ($this->$name !== $this->initialSettings[$name]) {
+                    $updatedSettings[$name] = $this->$name;
+                }
+            }
+        }
+
+        return $updatedSettings;
     }
 
     public function all(): array
     {
         return collect($this->initialSettings)
-            ->merge($this->newSettings)
+            ->merge($this->getUpdatedSettings())
             ->mapWithKeys(fn (mixed $payload, string $setting) => [$setting => $payload])
             ->all();
-    }
-
-    public function newSettings(): array
-    {
-        return $this->newSettings;
-    }
-
-    public function oldSettings(): array
-    {
-        return $this->oldSettings;
     }
 
     protected function setupGroup(): void
@@ -111,6 +93,11 @@ abstract class Settings
         }
     }
 
+    /**
+     * Get the public property names and their types.
+     *
+     * @return array<string, null|\ReflectionIntersectionType|\ReflectionNamedType|\ReflectionUnionType>
+     */
     protected function getCachedPropertyNames(): array
     {
         if (empty($this->cachedPublicPropertyNames)) {
@@ -124,8 +111,26 @@ abstract class Settings
         return $this->cachedPublicPropertyNames;
     }
 
-    protected function castValue(string $value, \ReflectionNamedType $type): mixed
+    protected function castValue(string $value,  null|\ReflectionIntersectionType|\ReflectionNamedType|\ReflectionUnionType $type): mixed
     {
+        if ($type === null) {
+            return $value;
+        }
+
+        if ($type instanceof \ReflectionIntersectionType) {
+            throw new \InvalidArgumentException('Intersection types are not supported.');
+        }
+
+        if ($type instanceof \ReflectionUnionType) {
+            $types = $type->getTypes();
+
+            if (count($types) > 1) {
+                throw new \InvalidArgumentException('Union types with more than one type are not supported.');
+            }
+
+            $type = $types[0];
+        }
+
         if ($type->allowsNull() && ($value === 'null' || $value === '')) {
             return null;
         }
