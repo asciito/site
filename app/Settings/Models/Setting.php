@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Settings\Models;
 
-use App\Models\Exceptions\LockedSettingException;
+use App\Settings\Models\Exceptions\LockedSettingException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
