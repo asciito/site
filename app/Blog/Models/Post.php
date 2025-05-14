@@ -202,19 +202,19 @@ class Post extends Model implements HasMedia, Sitemapable
 
     public function getTableOfContent(): ?HtmlString
     {
-        $toc = '';
-        $matches = [];
-        $content = str($this->content)->explode("\n");
+        $toc = collect(explode("\n", $this->content))
+            ->map(function (string $line) {
+                if (preg_match('/^(#{2,6})\s+(.*)/', $line, $matches)) {
+                    $indent = str_repeat(' ', (strlen($matches[1]) - 2) * 4);
+                    $slug = Str::slug($matches[2]);
 
-        foreach ($content as $line) {
-            if (preg_match_all('/^(#{2,6})\s+(.*)/', $line, $matches)) {
-                $level = strlen($matches[1][0]);
-                $title = $matches[2][0];
-                $slug = Str::slug($title);
+                    return "{$indent}- [{$matches[2]}](#{$slug})";
+                }
 
-                $toc .= str_repeat(' ', ($level - 2) * 4).'- ['.$title."](#$slug)\n";
-            }
-        }
+                return null;
+            })
+            ->filter()
+            ->implode("\n");
 
         return $toc ? str($toc)->markdown()->toHtmlString() : null;
     }
