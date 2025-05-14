@@ -200,7 +200,26 @@ class Post extends Model implements HasMedia, Sitemapable
         }
     }
 
-    protected static function newFactory(): PostFactory
+    public function getTableOfContent(): ?HtmlString
+    {
+        $toc = '';
+        $matches = [];
+        $content = str($this->content)->explode("\n");
+
+        foreach ($content as $line) {
+            if (preg_match_all('/^(#{2,6})\s+(.*)/', $line, $matches)) {
+                $level = strlen($matches[1][0]);
+                $title = $matches[2][0];
+                $slug = Str::slug($title);
+
+                $toc .= str_repeat(' ', ($level - 2) * 4).'- ['.$title."](#$slug)\n";
+            }
+        }
+
+        return $toc ? str($toc)->markdown()->toHtmlString() : null;
+    }
+
+    protected static function newFactory(): \Database\Factories\PostFactory
     {
         return PostFactory::new();
     }

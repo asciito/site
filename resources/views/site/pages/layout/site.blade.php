@@ -125,5 +125,6 @@
     </div>
 
     @filamentScripts
+    @stack('scripts')
 </body>
 </html>
