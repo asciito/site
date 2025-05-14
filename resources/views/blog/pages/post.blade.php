@@ -27,7 +27,56 @@
         </div>
     </div>
 
-    <div class="mt-4 content">
+    <div id="content" class="mt-4 content">
+        @if ($tableOfContent = $post->getTableOfContent())
+            <div id="table-of-content">
+                <h2 class="text-2xl mb-4">Table of Content</h2>
+
+                {{ $tableOfContent }}
+            </div>
+
+            <hr>
+        @endif
+
         {{ $post->getContent() }}
     </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const toc = document.getElementById('table-of-content');
+                const headings = document.querySelector('#content').querySelectorAll('h2, h3, h4, h5, h6');
+
+                const slug = (text) => {
+                    return text
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-|-$/g, '');
+                }
+
+                if (toc) {
+                    const links = toc.querySelectorAll('a');
+
+                    links.forEach(link => {
+                        link.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            const title = this.getAttribute('href').substring(1);
+
+                            for (const heading of headings) {
+                                if (slug(heading.innerText) === title) {
+                                    window.scrollTo({
+                                        top: heading.offsetTop,
+                                        behavior: 'smooth'
+                                    });
+
+                                    break;
+                                }
+                            }
+
+                        });
+                    });
+                }
+            });
+        </script>
+    @endpush
 </x-site::layout>
