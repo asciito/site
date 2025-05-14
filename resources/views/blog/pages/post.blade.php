@@ -43,39 +43,28 @@
 
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', () => {
                 const toc = document.getElementById('table-of-content');
-                const headings = document.querySelector('#content').querySelectorAll('h2, h3, h4, h5, h6');
 
-                const slug = (text) => {
-                    return text
-                        .toLowerCase()
-                        .replace(/[^a-z0-9]+/g, '-')
-                        .replace(/^-|-$/g, '');
-                }
+                if (! toc) return;
 
-                if (toc) {
-                    const links = toc.querySelectorAll('a');
+                const headings = document.querySelectorAll('#content h2, #content h3, #content h4, #content h5, #content h6');
 
-                    links.forEach(link => {
-                        link.addEventListener('click', function (event) {
-                            event.preventDefault();
-                            const title = this.getAttribute('href').substring(1);
+                const slugify = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-                            for (const heading of headings) {
-                                if (slug(heading.innerText) === title) {
-                                    window.scrollTo({
-                                        top: heading.offsetTop,
-                                        behavior: 'smooth'
-                                    });
+                toc.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', event => {
+                        event.preventDefault();
 
-                                    break;
-                                }
-                            }
+                        const targetSlug = link.getAttribute('href').slice(1);
 
-                        });
+                        const targetHeading = Array.from(headings).find(h => slugify(h.innerText) === targetSlug);
+
+                        if (targetHeading) {
+                            window.scrollTo({ top: targetHeading.offsetTop, behavior: 'smooth' });
+                        }
                     });
-                }
+                });
             });
         </script>
     @endpush
