@@ -6,6 +6,7 @@ export default {
     content: [
         './vendor/filament/filament/resources/views/components/user-menu.blade.php',
         './vendor/filament/support/resources/views/components/dropdown/**/*.blade.php',
+        './vendor/filament/filament/resources/views/components/theme-switcher/**/*.blade.php',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
