@@ -6,9 +6,14 @@ use App\Blog\Enums\Status;
 use App\Blog\Filament\Resources\PostResource\Pages;
 use App\Blog\Models\Post;
 use App\Site\Models\Scopes\ModelStatusScope;
+use BackedEnum;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Actions;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
@@ -23,117 +28,117 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 50;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                Forms\Components\Grid::make([
-                    'md' => 12,
-                ])
-                    ->schema([
-                        Forms\Components\Section::make([
-                            Forms\Components\Toggle::make('preview')
-                                ->live()
-                                ->afterStateUpdated(fn (Forms\Set $set, Forms\Get $get) => $set('preview', $get('preview', false)))
-                                ->hidden(fn (string $operation) => $operation === 'create'),
-                            Forms\Components\Group::make()
-                                ->schema([
-                                    Forms\Components\TextInput::make('title')
-                                        ->live(debounce: 350)
-                                        ->required()
-                                        ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, ?Post $record, string $operation, ?string $state) {
-                                            if ($record?->isPublished()) {
-                                                return;
+                Schemas\Components\Section::make([
+                    Forms\Components\Toggle::make('preview')
+                        ->live()
+                        ->afterStateUpdated(fn (Set $set, Get $get) => $set('preview', $get('preview', false)))
+                        ->hidden(fn (string $operation) => $operation === 'create'),
+                    Schemas\Components\Group::make()
+                        ->schema([
+                            Forms\Components\TextInput::make('title')
+                                ->live(debounce: 350)
+                                ->required()
+                                ->afterStateUpdated(function (Set $set, Get $get, ?Post $record, string $operation, ?string $state) {
+                                    if ($record?->isPublished()) {
+                                        return;
+                                    }
+
+                                    switch ($operation) {
+                                        case 'create':
+                                            if (! $get('editing')) {
+                                                $set('slug', Str::slug($state));
                                             }
 
-                                            switch ($operation) {
-                                                case 'create':
-                                                    if (! $get('editing')) {
-                                                        $set('slug', Str::slug($state));
-                                                    }
-
-                                                    return;
-                                                case 'edit':
-                                                    if (! $get('editing')) {
-                                                        $set('slug', Str::slug($state));
-                                                    } elseif (Str::startsWith(Str::slug($state), $get('slug'))) {
-                                                        $set('slug', Str::slug($state));
-                                                        $set('editing', false);
-                                                    }
-
-                                                    return;
+                                            return;
+                                        case 'edit':
+                                            if (! $get('editing')) {
+                                                $set('slug', Str::slug($state));
+                                            } elseif (Str::startsWith(Str::slug($state), $get('slug'))) {
+                                                $set('slug', Str::slug($state));
+                                                $set('editing', false);
                                             }
-                                        }),
-                                    Forms\Components\TextInput::make('slug')
-                                        ->live(debounce: 350)
-                                        ->unique(ignoreRecord: true)
-                                        ->required()
-                                        ->alphaDash()
-                                        ->afterStateUpdated(function (Forms\Set $set, ?string $state) {
-                                            $set('slug', Str::slug($state));
 
-                                            $set('editing', true);
-                                        })
-                                        ->disabled(fn (?Post $record) => $record?->isPublished()),
-                                    Forms\Components\Hidden::make('editing')
-                                        ->default(false),
-                                    Forms\Components\MarkdownEditor::make('content')
-                                        ->required()
-                                        ->columnSpanFull(),
-                                ])
-                                ->hidden(fn (Forms\Get $get) => $get('preview')),
-                            Forms\Components\Group::make()
-                                ->schema([
-                                    Forms\Components\View::make('blog::filament.forms.fields.preview'),
-                                ])
-                                ->hidden(fn (Forms\Get $get) => ! $get('preview')),
+                                            return;
+                                    }
+                                }),
+                            Forms\Components\TextInput::make('slug')
+                                ->live(debounce: 350)
+                                ->unique(ignoreRecord: true)
+                                ->required()
+                                ->alphaDash()
+                                ->afterStateUpdated(function (Set $set, ?string $state) {
+                                    $set('slug', Str::slug($state));
+
+                                    $set('editing', true);
+                                })
+                                ->disabled(fn (?Post $record) => $record?->isPublished()),
+                            Forms\Components\Hidden::make('editing')
+                                ->default(false),
+                            Forms\Components\MarkdownEditor::make('content')
+                                ->required()
+                                ->columnSpanFull(),
                         ])
-                            ->columnSpan([
-                                'md' => 9,
-                                'lg' => 8,
-                            ]),
-                        Forms\Components\Section::make()
-                            ->schema([
-                                \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('thumbnail')
-                                    ->image()
-                                    ->imageEditor()
-                                    ->imageCropAspectRatio('16:9')
-                                    ->loadingIndicatorPosition('right')
-                                    ->uploadButtonPosition('left')
-                                    ->uploadProgressIndicatorPosition('right')
-                                    ->removeUploadedFileButtonPosition('right')
-                                    ->conversion('thumb')
-                                    ->rules([
-                                        fn (): \Closure => function (string $attribute, TemporaryUploadedFile $value, \Closure $fail) {
-                                            [$width, $height] = getimagesize($value->getRealPath());
-
-                                            if ($width > 1920 || $height > 1080) {
-                                                $fail('The :attribute dimensions are not valid');
-                                            }
-                                        },
-                                    ])
-                                    ->responsiveImages(),
-                                Forms\Components\Textarea::make('excerpt')
-                                    ->live(debounce: 250)
-                                    ->maxLength(255)
-                                    ->helperText(function (Forms\Components\Textarea $component, ?string $state): Htmlable {
-                                        $current = strlen($state ?? '');
-
-                                        $color = $current / $component->getMaxLength() < 0.8 ? '--gray-600' : '--danger-600';
-
-                                        return new HtmlString("Characters count: <span class='font-semibold text-custom-600' style='--c-600: var($color)'>$current of 255<span>");
-                                    })
-                                    ->rows(6),
-                            ])
-                            ->columnSpan([
-                                'md' => 3,
-                                'lg' => 4,
-                            ]),
+                        ->hidden(fn (Get $get) => $get('preview')),
+                    Schemas\Components\Group::make()
+                        ->schema([
+                            Schemas\Components\View::make('blog::filament.forms.fields.preview'),
+                        ])
+                        ->hidden(fn (Get $get) => ! $get('preview')),
+                ])
+                    ->columnSpan([
+                        'md' => 9,
+                        'lg' => 8,
                     ]),
+                Schemas\Components\Section::make()
+                    ->schema([
+                        \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('thumbnail')
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->loadingIndicatorPosition('right')
+                            ->uploadButtonPosition('left')
+                            ->uploadProgressIndicatorPosition('right')
+                            ->removeUploadedFileButtonPosition('right')
+                            ->conversion('thumb')
+                            ->rules([
+                                fn (): \Closure => function (string $attribute, TemporaryUploadedFile $value, \Closure $fail) {
+                                    [$width, $height] = getimagesize($value->getRealPath());
+
+                                    if ($width > 1920 || $height > 1080) {
+                                        $fail('The :attribute dimensions are not valid');
+                                    }
+                                },
+                            ])
+                            ->responsiveImages(),
+                        Forms\Components\Textarea::make('excerpt')
+                            ->live(debounce: 250)
+                            ->maxLength(255)
+                            ->helperText(function (Forms\Components\Textarea $component, ?string $state): Htmlable {
+                                $current = strlen($state ?? '');
+
+                                $color = $current / $component->getMaxLength() < 0.8 ? '--gray-600' : '--danger-600';
+
+                                return new HtmlString("Characters count: <span class='font-semibold text-custom-600' style='--c-600: var($color)'>$current of 255<span>");
+                            })
+                            ->rows(6),
+                    ])
+                    ->columnSpan([
+                        'md' => 3,
+                        'lg' => 4,
+                    ]),
+            ])
+            ->columns([
+                'md' => 12,
+                'lg' => 12,
+                'xl' => 12
             ]);
     }
 
@@ -164,22 +169,22 @@ class PostResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
                 \App\Blog\Filament\Tables\Filters\StatusFilter::make(),
             ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('view')
+            ->recordActions([
+                Actions\ActionGroup::make([
+                    Actions\Action::make('view')
                         ->hidden(fn (Post $record) => $record->isArchived())
                         ->icon('heroicon-s-eye')
                         ->url(fn (Post $record) => route('post', $record), true),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\RestoreAction::make(),
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
+                    Actions\RestoreAction::make(),
                 ]),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
+                    Actions\ForceDeleteBulkAction::make(),
+                    Actions\RestoreBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'DESC');

@@ -6,7 +6,7 @@
     @endif
 
     <div class="relative">
-        <div class="absolute bottom-[1rem] left-[1rem] z-50 space-y-2 drop-shadow-xl">
+        <div class="absolute bottom-4 left-4 z-50 space-y-2 drop-shadow-xl">
             <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-semibold">
                 <span>{{ \Illuminate\Support\Str::title($post->title) }}</span>
             </h1>

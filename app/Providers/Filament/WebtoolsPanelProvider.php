@@ -30,7 +30,7 @@ class WebtoolsPanelProvider extends PanelProvider
             })
             ->profile(\App\Site\Filament\Pages\ProfilePage::class)
             ->userMenuItems([
-                \Filament\Navigation\MenuItem::make()
+                \Filament\Actions\Action::make('settings')
                     ->label('Settings')
                     ->url(fn () => \App\Site\Filament\Pages\SettingsPage::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
@@ -40,7 +40,7 @@ class WebtoolsPanelProvider extends PanelProvider
             ->path(config('site.webtools_path'))
             ->login()
             ->colors([
-                'primary' => '#0000AA',
+                'primary' => '#0000BB',
                 'secondary' => '#33FF33',
                 'success' => '#33FF33',
             ])

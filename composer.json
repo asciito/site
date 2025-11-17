@@ -5,34 +5,33 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "filament/filament": "^3.2",
-        "filament/spatie-laravel-media-library-plugin": "^3.2",
-        "graham-campbell/markdown": "^15.2",
-        "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9",
-        "league/flysystem-aws-s3-v3": "^3.0",
-        "livewire/livewire": "^3.4",
-        "livewire/volt": "^1.0",
-        "owenvoke/blade-fontawesome": "^2.9",
-        "pirsch-analytics/laravel-pirsch": "^0.4.9",
-        "ralphjsmit/laravel-seo": "^1.6",
-        "spatie/laravel-sitemap": "^7.2",
-        "symfony/yaml": "^7.1",
-        "torchlight/torchlight-laravel": "^0.6.0"
+        "filament/filament": "^4.0",
+        "filament/spatie-laravel-media-library-plugin": "^4.0",
+        "graham-campbell/markdown": "^16.0",
+        "laravel/framework": "^12.0",
+        "laravel/tinker": "^2.10",
+        "league/flysystem-aws-s3-v3": "^3.30",
+        "livewire/livewire": "^3.7",
+        "livewire/volt": "^1.9",
+        "owenvoke/blade-fontawesome": "^3.0",
+        "pirsch-analytics/laravel-pirsch": "^1.0",
+        "ralphjsmit/laravel-seo": "^1.7",
+        "spatie/laravel-sitemap": "^7.3",
+        "symfony/yaml": "^7.3",
+        "torchlight/torchlight-laravel": "^0.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.1",
-        "laravel/pint": "^1.13",
-        "laravel/sail": "^1.26",
+        "laravel/pint": "^1.25",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
-        "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
-        "pestphp/pest-plugin-livewire": "^2.1",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "pestphp/pest-plugin-livewire": "^4.0",
         "spatie/test-time": "^1.3"
     },
     "autoload": {
@@ -82,6 +81,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

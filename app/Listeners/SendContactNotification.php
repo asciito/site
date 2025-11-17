@@ -19,6 +19,6 @@ class SendContactNotification
      */
     public function handle(Contacted $event): void
     {
-        $event->user->messages()->create(['message' => $event->message]);
+        $event->contact->messages()->create(['message' => $event->message]);
     }
 }

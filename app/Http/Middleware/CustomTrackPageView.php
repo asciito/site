@@ -10,12 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CustomTrackPageView extends TrackPageview
 {
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string ...$excepts): Response
     {
-        if (Auth::check() || ! app()->isProduction()) {
-            return $next($request);
+        if (! Auth::check() && (app()->isProduction() || ! app()->runningUnitTests() || ! app()->runningInConsole())) {
+            return parent::handle($request, $next, ...$excepts);
         }
 
-        return parent::handle($request, $next);
+            return $next($request, $excepts);
     }
 }

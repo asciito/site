@@ -5,10 +5,13 @@ use function Pest\Laravel\get;
 beforeEach(function () {
     \Spatie\TestTime\TestTime::freeze('Y-m-d', '2024-01-01');
 
-    Pest\Laravel\actingAs(\App\Models\User::factory()->create());
+    /** @var \Illuminate\Database\Eloquent\Models&\Illuminate\Contracts\Auth\Authenticatable $user */
+    $user = \App\Models\User::factory()->create()->first();
+
+    Pest\Laravel\actingAs($user);
 });
 
-function visit(\App\Blog\Models\Post $post): \Pest\Expectation
+function to(\App\Blog\Models\Post $post): \Pest\Expectation
 {
     $response = get(route('post', $post))->assertOk();
 
@@ -33,14 +36,14 @@ function visit(\App\Blog\Models\Post $post): \Pest\Expectation
 it('`Created Today`', function () {
     $post = \App\Blog\Models\Post::factory()->create();
 
-    visit($post)
+    to($post)
         ->isPublished()->toBeFalse()
         ->toSeeTimeTag('2024-01-01')
         ->toSeeText('Created Today');
 
     \Spatie\TestTime\TestTime::addMinute();
 
-    visit(
+    to(
         tap($post)->touch()
     )->not->toSeeText('Created Today');
 });
@@ -50,13 +53,13 @@ it('`Created on`', function () {
 
     \Spatie\TestTime\TestTime::addDay();
 
-    visit($post)
+    to($post)
         ->isPublished()
         ->toBeFalse()
         ->toSeeTimeTag('2024-01-01')
         ->toSeeText('Created on January 01, 2024');
 
-    visit(
+    to(
         tap($post)->publish()
     )->not->toSeeText('Created on January 01, 2024');
 });
@@ -68,13 +71,13 @@ it('`Updated Today`', function () {
 
     $post->touch();
 
-    visit($post)
+    to($post)
         ->isPublished()
         ->toBeFalse()
         ->toSeeTimeTag('2024-01-02')
         ->toSeeText('Updated Today');
 
-    visit(
+    to(
         tap($post)->publish()
     )->not->toSeeText('Updated Today');
 });
@@ -88,7 +91,7 @@ it('`Updated on`', function () {
 
     \Spatie\TestTime\TestTime::addDay();
 
-    visit($post)
+    to($post)
         ->isPublished()
         ->toBeFalse()
         ->toSeeTimeTag('2024-01-02')
@@ -96,7 +99,7 @@ it('`Updated on`', function () {
 
     tap($post, fn ($post) => $post->delete())->restore();
 
-    visit(
+    to(
         $post
     )->not->toSeeText('Updated on January 02, 2024');
 });
@@ -104,7 +107,7 @@ it('`Updated on`', function () {
 it('`Published Today`', function () {
     $post = \App\Blog\Models\Post::factory()->published()->create();
 
-    visit($post)
+    to($post)
         ->isPublished()
         ->toBeTrue()
         ->toSeeTimeTag('2024-01-01')
@@ -112,7 +115,7 @@ it('`Published Today`', function () {
 
     \Spatie\TestTime\TestTime::addDay();
 
-    visit(
+    to(
         $post
     )->not->toSeeText('Published Today');
 });
@@ -122,7 +125,7 @@ it('`Published on`', function () {
 
     \Spatie\TestTime\TestTime::addDay();
 
-    visit($post)
+    to($post)
         ->isPublished()
         ->toBeTrue()
         ->toSeeTimeTag('2024-01-01')
@@ -130,7 +133,7 @@ it('`Published on`', function () {
 
     tap($post, fn ($post) => $post->archive())->restore();
 
-    visit(
+    to(
         $post
     )->not->toSeeText('Published on January 01, 2024');
 });
@@ -144,7 +147,7 @@ it('Published but updated', function () {
 
     \Spatie\TestTime\TestTime::addDay();
 
-    visit($post)
+    to($post)
         ->isPublished()
         ->toBeTrue()
         ->toSeeTimeTag('2024-01-02')
@@ -152,7 +155,7 @@ it('Published but updated', function () {
 
     \Spatie\TestTime\TestTime::addDay();
 
-    visit(
+    to(
         tap($post)->touch()
     )->not->toSeeText('Updated on January 02, 2024');
 });

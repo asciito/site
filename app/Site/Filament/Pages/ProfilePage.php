@@ -2,8 +2,8 @@
 
 namespace App\Site\Filament\Pages;
 
+use Filament\Auth\Pages\EditProfile;
 use Filament\Forms;
-use Filament\Pages\Auth\EditProfile;
 use Illuminate\Support\Facades\Storage;
 
 class ProfilePage extends EditProfile

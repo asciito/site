@@ -3,6 +3,7 @@
 namespace App\Site\Filament\Pages;
 
 use App\AppSettings;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Forms;
@@ -25,11 +26,11 @@ class SettingsPage extends Page
 
     protected static ?string $title = 'Settings';
 
-    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected static ?string $settings = AppSettings::class;
 
-    protected static string $view = 'site.pages.settings';
+    protected string $view = 'site.pages.settings';
 
     protected static bool $shouldRegisterNavigation = false;
 

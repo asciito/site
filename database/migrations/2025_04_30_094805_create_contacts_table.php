@@ -20,7 +20,7 @@ return new class extends Migration
         });
 
         Schema::table('messages', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Site\Models\Contact::class)->after((new \App\Models\User)->getForeignKey())->nullable();
+            $table->foreignIdFor(\App\Site\Models\Contact::class)->nullable();
         });
 
         $users = \App\Models\User::with('messages')

@@ -51,7 +51,7 @@ class ContactForm extends Form
         $this->sanitizeMessage();
 
         Contacted::dispatch(
-            $this->resolveUser(),
+            $this->resolveContact(),
             $this->message,
         );
     }
@@ -61,13 +61,12 @@ class ContactForm extends Form
         $this->message = strip_tags($this->message);
     }
 
-    public function resolveUser(): \App\Models\User
+    public function resolveContact(): \App\Site\Models\Contact
     {
-        return \App\Models\User::firstOrCreate(
+        return \App\Site\Models\Contact::firstOrCreate(
             ['email' => $this->email],
             [
                 'name' => "{$this->name} {$this->lastName}",
-                'password' => bcrypt(Str::random(32)),
             ]
         );
     }
