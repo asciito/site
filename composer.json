@@ -8,6 +8,7 @@
         "php": "^8.4",
         "ext-dom": "*",
         "ext-libxml": "*",
+        "coyotito/laravel-settings": "^0.0.2",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "graham-campbell/markdown": "^15.2",
@@ -33,7 +34,8 @@
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
         "pestphp/pest-plugin-livewire": "^2.1",
-        "spatie/test-time": "^1.3"
+        "spatie/test-time": "^1.3",
+        "ext-simplexml": "*"
     },
     "autoload": {
         "psr-4": {
