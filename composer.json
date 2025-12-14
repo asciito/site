@@ -8,7 +8,7 @@
         "php": "^8.4",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "coyotito/laravel-settings": "^0.0.2",
+        "coyotito/laravel-settings": "^0.1.1",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "graham-campbell/markdown": "^15.2",
