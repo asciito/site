@@ -87,9 +87,7 @@ class SettingsPage extends Page
 
         $this->getSaveNotification()->send();
 
-        if ($redirectUrl = $this->getRedirectUrl()) {
-            $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode($redirectUrl));
-        }
+        $this->redirect(static::getNavigationUrl(), navigate: FilamentView::hasSpaMode());
     }
 
     protected function mutateFormDataBeforeFill(array $data): array
@@ -206,10 +204,5 @@ class SettingsPage extends Page
                     ->inlineLabel($this->hasInlineLabels())
             ),
         ];
-    }
-
-    public function getRedirectUrl(): ?string
-    {
-        return null;
     }
 }
