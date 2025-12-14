@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Site\Models\Message;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MessageFactory extends Factory
 {
+    protected $model = Message::class;
+
     /**
      * Define the model's default state.
      *
