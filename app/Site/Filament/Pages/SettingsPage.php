@@ -70,7 +70,7 @@ class SettingsPage extends Page
             $settings = static::getSettings();
 
             // TODO: Remove quick hack to fill settings once the package `coyotito/laravel-settings` supports mass assignment.
-            $this->fillSettings($settings, $data)->save();
+            $settings->update($data)->save();
 
             $this->callHook('afterSave');
         } catch (Halt $exception) {
@@ -105,19 +105,6 @@ class SettingsPage extends Page
     protected static function getSettings(): Settings
     {
         return app()->make(static::$settings);
-    }
-
-    protected function fillSettings(Settings $settings, array $data): Settings
-    {
-        foreach ($data as $key => $value) {
-            if (! property_exists($settings, $key)) {
-                continue;
-            }
-
-            $settings->{$key} = $value;
-        }
-
-        return $settings;
     }
 
     public function getSaveNotification(): \Filament\Notifications\Notification
