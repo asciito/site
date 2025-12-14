@@ -1,5 +1,5 @@
 @php
-    $settings = \App\Helpers\app_settings();
+    use function Coyotito\LaravelSettings\Helpers\settings;
 @endphp
 
 <!doctype html>
@@ -60,28 +60,28 @@
             <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto flex flex-col justify-between md:flex-row items-center px-4 py-8 gap-4">
                 <ul class="flex justify-center space-x-4">
                     <li class="w-6">
-                        <a href="https://github.com/{{ $settings->github_handler }}" target="_blank">
+                        <a href="https://github.com/{{ settings('github_handler') }}" target="_blank">
                             <span class="sr-only">GitHub</span>
                             <x-site::icons.github class="fill-slate-800 hover:fill-slate-600"/>
                         </a>
                     </li>
 
                     <li class="w-6">
-                        <a href="https://x.com/{{ $settings->twitter_handler }}" target="_blank">
+                        <a href="https://x.com/{{ settings('twitter_handler') }}" target="_blank">
                             <span class="sr-only">X (formerly known as Twitter)</span>
                             <x-site::icons.x-twitter class="fill-slate-800 hover:fill-slate-600"/>
                         </a>
                     </li>
 
                     <li class="w-6">
-                        <a href="https://www.instagram.com/{{ $settings->instagram_handler }}" target="_blank">
+                        <a href="https://www.instagram.com/{{ settings('instagram_handler') }}" target="_blank">
                             <span class="sr-only">Instagram</span>
                             <x-site::icons.instagram class="fill-slate-800 hover:fill-slate-600"/>
                         </a>
                     </li>
 
                     <li class="w-6">
-                        <a href="https://www.linkedin.com/in/{{ $settings->linkedin_handler }}" target="_blank">
+                        <a href="https://www.linkedin.com/in/{{ settings('linkedin_handler') }}" target="_blank">
                             <span class="sr-only">Linked In</span>
                             <x-site::icons.linkedin class="fill-slate-800 hover:fill-slate-600"/>
                         </a>

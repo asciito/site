@@ -2,9 +2,9 @@
 
 namespace App\Blog\Models;
 
-use App\AppSettings;
 use App\Blog\HtmlContent;
 use App\Site\Models\Concerns\ModelStatus;
+use App\Site\Settings\SiteSettings;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
@@ -110,7 +110,7 @@ class Post extends Model implements HasMedia, Sitemapable
     public function getDynamicSEOData(): SEOData
     {
         return new SEOData(
-            title: $this->title.' | '.(app(AppSettings::class)->name ?? config('app.name')),
+            title: $this->title.' | '.(app(SiteSettings::class)->name ?? config('app.name')),
             description: $this->getExcerpt(),
             image: $this->getFirstMedia()?->getUrl(),
             url: route('post', $this),

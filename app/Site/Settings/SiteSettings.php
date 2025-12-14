@@ -1,8 +1,12 @@
 <?php
 
-namespace App;
+declare(strict_types=1);
 
-class AppSettings extends \App\Settings\Settings
+namespace App\Site\Settings;
+
+use Coyotito\LaravelSettings\Settings;
+
+class SiteSettings extends Settings
 {
     public ?string $name = null;
 
