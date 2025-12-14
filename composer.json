@@ -5,7 +5,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "ext-dom": "*",
         "ext-libxml": "*",
         "coyotito/laravel-settings": "^0.1.1",
