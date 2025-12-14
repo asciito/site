@@ -1,0 +1,11 @@
+name: Run quality code checks
+
+on:
+  pull_request:
+    branches: [main, dev, 'hotfix/**']
+
+jobs:
+  lint:
+    uses: coyotito-mx/.github/.github/workflows/coding-standards.yml@main
+    with:
+      fix: false
