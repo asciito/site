@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Events\Contacted;
+use App\Site\Models\Contact;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Form;
@@ -61,9 +62,9 @@ class ContactForm extends Form
         $this->message = strip_tags($this->message);
     }
 
-    public function resolveContact(): \App\Site\Models\Contact
+    public function resolveContact(): Contact
     {
-        return \App\Site\Models\Contact::firstOrCreate(
+        return Contact::firstOrCreate(
             ['email' => $this->email],
             [
                 'name' => "{$this->name} {$this->lastName}",

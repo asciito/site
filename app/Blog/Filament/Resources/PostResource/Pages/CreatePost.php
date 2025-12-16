@@ -3,7 +3,7 @@
 namespace App\Blog\Filament\Resources\PostResource\Pages;
 
 use App\Blog\Filament\Resources\PostResource;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Validation\ValidationException;
 
@@ -14,11 +14,11 @@ class CreatePost extends CreateRecord
     public function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('draft')
+            Action::make('draft')
                 ->label('Save as Draft')
                 ->link()
                 ->color('gray')
-                ->action(function (Actions\Action $action) {
+                ->action(function (Action $action) {
                     try {
                         $this->create();
 
@@ -30,9 +30,9 @@ class CreatePost extends CreateRecord
                     }
                 })
                 ->keyBindings(['mod+s']),
-            Actions\Action::make('publish')
+            Action::make('publish')
                 ->requiresConfirmation()
-                ->action(function (Actions\Action $action) {
+                ->action(function (Action $action) {
                     try {
                         $this->create();
 

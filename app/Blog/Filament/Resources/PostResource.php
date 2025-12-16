@@ -3,18 +3,38 @@
 namespace App\Blog\Filament\Resources;
 
 use App\Blog\Enums\Status;
-use App\Blog\Filament\Resources\PostResource\Pages;
+use App\Blog\Filament\Resources\PostResource\Pages\CreatePost;
+use App\Blog\Filament\Resources\PostResource\Pages\EditPost;
+use App\Blog\Filament\Resources\PostResource\Pages\ListPosts;
+use App\Blog\Filament\Tables\Filters\StatusFilter;
 use App\Blog\Models\Post;
 use App\Site\Models\Scopes\ModelStatusScope;
-use BackedEnum;
-use Filament\Actions;
-use Filament\Forms;
+use Closure;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreAction;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Schemas;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
-use Filament\Tables;
+use Filament\Support\Colors\Color;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,22 +48,22 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 50;
 
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->schema([
-                Schemas\Components\Section::make([
-                    Forms\Components\Toggle::make('preview')
+            ->components([
+                Section::make([
+                    Toggle::make('preview')
                         ->live()
                         ->afterStateUpdated(fn (Set $set, Get $get) => $set('preview', $get('preview', false)))
                         ->hidden(fn (string $operation) => $operation === 'create'),
-                    Schemas\Components\Group::make()
+                    Group::make()
                         ->schema([
-                            Forms\Components\TextInput::make('title')
+                            TextInput::make('title')
                                 ->live(debounce: 350)
                                 ->required()
                                 ->afterStateUpdated(function (Set $set, Get $get, ?Post $record, string $operation, ?string $state) {
@@ -69,7 +89,7 @@ class PostResource extends Resource
                                             return;
                                     }
                                 }),
-                            Forms\Components\TextInput::make('slug')
+                            TextInput::make('slug')
                                 ->live(debounce: 350)
                                 ->unique(ignoreRecord: true)
                                 ->required()
@@ -80,16 +100,16 @@ class PostResource extends Resource
                                     $set('editing', true);
                                 })
                                 ->disabled(fn (?Post $record) => $record?->isPublished()),
-                            Forms\Components\Hidden::make('editing')
+                            Hidden::make('editing')
                                 ->default(false),
-                            Forms\Components\MarkdownEditor::make('content')
+                            MarkdownEditor::make('content')
                                 ->required()
                                 ->columnSpanFull(),
                         ])
                         ->hidden(fn (Get $get) => $get('preview')),
-                    Schemas\Components\Group::make()
+                    Group::make()
                         ->schema([
-                            Schemas\Components\View::make('blog::filament.forms.fields.preview'),
+                            View::make('blog::filament.forms.fields.preview'),
                         ])
                         ->hidden(fn (Get $get) => ! $get('preview')),
                 ])
@@ -97,9 +117,9 @@ class PostResource extends Resource
                         'md' => 9,
                         'lg' => 8,
                     ]),
-                Schemas\Components\Section::make()
+                Section::make()
                     ->schema([
-                        \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('thumbnail')
+                        SpatieMediaLibraryFileUpload::make('thumbnail')
                             ->image()
                             ->imageEditor()
                             ->imageCropAspectRatio('16:9')
@@ -109,7 +129,7 @@ class PostResource extends Resource
                             ->removeUploadedFileButtonPosition('right')
                             ->conversion('thumb')
                             ->rules([
-                                fn (): \Closure => function (string $attribute, TemporaryUploadedFile $value, \Closure $fail) {
+                                fn (): Closure => function (string $attribute, TemporaryUploadedFile $value, Closure $fail) {
                                     [$width, $height] = getimagesize($value->getRealPath());
 
                                     if ($width > 1920 || $height > 1080) {
@@ -118,10 +138,10 @@ class PostResource extends Resource
                                 },
                             ])
                             ->responsiveImages(),
-                        Forms\Components\Textarea::make('excerpt')
+                        Textarea::make('excerpt')
                             ->live(debounce: 250)
                             ->maxLength(255)
-                            ->helperText(function (Forms\Components\Textarea $component, ?string $state): Htmlable {
+                            ->helperText(function (Textarea $component, ?string $state): Htmlable {
                                 $current = strlen($state ?? '');
 
                                 $color = $current / $component->getMaxLength() < 0.8 ? '--gray-600' : '--danger-600';
@@ -146,45 +166,45 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->limit(50)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                TextColumn::make('slug')
                     ->limit(50)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->formatStateUsing(fn (Status $state) => $state->name)
                     ->badge()
                     ->color(fn (Status $state) => match ($state) {
-                        Status::DRAFT => \Filament\Support\Colors\Color::Gray,
-                        Status::PUBLISHED => \Filament\Support\Colors\Color::Blue,
-                        Status::ARCHIVED => \Filament\Support\Colors\Color::Red,
+                        Status::DRAFT => Color::Gray,
+                        Status::PUBLISHED => Color::Blue,
+                        Status::ARCHIVED => Color::Red,
                     }),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Last time updated')
                     ->formatStateUsing(fn (Carbon $state) => $state->diffForHumans()),
             ])
             ->recordUrl(fn (Post $record) => ! $record->isArchived() ? route('filament.webtools.resources.posts.edit', $record) : null)
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
-                \App\Blog\Filament\Tables\Filters\StatusFilter::make(),
+                TrashedFilter::make(),
+                StatusFilter::make(),
             ])
             ->recordActions([
-                Actions\ActionGroup::make([
-                    Actions\Action::make('view')
+                ActionGroup::make([
+                    Action::make('view')
                         ->hidden(fn (Post $record) => $record->isArchived())
                         ->icon('heroicon-s-eye')
                         ->url(fn (Post $record) => route('post', $record), true),
-                    Actions\EditAction::make(),
-                    Actions\DeleteAction::make(),
-                    Actions\RestoreAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    RestoreAction::make(),
                 ]),
             ])
             ->toolbarActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                    Actions\ForceDeleteBulkAction::make(),
-                    Actions\RestoreBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'DESC');
@@ -200,9 +220,9 @@ class PostResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPosts::route('/'),
-            'create' => Pages\CreatePost::route('/create'),
-            'edit' => Pages\EditPost::route('/{record}/edit'),
+            'index' => ListPosts::route('/'),
+            'create' => CreatePost::route('/create'),
+            'edit' => EditPost::route('/{record}/edit'),
         ];
     }
 
