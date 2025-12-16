@@ -1,10 +1,10 @@
 @import "tailwindcss";
+@import '../../vendor/filament/support/resources/css/index.css';
+@import '../../vendor/filament/filament/resources/css/components/theme-switcher.css';
+
 @plugin '@tailwindcss/typography';
 
 @config '../../tailwind.config.js';
-
-@import '../../vendor/filament/support/resources/css/index.css';
-@import '../../vendor/filament/filament/resources/css/components/theme-switcher.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

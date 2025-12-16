@@ -3,8 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Site\Filament\Pages\ProfilePage;
-use App\Site\Filament\Pages\SettingsPage;
-use App\Site\Settings\SiteSettings;
+use App\Site\Filament\Pages\SiteSettings;
+use App\Site\Settings\SiteSettings as Settings;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -30,12 +30,12 @@ class WebtoolsPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->brandName(fn (SiteSettings $settings) => $settings->name)
+            ->brandName(fn (Settings $settings) => $settings->name)
             ->profile(ProfilePage::class)
             ->userMenuItems([
                 Action::make('settings')
                     ->label('Settings')
-                    ->url(fn () => SettingsPage::getUrl())
+                    ->url(fn () => SiteSettings::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
             ->default()
