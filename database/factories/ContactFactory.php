@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Site\Models\Contact;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ContactFactory extends Factory
 {
+    protected $model = Contact::class;
+
     /**
      * Define the model's default state.
      *

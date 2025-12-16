@@ -2,6 +2,7 @@
 
 namespace App\Site;
 
+use Coyotito\LaravelSettings\Facades\SettingsManager;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,6 +16,8 @@ class SiteServiceProvider extends ServiceProvider
         $this->loadViewsFrom(resource_path('views/site'), 'site');
 
         Blade::componentNamespace('App\\Site\\View\\Components', 'site');
+
+        SettingsManager::addNamespace('App\\Site\\Settings');
     }
 
     /**

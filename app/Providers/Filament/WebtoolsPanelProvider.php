@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Site\Settings\SiteSettings;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -25,9 +26,7 @@ class WebtoolsPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->brandName(function (\App\AppSettings $settings) {
-                return $settings->name;
-            })
+            ->brandName(fn (SiteSettings $settings) => $settings->name)
             ->profile(\App\Site\Filament\Pages\ProfilePage::class)
             ->userMenuItems([
                 \Filament\Actions\Action::make('settings')

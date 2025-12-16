@@ -1,8 +1,8 @@
 @php
-    $settings = \App\Helpers\app_settings();
+    use function Coyotito\LaravelSettings\Helpers\settings;
 
     $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
-        title: 'Contact'.' | '.($settings->name ?? config('app.name')),
+        title: 'Contact'.' | '.(settings('name') ?? config('app.name')),
         description: 'You have a project in mind? talk with me',
     );
 @endphp

@@ -1,16 +1,15 @@
 @php
     use Illuminate\Support\Facades\Storage;
-
-    $settings = \App\Helpers\app_settings();
+    use function Coyotito\LaravelSettings\Helpers\settings;
 
     $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
-        title: $settings->name,
-        description: $settings->description,
-        image: $settings->image ? Storage::disk('public')->url($settings->image) : null,
+        title: settings('name'),
+        description: settings('description'),
+        image: settings('image') ? Storage::disk('public')->url(settings('image')) : null,
     );
 @endphp
 
-<x-site::layout :$settings :page="$seoData">
+<x-site::layout :page="$seoData">
     <header class="block text-center space-y-4 mb-8">
         <h1 class="text-2xl md:text-4xl lg:text-5xl leading-snug!"><span>Hi, I'm Ayax Córdova</span>
             <span class="block">(A.K.A <strong>@asciito</strong>)<span></h1>

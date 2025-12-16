@@ -2,8 +2,9 @@
 
 namespace App\Site\Filament\Pages;
 
-use App\AppSettings;
 use BackedEnum;
+use App\Site\Settings\SiteSettings;
+use Coyotito\LaravelSettings\Settings;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Forms;
@@ -28,7 +29,7 @@ class SettingsPage extends Page
 
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static ?string $settings = AppSettings::class;
+    protected static ?string $settings = SiteSettings::class;
 
     protected string $view = 'site.pages.settings';
 
@@ -69,9 +70,7 @@ class SettingsPage extends Page
 
             $settings = static::getSettings();
 
-            $settings->update($data);
-
-            $settings->save();
+            $settings->update($data)->save();
 
             $this->callHook('afterSave');
         } catch (Halt $exception) {
@@ -88,9 +87,7 @@ class SettingsPage extends Page
 
         $this->getSaveNotification()->send();
 
-        if ($redirectUrl = $this->getRedirectUrl()) {
-            $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode($redirectUrl));
-        }
+        $this->redirect(static::getNavigationUrl(), navigate: FilamentView::hasSpaMode());
     }
 
     protected function mutateFormDataBeforeFill(array $data): array
@@ -103,7 +100,7 @@ class SettingsPage extends Page
         return $data;
     }
 
-    protected static function getSettings(): \App\Settings\Settings
+    protected static function getSettings(): Settings
     {
         return app()->make(static::$settings);
     }
@@ -207,10 +204,5 @@ class SettingsPage extends Page
                     ->inlineLabel($this->hasInlineLabels())
             ),
         ];
-    }
-
-    public function getRedirectUrl(): ?string
-    {
-        return null;
     }
 }

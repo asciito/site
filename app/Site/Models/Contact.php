@@ -2,6 +2,8 @@
 
 namespace App\Site\Models;
 
+use Database\Factories\ContactFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,5 +21,10 @@ class Contact extends Model
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return ContactFactory::new();
     }
 }

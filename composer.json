@@ -8,6 +8,7 @@
         "php": "^8.4",
         "ext-dom": "*",
         "ext-libxml": "*",
+        "coyotito/laravel-settings": "^0.1.1",
         "filament/filament": "^4.0",
         "filament/spatie-laravel-media-library-plugin": "^4.0",
         "graham-campbell/markdown": "^16.0",
@@ -32,7 +33,8 @@
         "pestphp/pest": "^4.0",
         "pestphp/pest-plugin-laravel": "^4.0",
         "pestphp/pest-plugin-livewire": "^4.0",
-        "spatie/test-time": "^1.3"
+        "spatie/test-time": "^1.3",
+        "ext-simplexml": "*"
     },
     "autoload": {
         "psr-4": {
@@ -81,6 +83,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
