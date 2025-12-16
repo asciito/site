@@ -16,6 +16,6 @@ class CustomTrackPageView extends TrackPageview
             return parent::handle($request, $next, ...$excepts);
         }
 
-            return $next($request, $excepts);
+        return $next($request, $excepts);
     }
 }

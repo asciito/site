@@ -7,13 +7,13 @@ use App\Blog\Filament\Resources\PostResource\Pages;
 use App\Blog\Models\Post;
 use App\Site\Models\Scopes\ModelStatusScope;
 use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas;
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Utilities\Get;
-use Filament\Actions;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
@@ -138,7 +138,7 @@ class PostResource extends Resource
             ->columns([
                 'md' => 12,
                 'lg' => 12,
-                'xl' => 12
+                'xl' => 12,
             ]);
     }
 
