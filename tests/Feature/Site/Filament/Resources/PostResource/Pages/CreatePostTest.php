@@ -1,12 +1,12 @@
 <?php
 
 it('can render', function () {
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
         ->assertSuccessful();
 });
 
 it('can create post', function () {
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -26,7 +26,7 @@ it('can create post', function () {
 });
 
 it('can be published', function () {
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -36,7 +36,7 @@ it('can be published', function () {
         ])
         ->callAction('publish')
         ->assertHasNoErrors()
-        ->assertRedirectToRoute(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::getRouteName(), ['record' => 1]);
+        ->assertRedirectToRoute(\App\Blog\Filament\Resources\Posts\Pages\EditPost::getRouteName(), ['record' => 1]);
 
     \Pest\Laravel\assertDatabaseHas('posts', [
         'title' => $title,
@@ -49,7 +49,7 @@ it('can add thumbnail', function () {
 
     $image = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 1920, 1080);
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
         ->fillForm([
             'title' => fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -66,7 +66,7 @@ it('can add thumbnail', function () {
 it('can\'t add over-dimensioned image', function () {
     $image = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 2640, 1485);
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
         ->fillForm([
             'title' => fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -82,7 +82,7 @@ it('can\'t add over-dimensioned image', function () {
 });
 
 it('can add excerpt', function () {
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\CreatePost::class)
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),

@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Volt\Component;
 
 new class extends Component {
-    //
+    public function getUserMenuItems(): array
+    {
+        return filament()->getUserMenuItems();
+    }
 }; ?>
 
 <div class="relative h-16 bg-white shadow z-[9999]">

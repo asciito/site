@@ -2,9 +2,13 @@
 
 namespace App\Site\Filament\Pages;
 
-use Filament\Forms;
-use Filament\Pages\Auth\EditProfile;
+use Filament\Auth\Pages\EditProfile;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Section;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ProfilePage extends EditProfile
 {
@@ -19,7 +23,7 @@ class ProfilePage extends EditProfile
 
         return [
             'form' => $form->schema([
-                Forms\Components\Section::make('Profile Information')
+                Section::make('Profile Information')
                     ->schema([
                         $this->getNameFormComponent(),
                         $this->getEmailFormComponent(),
@@ -34,9 +38,9 @@ class ProfilePage extends EditProfile
         ];
     }
 
-    protected function getDescriptionFormComponent(): \Filament\Forms\Components\Component
+    protected function getDescriptionFormComponent(): Component
     {
-        return \Filament\Forms\Components\MarkdownEditor::make('description')
+        return MarkdownEditor::make('description')
             ->label(__('Description'))
             ->toolbarButtons([
                 'blockquote',
@@ -53,13 +57,13 @@ class ProfilePage extends EditProfile
             ->grow();
     }
 
-    protected function getResumeFormComponent(): \Filament\Forms\Components\Component
+    protected function getResumeFormComponent(): Component
     {
-        return \Filament\Forms\Components\FileUpload::make('resume')
+        return FileUpload::make('resume')
             ->label(__('Resume'))
             ->acceptedFileTypes(['application/pdf'])
             ->formatStateUsing(fn () => Storage::exists('resume.pdf') ? ['resume.pdf'] : [])
-            ->saveUploadedFileUsing(function (Forms\Components\Component $component, \Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file) {
+            ->saveUploadedFileUsing(function (Component $component, TemporaryUploadedFile $file) {
                 $filename = 'resume.pdf';
 
                 if (Storage::exists($filename)) {
@@ -70,7 +74,7 @@ class ProfilePage extends EditProfile
 
                 return $file;
             })
-            ->deleteUploadedFileUsing(function (Forms\Components\Component $component) {
+            ->deleteUploadedFileUsing(function (Component $component) {
                 $filename = 'resume.pdf';
 
                 if (Storage::exists($filename)) {

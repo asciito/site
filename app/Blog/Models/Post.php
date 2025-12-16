@@ -5,6 +5,9 @@ namespace App\Blog\Models;
 use App\Blog\HtmlContent;
 use App\Site\Models\Concerns\ModelStatus;
 use App\Site\Settings\SiteSettings;
+use Database\Factories\PostFactory;
+use DOMDocument;
+use DOMElement;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +26,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
+
+use function App\Helpers\getMediaImageDimensions;
 
 class Post extends Model implements HasMedia, Sitemapable
 {
@@ -65,13 +70,13 @@ class Post extends Model implements HasMedia, Sitemapable
             return $this->excerpt;
         }
 
-        $dom = new \DOMDocument;
+        $dom = new DOMDocument;
         libxml_use_internal_errors(true);
         $dom->loadHTML(mb_convert_encoding($this->getContent(false), 'HTML-ENTITIES', 'UTF-8'));
         libxml_clear_errors();
 
         $text = collect($dom->getElementsByTagName('p'))
-            ->reduce(fn (string $text, \DOMElement $p) => $text.' '.trim(strip_tags($p->textContent)), '');
+            ->reduce(fn (string $text, DOMElement $p) => $text.' '.trim(strip_tags($p->textContent)), '');
 
         return Str::of($text)->trim()->limit(255, $end);
     }
@@ -121,7 +126,7 @@ class Post extends Model implements HasMedia, Sitemapable
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $dimensions = filled($media) ? \App\Helpers\getMediaImageDimensions($media) : null;
+        $dimensions = filled($media) ? getMediaImageDimensions($media) : null;
 
         $thumb = $this
             ->addMediaConversion('thumb')
@@ -195,8 +200,8 @@ class Post extends Model implements HasMedia, Sitemapable
         }
     }
 
-    protected static function newFactory(): \Database\Factories\PostFactory
+    protected static function newFactory(): PostFactory
     {
-        return \Database\Factories\PostFactory::new();
+        return PostFactory::new();
     }
 }

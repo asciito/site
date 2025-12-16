@@ -3,9 +3,10 @@
 namespace App\Blog;
 
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support;
+use Illuminate\Support\Str;
+use Stringable;
 
-class HtmlContent implements \Stringable, Htmlable
+class HtmlContent implements Htmlable, Stringable
 {
     public function __construct(protected string $content, protected bool $withTorchlight = true)
     {
@@ -14,7 +15,7 @@ class HtmlContent implements \Stringable, Htmlable
 
     protected function replacePreWithTorchlight(): static
     {
-        $this->content = Support\Str::of($this->content)
+        $this->content = Str::of($this->content)
             ->replaceMatches(
                 '/<pre><code(?: class="language-([^"]+)")?>(.*?)<\/code><\/pre>/s',
                 fn (array $matches) => view('site::torchlight', [

@@ -1,41 +1,48 @@
 <?php
 
-namespace App\Site\Filament\Resources;
+namespace App\Site\Filament\Resources\Messages;
 
 use App\MessageStatusEnum;
+use App\Site\Filament\Resources\Messages\Pages\ListMessages;
+use App\Site\Filament\Resources\Messages\Pages\ViewMessage;
 use App\Site\Models\Contact;
 use App\Site\Models\Message;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Flex;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-inbox-stack';
 
     protected static ?int $navigationSort = 100;
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Infolists\Components\Split::make([
-                    Infolists\Components\Section::make([
-                        Infolists\Components\TextEntry::make('contact')
+        return $schema
+            ->components([
+                Flex::make([
+                    Section::make([
+                        TextEntry::make('contact')
                             ->formatStateUsing(fn (Contact $state) => "{$state->email} ({$state->name})")
                             ->label('From')
                             ->url(fn (Contact $state) => "mailto:{$state->email}"),
-                        Infolists\Components\TextEntry::make('message')
+                        TextEntry::make('message')
                             ->words(50),
                     ])
                         ->columnSpan(8),
-                    Infolists\Components\Section::make([
-                        Infolists\Components\TextEntry::make('status')
+                    Section::make([
+                        TextEntry::make('status')
                             ->formatStateUsing(fn (MessageStatusEnum $state) => $state->name)
                             ->icon(fn (MessageStatusEnum $state) => match ($state) {
                                 MessageStatusEnum::READ => 'heroicon-s-eye',
@@ -49,7 +56,7 @@ class MessageResource extends Resource
                                 MessageStatusEnum::READ => Color::Green,
                                 MessageStatusEnum::UNREAD => Color::Red
                             }),
-                        Infolists\Components\TextEntry::make('created_at')
+                        TextEntry::make('created_at')
                             ->date('F d, Y \a\t H:i'),
                     ])
                         ->grow(false),
@@ -63,14 +70,14 @@ class MessageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('contact.name'),
-                Tables\Columns\TextColumn::make('message')
+                TextColumn::make('contact.name'),
+                TextColumn::make('message')
                     ->wrap()
                     ->limit(80),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->date('F d, Y')
                     ->label('Received at'),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->formatStateUsing(fn (MessageStatusEnum $state) => $state->name)
                     ->icon(fn (MessageStatusEnum $state) => match ($state) {
                         MessageStatusEnum::READ => 'heroicon-s-eye',
@@ -88,9 +95,9 @@ class MessageResource extends Resource
             ->filters([
                 //
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'DESC');
@@ -106,8 +113,8 @@ class MessageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Site\Filament\Resources\MessageResource\Pages\ListMessages::route('/'),
-            'view' => \App\Site\Filament\Resources\MessageResource\Pages\ViewMessage::route('/{record}'),
+            'index' => ListMessages::route('/'),
+            'view' => ViewMessage::route('/{record}'),
         ];
     }
 }

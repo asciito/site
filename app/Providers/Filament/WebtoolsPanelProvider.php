@@ -2,16 +2,20 @@
 
 namespace App\Providers\Filament;
 
+use App\Site\Filament\Pages\ProfilePage;
+use App\Site\Filament\Pages\SettingsPage;
 use App\Site\Settings\SiteSettings;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
+use Filament\Navigation\MenuItem;
+use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
-use Filament\Widgets;
+use Filament\Widgets\AccountWidget;
+use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -27,11 +31,11 @@ class WebtoolsPanelProvider extends PanelProvider
     {
         return $panel
             ->brandName(fn (SiteSettings $settings) => $settings->name)
-            ->profile(\App\Site\Filament\Pages\ProfilePage::class)
+            ->profile(ProfilePage::class)
             ->userMenuItems([
-                \Filament\Navigation\MenuItem::make()
+                MenuItem::make()
                     ->label('Settings')
-                    ->url(fn () => \App\Site\Filament\Pages\SettingsPage::getUrl())
+                    ->url(fn () => SettingsPage::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
             ->default()
@@ -47,12 +51,12 @@ class WebtoolsPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Blog/Filament/Resources'), for: 'App\\Blog\\Filament\\Resources')
             ->discoverPages(in: app_path('Site/Filament/Pages'), for: 'App\\Site\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                AccountWidget::class,
+                FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
