@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -200,7 +201,51 @@ class Post extends Model implements HasMedia, Sitemapable
         }
     }
 
-    protected static function newFactory(): PostFactory
+    public function getTableOfContent(bool $unordered = true): ?HtmlString
+    {
+        preg_match_all('/^(?<size>#{2,6})\h+(?<title>.+)$/m', $this->content, $matches);
+
+        if (empty($matches['size']) || empty($matches['title'])) {
+            return null;
+        }
+
+        $counters = [];
+
+        $toc = collect($matches['size'])
+            ->zip($matches['title'])
+            ->map(function (Collection $heading) use (&$counters, $unordered) {
+                [$size, $title] = $heading;
+
+                $level = strlen($size);
+
+                // Indent by 4 spaces per nesting level (Markdown convention)
+                $indent = str_repeat(' ', ($level - 2) * 4);
+
+                if ($unordered) {
+                    $marker = '-';
+                } else {
+                    // Reset deeper levels when we come back up
+                    for ($l = $level + 1; $l <= 6; $l++) {
+                        unset($counters[$l]);
+                    }
+
+                    $counters[$level] = ($counters[$level] ?? 0) + 1;
+                    $marker = $counters[$level].'.';
+                }
+
+                return sprintf(
+                    '%s%s [%s](#%s)',
+                    $indent,
+                    $marker,
+                    $title,
+                    str($title)->slug(),
+                );
+            })->join("\n");
+
+        return $toc ? str($toc)->markdown()->toHtmlString() : null;
+    }
+
+    protected static function newFactory(): \Database\Factories\PostFactory
     {
         return PostFactory::new();
     }
