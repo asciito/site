@@ -36,7 +36,11 @@
             <p class="text-center">User not yet created</p>
         @else
             <div class="prose prose-pre:ring-1 prose-pre:ring-black/5 prose-pre:shadow-sm max-w-none mt-8">
-                {!! str($user->description)->markdown()->sanitizeHtml() !!}
+                @if ($description = $user->description)
+                    {!! str($description)->markdown()->sanitizeHtml() !!}
+                @else
+                    <p class="text-center">There's no description available</p>
+                @endif
             </div>
         @endempty
     </section>
