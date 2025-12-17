@@ -190,9 +190,9 @@ class SettingsPage extends Page
                                 ->prefixIcon('fab-github'),
                         ]),
                     ])
+                    ->columnSpanFull()
                     ->aside(),
             ])
-            ->columns()
             ->inlineLabel($this->hasInlineLabels())
             ->statePath('data');
     }

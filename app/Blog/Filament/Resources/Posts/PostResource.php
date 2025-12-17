@@ -159,7 +159,7 @@ class PostResource extends Resource
                                 'md' => 3,
                                 'lg' => 4,
                             ]),
-                    ]),
+                    ])->columnSpanFull(),
             ]);
     }
 
