@@ -205,32 +205,40 @@ class Post extends Model implements HasMedia, Sitemapable
     {
         preg_match_all('/^(?<size>#{2,6})\h+(?<title>.+)$/m', $this->content, $matches);
 
-        if (! isset($matches['size'])) {
-            return str('Nothing to show')->toHtmlString();
+        if (empty($matches['size']) || empty($matches['title'])) {
+            return null;
         }
 
-        $stack = [];
-
-        $currentLevel = 2;
+        $counters = [];
 
         $toc = collect($matches['size'])
             ->zip($matches['title'])
-            ->map(function (Collection $heading) use (&$currentLevel, &$stack, $unordered) {
+            ->map(function (Collection $heading) use (&$counters, $unordered) {
                 [$size, $title] = $heading;
 
-                if (strlen($size) === $currentLevel) {
-                    $stack[] = null;
+                $level = strlen($size);
+
+                // Indent by 4 spaces per nesting level (Markdown convention)
+                $indent = str_repeat(' ', ($level - 2) * 4);
+
+                if ($unordered) {
+                    $marker = '-';
                 } else {
-                    $stack = [null];
-                    $currentLevel = strlen($size);
+                    // Reset deeper levels when we come back up
+                    for ($l = $level + 1; $l <= 6; $l++) {
+                        unset($counters[$l]);
+                    }
+
+                    $counters[$level] = ($counters[$level] ?? 0) + 1;
+                    $marker = $counters[$level].'.';
                 }
 
                 return sprintf(
                     '%s%s [%s](#%s)',
-                    str_repeat(' ', ($currentLevel - 2) * 4),
-                    $unordered ? '-' : count($stack).'.',
+                    $indent,
+                    $marker,
                     $title,
-                    str()->slug($title),
+                    str($title)->slug(),
                 );
             })->join("\n");
 
