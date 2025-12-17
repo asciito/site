@@ -6,17 +6,21 @@ use App\Site\Settings\SiteSettings;
 use Coyotito\LaravelSettings\Settings;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\CanUseDatabaseTransactions;
 use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Exceptions\Halt;
 use Filament\Support\Facades\FilamentView;
 
 /**
- * @property Form $form
+ * @property Schema $form
  */
 class SettingsPage extends Page
 {
@@ -26,11 +30,11 @@ class SettingsPage extends Page
 
     protected static ?string $title = 'Settings';
 
-    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected static ?string $settings = SiteSettings::class;
 
-    protected static string $view = 'site.pages.settings';
+    protected string $view = 'site.pages.settings';
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -105,12 +109,12 @@ class SettingsPage extends Page
         return app()->make(static::$settings);
     }
 
-    public function getSaveNotification(): \Filament\Notifications\Notification
+    public function getSaveNotification(): Notification
     {
         $title = $this->getSaveNotificationTitle();
         $message = $this->getSaveNotificationMessage();
 
-        return \Filament\Notifications\Notification::make()
+        return Notification::make()
             ->success()
             ->title($title)
             ->body($message);
@@ -149,46 +153,46 @@ class SettingsPage extends Page
         return $this->getSaveFormAction();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make(__('Site Configuration'))
+        return $schema
+            ->components([
+                Section::make(__('Site Configuration'))
                     ->description('Configure the basic settings for your site.')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->required()
                             ->maxLength(32),
-                        Forms\Components\Textarea::make('description')
+                        Textarea::make('description')
                             ->required()
                             ->maxLength(120),
                         // TODO: Add logo, media and favicon uploaders
-                        Forms\Components\Group::make([
-                            Forms\Components\TextInput::make('twitter_handler')
+                        Group::make([
+                            TextInput::make('twitter_handler')
                                 ->label('X/Twitter')
                                 ->required()
                                 ->prefixIcon('fab-x-twitter'),
-                            Forms\Components\TextInput::make('facebook_handler')
+                            TextInput::make('facebook_handler')
                                 ->label('Facebook')
                                 ->required()
                                 ->prefixIcon('fab-facebook-f'),
-                            Forms\Components\TextInput::make('instagram_handler')
+                            TextInput::make('instagram_handler')
                                 ->label('Instagram')
                                 ->required()
                                 ->prefixIcon('fab-instagram'),
-                            Forms\Components\TextInput::make('linkedin_handler')
+                            TextInput::make('linkedin_handler')
                                 ->label('LinkedIn')
                                 ->required()
                                 ->prefixIcon('fab-linkedin'),
-                            Forms\Components\TextInput::make('github_handler')
+                            TextInput::make('github_handler')
                                 ->label('Github')
                                 ->required()
                                 ->prefixIcon('fab-github'),
                         ]),
                     ])
+                    ->columnSpanFull()
                     ->aside(),
             ])
-            ->columns()
             ->inlineLabel($this->hasInlineLabels())
             ->statePath('data');
     }

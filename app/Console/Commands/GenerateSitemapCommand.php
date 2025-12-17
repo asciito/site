@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Blog\Models\Post;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Spatie\Sitemap\Sitemap;
@@ -15,7 +17,7 @@ class GenerateSitemapCommand extends Command
 
     protected $description = 'Generate the sitemap xml file';
 
-    protected \Illuminate\Contracts\Filesystem\Filesystem $files;
+    protected Filesystem $files;
 
     protected string $disk = 'public';
 
@@ -51,7 +53,7 @@ class GenerateSitemapCommand extends Command
 
         return Url::create(route($page))
             ->setLastModificationDate(
-                \Illuminate\Support\Carbon::createFromTimestamp($lastModificationDate, config('app.timezone')),
+                Carbon::createFromTimestamp($lastModificationDate, config('app.timezone')),
             );
     }
 

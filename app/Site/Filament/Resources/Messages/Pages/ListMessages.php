@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Site\Filament\Resources\MessageResource\Pages;
+namespace App\Site\Filament\Resources\Messages\Pages;
 
-use App\Site\Filament\Resources\MessageResource;
+use App\Site\Filament\Resources\Messages\MessageResource;
 use Filament\Resources\Pages\ListRecords;
 
 class ListMessages extends ListRecords

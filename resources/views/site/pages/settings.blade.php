@@ -1,13 +1,12 @@
+@php use Filament\Support\Enums\Alignment; @endphp
+
 <x-filament-panels::page>
-    <x-filament-panels::form id="form" wire:submit="save">
-        {{ $this->form }}
+    {{ $this->form }}
 
-        <x-filament-panels::form.actions
-            :actions="$this->getCachedFormActions()"
-            :full-width="$this->hasFullWidthFormActions()"
-            :alignment="\Filament\Support\Enums\Alignment::End"
-        />
-    </x-filament-panels::form>
+    <x-filament::actions
+        :actions="$this->getCachedFormActions()"
+        :alignment="Alignment::End"
+    />
 
-    <x-filament-panels::page.unsaved-data-changes-alert />
+    <x-filament-panels::unsaved-action-changes-alert />
 </x-filament-panels::page>

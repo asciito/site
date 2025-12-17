@@ -3,14 +3,14 @@
 it('can render', function () {
     $post = \App\Blog\Models\Post::factory()->create();
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\EditPost::class, ['record' => $post->id])
         ->assertSuccessful();
 });
 
 it('can fill edit form', function () {
     $post = \App\Blog\Models\Post::factory()->create();
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\EditPost::class, ['record' => $post->id])
         ->fillForm([
             'title' => $title = 'This is a new title',
             'slug' => $slug = 'just-a-new-slug',
@@ -36,7 +36,7 @@ it('can add missing thumbnail', function () {
 
     $post = \App\Blog\Models\Post::factory()->create();
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
+    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\EditPost::class, ['record' => $post->id])
         ->fillForm([
             'thumbnail' => $newImage,
         ])

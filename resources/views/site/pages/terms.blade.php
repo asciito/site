@@ -11,7 +11,7 @@
 @endphp
 
 <x-site::layout :page="$seo">
-    <h1 class="text-4xl lg:text-5xl !leading-snug text-center mb-8">Terms of Use</h1>
+    <h1 class="text-4xl lg:text-5xl leading-snug! text-center mb-8">Terms of Use</h1>
 
     <div class="content">
         <p>Welcome to asciito's Terms of Use page. Here, you'll find detailed information about the rules and regulations that govern your use of our website. Our Terms of Use cover important aspects such as intellectual property rights, acceptable use of our site, and our policies regarding public code and proprietary content. Please read these terms carefully to ensure a safe and enjoyable experience while using Asciito. For any questions or clarifications, feel free to contact us at <a href="mailto:ayax.cordova@aydev.mx">ayax.cordova@aydev.mx</a>.</p>
