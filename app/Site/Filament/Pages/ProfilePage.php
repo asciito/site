@@ -69,13 +69,10 @@ class ProfilePage extends EditProfile
         return MarkdownEditor::make('introduction')
             ->label(__('Introduction'))
             ->toolbarButtons([
-                'blockquote',
                 'bold',
-                'bulletList',
                 'italic',
                 'link',
                 'heading',
-                'orderedList',
                 'redo',
                 'strike',
                 'undo',
