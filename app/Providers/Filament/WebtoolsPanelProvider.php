@@ -30,6 +30,7 @@ class WebtoolsPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->darkMode(false)
             ->brandName(fn (SiteSettings $settings) => $settings->name)
             ->profile(ProfilePage::class)
             ->userMenuItems([

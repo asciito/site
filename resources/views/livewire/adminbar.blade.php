@@ -1,27 +1,41 @@
 <?php
 
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Session;
 use Livewire\Volt\Component;
 
 new class extends Component {
+    protected ?array $userMenuItems = null;
+
     public function getUserMenuItems(): array
     {
-        return filament()->getUserMenuItems();
+        $this->userMenuItems = Filament::getUserMenuItems();
+
+        foreach ($this->userMenuItems as $action) {
+            $action->defaultView($action::GROUPED_VIEW);
+        }
+
+        if (blank($this->userMenuItems)) {
+            $this->userMenuItems = null;
+        }
+
+        return $this->userMenuItems ?? [];
     }
 }; ?>
 
-<div class="relative h-16 bg-white shadow z-[9999]">
+<div class="relative h-16 bg-white shadow-sm z-9999">
     <div class="mx-auto h-full">
         <nav class="h-full flex items-center justify-between text-dark-blue-600 text-sm px-4 md:px-6 lg:px-8">
             <ul class="flex items-center justify-start gap-6">
                 <li>
                     <a
                         href="{{ route('filament.webtools.pages.dashboard') }}"
-                        class="group/link relative inline-flex items-center justify-center outline-none gap-1.5 cursor-pointer"
+                        class="group/link relative inline-flex items-center justify-center outline-hidden gap-1.5 cursor-pointer"
                     >
                         <x-icon name="heroicon-s-wrench-screwdriver" class="w-4"/>
 
-                        <span class="font-semibold group-hover/link:underline group-focus-visible/link:underline text-sm">Webtools</span>
+                        <span
+                            class="font-semibold group-hover/link:underline group-focus-visible/link:underline text-sm">Webtools</span>
                     </a>
                 </li>
 
@@ -39,7 +53,7 @@ new class extends Component {
                 @endif
             </ul>
 
-            <x-filament-panels::user-menu />
+            <x-filament-panels::user-menu/>
         </nav>
     </div>
 </div>
