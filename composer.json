@@ -28,6 +28,7 @@
         "ext-simplexml": "*",
         "fakerphp/faker": "^1.23",
         "filament/upgrade": "^4.0",
+        "larastan/larastan": "^3.0",
         "laravel/breeze": "^2.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
