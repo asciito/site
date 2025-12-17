@@ -12,7 +12,7 @@
 <x-site::layout :page="$seoData">
     <header class="block text-center space-y-4 mb-8">
         <div class="prose-lg prose-a:active:text-harlequin-600 prose-a:hover:text-harlequin-600 prose-a:transition-colors prose-a:duration-75">
-            @if ($introduction = $user->introduction)
+            @if ($introduction = $user?->introduction)
                 {!! str($introduction)->markdown()->toHtmlString() !!}
             @else
                 <p>There's no introduction available</p>
@@ -35,16 +35,12 @@
 
         <h3 class="text-3xl mb-8 text-center">{{ $user?->name ?? 'User not created' }}</h3>
 
-        @empty($user)
-            <p class="text-center">User not yet created</p>
-        @else
-            <div class="prose prose-pre:ring-1 prose-pre:ring-black/5 prose-pre:shadow-sm max-w-none mt-8  prose-a:active:text-harlequin-600 prose-a:hover:text-harlequin-600 prose-a:transition-colors prose-a:duration-75">
-                @if ($description = $user->description)
-                    {!! str($description)->markdown()->sanitizeHtml() !!}
-                @else
-                    <p class="text-center">There's no description available</p>
-                @endif
-            </div>
-        @endempty
+        <div class="prose prose-pre:ring-1 prose-pre:ring-black/5 prose-pre:shadow-sm max-w-none mt-8  prose-a:active:text-harlequin-600 prose-a:hover:text-harlequin-600 prose-a:transition-colors prose-a:duration-75">
+            @if ($description = $user?->description)
+                {!! str($description)->markdown()->sanitizeHtml() !!}
+            @else
+                <p class="text-center">There's no description available</p>
+            @endif
+        </div>
     </section>
 </x-site::layout>
