@@ -28,6 +28,7 @@
         "ext-simplexml": "*",
         "fakerphp/faker": "^1.23",
         "filament/upgrade": "^4.0",
+        "larastan/larastan": "^3.0",
         "laravel/breeze": "^2.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
@@ -70,6 +71,15 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
+        ],
+        "test": "./vendor/bin/pest",
+        "test:ci": "./vendor/bin/pest --ci",
+        "lint": "./vendor/bin/phpstan analyse --memory-limit=1G",
+        "style": "./vendor/bin/pint --tests --dirty",
+        "style:fix": "./vendor/bin/pint --dirty",
+        "lint:with-style": [
+            "@lint",
+            "@style"
         ]
     },
     "extra": {
