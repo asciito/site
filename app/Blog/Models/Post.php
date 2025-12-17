@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -200,21 +201,38 @@ class Post extends Model implements HasMedia, Sitemapable
         }
     }
 
-    public function getTableOfContent(): ?HtmlString
+    public function getTableOfContent(bool $unordered = true): ?HtmlString
     {
-        $toc = collect(explode("\n", $this->content))
-            ->map(function (string $line) {
-                if (preg_match('/^(#{2,6})\s+(.*)/', $line, $matches)) {
-                    $indent = str_repeat(' ', (strlen($matches[1]) - 2) * 4);
-                    $slug = Str::slug($matches[2]);
+        preg_match_all('/^(?<size>#{2,6})\h+(?<title>.+)$/m', $this->content, $matches);
 
-                    return "{$indent}- [{$matches[2]}](#{$slug})";
+        if (! isset($matches['size'])) {
+            return str('Nothing to show')->toHtmlString();
+        }
+
+        $stack = [];
+
+        $currentLevel = 2;
+
+        $toc = collect($matches['size'])
+            ->zip($matches['title'])
+            ->map(function (Collection $heading) use (&$currentLevel, &$stack, $unordered) {
+                [$size, $title] = $heading;
+
+                if (strlen($size) === $currentLevel) {
+                    $stack[] = null;
+                } else {
+                    $stack = [null];
+                    $currentLevel = strlen($size);
                 }
 
-                return null;
-            })
-            ->filter()
-            ->implode("\n");
+                return sprintf(
+                    '%s%s [%s](#%s)',
+                    str_repeat(' ', ($currentLevel - 2) * 4),
+                    $unordered ? '-' : count($stack).'.',
+                    $title,
+                    str()->slug($title),
+                );
+            })->join("\n");
 
         return $toc ? str($toc)->markdown()->toHtmlString() : null;
     }
