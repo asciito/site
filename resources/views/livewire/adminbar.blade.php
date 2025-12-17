@@ -25,7 +25,7 @@ new class extends Component {
 
 <div class="relative h-16 bg-white shadow-sm z-9999">
     <div class="mx-auto h-full">
-        <nav class="h-full flex items-center justify-between text-dark-blue-600 text-sm px-4 md:px-6 lg:px-8">
+        <nav class="h-full flex items-center justify-between text-dark-blue-600 text-sm px-4 md:px-4 lg:px-6">
             <ul class="flex items-center justify-start gap-6">
                 <li>
                     <a
