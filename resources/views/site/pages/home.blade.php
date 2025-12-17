@@ -11,10 +11,13 @@
 
 <x-site::layout :page="$seoData">
     <header class="block text-center space-y-4 mb-8">
-        <h1 class="text-2xl md:text-4xl lg:text-5xl leading-snug!"><span>Hi, I'm Ayax Córdova</span>
-            <span class="block">(A.K.A <strong>@asciito</strong>)<span></h1>
-        <p>As a Software Engineer, I share insights on PHP (<strong>Laravel</strong>), JavaScript, Python, and web development. Explore tutorials, coding tips, and programming guides to boost your skills. Feel free to reach out for tech advice!
-        </p>
+        <div class="prose-lg prose-a:active:text-harlequin-600 prose-a:hover:text-harlequin-600 prose-a:transition-colors prose-a:duration-75">
+            @if ($introduction = $user->introduction)
+                {!! str($introduction)->markdown()->toHtmlString() !!}
+            @else
+                <p>There's no introduction available</p>
+            @endif
+        </div>
     </header>
 
     <div class="w-full h-32 grayscale mb-5">
@@ -35,8 +38,12 @@
         @empty($user)
             <p class="text-center">User not yet created</p>
         @else
-            <div class="prose prose-pre:ring-1 prose-pre:ring-black/5 prose-pre:shadow-sm max-w-none mt-8">
-                {!! str($user->description)->markdown()->sanitizeHtml() !!}
+            <div class="prose prose-pre:ring-1 prose-pre:ring-black/5 prose-pre:shadow-sm max-w-none mt-8  prose-a:active:text-harlequin-600 prose-a:hover:text-harlequin-600 prose-a:transition-colors prose-a:duration-75">
+                @if ($description = $user->description)
+                    {!! str($description)->markdown()->sanitizeHtml() !!}
+                @else
+                    <p class="text-center">There's no description available</p>
+                @endif
             </div>
         @endempty
     </section>
