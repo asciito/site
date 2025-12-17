@@ -11,10 +11,11 @@
 
 <x-site::layout :page="$seoData">
     <header class="block text-center space-y-4 mb-8">
-        <h1 class="text-2xl md:text-4xl lg:text-5xl leading-snug!"><span>Hi, I'm Ayax Córdova</span>
-            <span class="block">(A.K.A <strong>@asciito</strong>)<span></h1>
-        <p>As a Software Engineer, I share insights on PHP (<strong>Laravel</strong>), JavaScript, Python, and web development. Explore tutorials, coding tips, and programming guides to boost your skills. Feel free to reach out for tech advice!
-        </p>
+        @if ($introduction = $user->introduction)
+            {!! str($introduction)->markdown()->toHtmlString() !!}
+        @else
+            <p>There's no introduction available</p>
+        @endif
     </header>
 
     <div class="w-full h-32 grayscale mb-5">

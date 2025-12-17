@@ -7,6 +7,8 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Alignment;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -17,25 +19,29 @@ class ProfilePage extends EditProfile
         return false;
     }
 
-    protected function getForms(): array
+    public function form(Schema $schema): Schema
     {
-        $form = parent::getForms()['form'];
-
-        return [
-            'form' => $form->schema([
+        return $schema
+            ->components([
                 Section::make('Profile Information')
                     ->schema([
                         $this->getNameFormComponent(),
                         $this->getEmailFormComponent(),
                         $this->getPasswordFormComponent(),
                         $this->getPasswordConfirmationFormComponent(),
+                        $this->getCurrentPasswordFormComponent(),
                         $this->getResumeFormComponent(),
+                        $this->getIntroductionComponent(),
                         $this->getDescriptionFormComponent(),
                     ])
-                    ->aside(),
-            ])
-                ->inlineLabel(false),
-        ];
+                    ->aside()
+                    ->description('Update the your profile information and provide the needed information.'),
+            ]);
+    }
+
+    public function getFormActionsAlignment(): string|Alignment
+    {
+        return Alignment::End;
     }
 
     protected function getDescriptionFormComponent(): Component
@@ -54,7 +60,28 @@ class ProfilePage extends EditProfile
                 'strike',
                 'undo',
             ])
-            ->grow();
+            ->grow()
+            ->helperText('This text will be display in the `About me` section of the home page');
+    }
+
+    protected function getIntroductionComponent(): Component
+    {
+        return MarkdownEditor::make('introduction')
+            ->label(__('Introduction'))
+            ->toolbarButtons([
+                'blockquote',
+                'bold',
+                'bulletList',
+                'italic',
+                'link',
+                'heading',
+                'orderedList',
+                'redo',
+                'strike',
+                'undo',
+            ])
+            ->grow()
+            ->helperText('This text will be display at the beginning of the home page');
     }
 
     protected function getResumeFormComponent(): Component
