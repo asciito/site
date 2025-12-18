@@ -3,10 +3,16 @@
 namespace App\Blog\Filament\Resources\Posts\Pages;
 
 use App\Blog\Filament\Resources\Posts\PostResource;
+use App\Blog\Models\Post;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @property null|Post $record
+ * @method null|Post getRecord()
+ */
 class CreatePost extends CreateRecord
 {
     protected static string $resource = PostResource::class;
