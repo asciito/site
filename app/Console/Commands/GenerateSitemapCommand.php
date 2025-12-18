@@ -58,15 +58,16 @@ class GenerateSitemapCommand extends Command
     {
         if (is_string($page)) {
             $time = File::lastModified(resource_path("views/site/pages/$page.blade.php"));
-
+            $route = route($page);
             $lastModificationDate = Carbon::createFromTimestamp($time);
-        } elseif (property_exists($page, 'updated_at')) {
-            $lastModificationDate = $page->updated_at;
+        } elseif ($page instanceof Model && $updated_at = $page->updated_at) {
+            $route = route('post', $page);
+            $lastModificationDate = $updated_at;
         } else {
             throw new InvalidArgumentException('The page provided does not have a updated_at property.');
         }
 
-        return Url::create(route($page))->setLastModificationDate($lastModificationDate);
+        return Url::create($route)->setLastModificationDate($lastModificationDate);
     }
 
     protected function generateSitemap(Collection $collection): void

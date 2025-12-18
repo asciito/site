@@ -10,7 +10,7 @@ trait ModelStatus
 {
     public const string STATUS_COLUMN = 'status';
 
-    public const string PUBLISHED_AT_COLUMN = 'published';
+    public const string PUBLISHED_AT_COLUMN = 'published_at';
 
     public static function bootModelStatus(): void
     {
