@@ -39,4 +39,4 @@ jobs:
             --optimize-autoloader
 
       - name: Run code quality Tools
-        run: composer run lint:with-style
+        run: composer run lint:style

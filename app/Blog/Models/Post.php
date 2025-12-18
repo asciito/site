@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Blog\Models;
 
+use App\Blog\Enums\Status;
 use App\Blog\HtmlContent;
 use App\Site\Models\Concerns\ModelStatus;
 use App\Site\Settings\SiteSettings;
@@ -22,6 +25,7 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Spatie\MediaLibrary\Conversions\Conversion;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -30,6 +34,16 @@ use Spatie\Sitemap\Tags\Url;
 
 use function App\Helpers\getMediaImageDimensions;
 
+/**
+ * @property string $title
+ * @property string $slug
+ * @property Status $status
+ * @property string $content
+ * @property string $excerpt
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property ?Carbon $published_at
+ */
 class Post extends Model implements HasMedia, Sitemapable
 {
     use HasFactory;
@@ -73,13 +87,13 @@ class Post extends Model implements HasMedia, Sitemapable
 
         $dom = new DOMDocument;
         libxml_use_internal_errors(true);
-        $dom->loadHTML(mb_convert_encoding($this->getContent(false), 'HTML-ENTITIES', 'UTF-8'));
+        $dom->loadHTML(mb_convert_encoding($this->getContent(false)->toHtml(), 'HTML-ENTITIES', 'UTF-8'));
         libxml_clear_errors();
 
         $text = collect($dom->getElementsByTagName('p'))
             ->reduce(fn (string $text, DOMElement $p) => $text.' '.trim(strip_tags($p->textContent)), '');
 
-        return Str::of($text)->trim()->limit(255, $end);
+        return (string) Str::of($text)->trim()->limit(255, $end);
     }
 
     public function getDate(bool $asHtml = true): Htmlable|Carbon
@@ -96,10 +110,12 @@ class Post extends Model implements HasMedia, Sitemapable
             }
         } else {
             if ($this->updated_at->equalTo($this->published_at)) {
+                /** @var Carbon $date */
                 $date = $this->published_at;
 
                 $message = $date->isToday() ? 'Published Today' : 'Published on '.$date->format('F d, Y');
             } else {
+                /** @var Carbon $date */
                 $date = $this->updated_at;
 
                 $message = $date->isToday() ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
@@ -134,11 +150,13 @@ class Post extends Model implements HasMedia, Sitemapable
             ->width(1280)
             ->height(720);
 
-        $feature = $this
-            ->addMediaConversion('feature-image')
-            ->width(1920)
-            ->height(1080)
-            ->withResponsiveImages();
+        $feature = tap(
+            $this->addMediaConversion('feature-image'),
+            function (Conversion $conversion) {
+                $conversion->width(1920)->height(1080);
+
+                $conversion->withResponsiveImages();
+            });
 
         if (filled($dimensions) && ($dimensions[0] > 1920 || $dimensions[1] > 1080)) {
             $thumb->focalCrop(1920, 1080);
@@ -150,6 +168,7 @@ class Post extends Model implements HasMedia, Sitemapable
     public function resolveRouteBinding($value, $field = null)
     {
         return parent::resolveRouteBindingQuery($this, $value, $field)
+            /** @phpstan-ignore-next-line */
             ->when(Auth::check(), fn (Builder $query) => $query->withDrafts())
             ->first();
     }

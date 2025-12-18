@@ -16,7 +16,7 @@ class ModelStatusScope implements Scope
         $builder->where('status', Status::PUBLISHED);
     }
 
-    public function extend(Builder $builder)
+    public function extend(Builder $builder): void
     {
         foreach ($this->extensions as $extension) {
             $this->{"add{$extension}"}($builder);
@@ -25,7 +25,7 @@ class ModelStatusScope implements Scope
 
     protected function addWithDrafts(Builder $builder): void
     {
-        $builder->macro('withDrafts', function (Builder $builder, bool $withDrafts = true) {
+        $builder->macro('withDrafts', function (Builder $builder, bool $withDrafts = true): Builder {
             if (! $withDrafts) {
                 return $this->withoutDrafts();
             }
@@ -36,7 +36,7 @@ class ModelStatusScope implements Scope
 
     protected function addWithoutDrafts(Builder $builder): void
     {
-        $builder->macro('withoutDrafts', function (Builder $builder) {
+        $builder->macro('withoutDrafts', function (Builder $builder): Builder {
             $model = $builder->getModel();
 
             return $builder->withoutGlobalScope($this)->whereNot(
@@ -48,14 +48,14 @@ class ModelStatusScope implements Scope
 
     protected function addOnlyDrafts(Builder $builder): void
     {
-        $builder->macro('onlyDrafts', function (Builder $builder) {
+        $builder->macro('onlyDrafts', function (Builder $builder): Builder {
             return $this->onlyWithStatus($builder, Status::DRAFT);
         });
     }
 
     protected function addOnlyPublished(Builder $builder): void
     {
-        $builder->macro('onlyPublished', function (Builder $builder) {
+        $builder->macro('onlyPublished', function (Builder $builder): Builder {
             return $this->onlyWithStatus($builder, Status::PUBLISHED);
         });
     }
@@ -65,6 +65,7 @@ class ModelStatusScope implements Scope
         $model = $builder->getModel();
 
         return $builder->withoutGlobalScope($this)->where(
+            /** @phpstan-ignore-next-line */
             $model->getQualifiedStatusColumn(),
             $status,
         );
