@@ -73,19 +73,21 @@
             "@php artisan migrate --graceful --ansi"
         ],
         "test": "./vendor/bin/pest",
-        "test:ci": "./vendor/bin/pest --ci",
+        "test:ci": "@test --ci",
+        "test:parallel": "@test:ci --parallel",
         "lint": "./vendor/bin/phpstan analyse --memory-limit=1G",
-        "style": "./vendor/bin/pint --test --dirty",
-        "style:fix": "./vendor/bin/pint --dirty",
-        "rector": "./vendor/bin/rector --dry-run",
-        "rector:fix": "./vendor/bin/rector",
+        "style": "./vendor/bin/pint",
+        "style:test": "@style --test",
+        "style:fix": "@style --dirty",
+        "refactor:fix": "./vendor/bin/rector",
+        "refactor:test": "@refactor:fix --dry-run",
         "lint:style": [
             "@lint",
-            "@style",
-            "@rector"
+            "@style:test",
+            "@refactor:test"
         ],
-        "full:refactor": [
-            "@rector:fix",
+        "refactor": [
+            "@refactor:fix",
             "@style:fix"
         ]
     },
