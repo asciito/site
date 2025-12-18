@@ -18,6 +18,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Override;
 
 class MessageResource extends Resource
 {
@@ -27,6 +28,7 @@ class MessageResource extends Resource
 
     protected static ?int $navigationSort = 100;
 
+    #[Override]
     public static function infolist(Schema $schema): Schema
     {
         return $schema
@@ -66,6 +68,7 @@ class MessageResource extends Resource
             ]);
     }
 
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -103,6 +106,7 @@ class MessageResource extends Resource
             ->defaultSort('created_at', 'DESC');
     }
 
+    #[Override]
     public static function getRelations(): array
     {
         return [

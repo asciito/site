@@ -1,5 +1,8 @@
 <?php
 
+use Coyotito\LaravelSettings\Models\Setting;
+use Coyotito\LaravelSettings\Repositories\EloquentRepository;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -23,9 +26,9 @@ return [
     */
     'repositories' => [
         'eloquent' => [
-            'class' => \Coyotito\LaravelSettings\Repositories\EloquentRepository::class,
+            'class' => EloquentRepository::class,
 
-            'model' => \Coyotito\LaravelSettings\Models\Setting::class,
+            'model' => Setting::class,
         ],
     ],
 ];

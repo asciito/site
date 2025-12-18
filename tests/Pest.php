@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Features\SupportTesting\Testable;
+use Livewire\Volt\Volt;
 use Tests\TestCase;
 
 /*
@@ -27,11 +29,9 @@ uses(TestCase::class, RefreshDatabase::class)->in('Feature');
 |
 */
 
-expect()->extend('toMatchArraySubset', function (array $subset) {
-    return $this->toMatchArray(
-        array_intersect_assoc($this->value, [$subset])
-    );
-});
+expect()->extend('toMatchArraySubset', fn (array $subset) => $this->toMatchArray(
+    array_intersect_assoc($this->value, [$subset])
+));
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +49,7 @@ function something()
     // ..
 }
 
-function volt(string $component, array $params = []): \Livewire\Features\SupportTesting\Testable
+function volt(string $component, array $params = []): Testable
 {
-    return \Livewire\Volt\Volt::test($component, $params);
+    return Volt::test($component, $params);
 }

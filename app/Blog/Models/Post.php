@@ -23,6 +23,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Override;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Spatie\MediaLibrary\Conversions\Conversion;
@@ -71,9 +72,7 @@ class Post extends Model implements HasMedia, Sitemapable
         if (app()->isProduction()) {
             $key = $this->calculateCacheKey('content', $this->updated_at->timestamp);
 
-            return cache()->rememberForever($key, function () {
-                return Markdown::convert($this->content)->getContent();
-            });
+            return cache()->rememberForever($key, fn () => Markdown::convert($this->content)->getContent());
         }
 
         return Markdown::convert($this->content)->getContent();
@@ -108,18 +107,15 @@ class Post extends Model implements HasMedia, Sitemapable
 
                 $message = $date->isToday() ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
             }
+        } elseif ($this->updated_at->equalTo($this->published_at)) {
+            /** @var Carbon $date */
+            $date = $this->published_at;
+            $message = $date->isToday() ? 'Published Today' : 'Published on '.$date->format('F d, Y');
         } else {
-            if ($this->updated_at->equalTo($this->published_at)) {
-                /** @var Carbon $date */
-                $date = $this->published_at;
+            /** @var Carbon $date */
+            $date = $this->updated_at;
 
-                $message = $date->isToday() ? 'Published Today' : 'Published on '.$date->format('F d, Y');
-            } else {
-                /** @var Carbon $date */
-                $date = $this->updated_at;
-
-                $message = $date->isToday() ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
-            }
+            $message = $date->isToday() ? 'Updated Today' : 'Updated on '.$date->format('F d, Y');
         }
 
         return $asHtml ? new HtmlString(<<<HTML
@@ -137,7 +133,7 @@ class Post extends Model implements HasMedia, Sitemapable
             image: $this->getFirstMedia()?->getUrl(),
             url: route('post', $this),
             enableTitleSuffix: false,
-            robots: ! $this->isPublished() ? 'noindex, nofollow' : config('seo.robots.default')
+            robots: $this->isPublished() ? config('seo.robots.default') : 'noindex, nofollow'
         );
     }
 
@@ -165,6 +161,7 @@ class Post extends Model implements HasMedia, Sitemapable
         }
     }
 
+    #[Override]
     public function resolveRouteBinding($value, $field = null)
     {
         return parent::resolveRouteBindingQuery($this, $value, $field)
@@ -191,12 +188,11 @@ class Post extends Model implements HasMedia, Sitemapable
         return (
             $calculateCacheKeyUsing
                 ? $calculateCacheKeyUsing()
-                : function (self $post, ...$key): string {
-                    return class_basename($post).'::'.$post->id.'.'.Arr::join($key, '.');
-                }
+                : (fn (self $post, ...$key): string => class_basename($post).'::'.$post->id.'.'.Arr::join($key, '.'))
         )($this, ...$key);
     }
 
+    #[Override]
     protected static function booted(): void
     {
         if (app()->isProduction()) {
@@ -264,7 +260,7 @@ class Post extends Model implements HasMedia, Sitemapable
         return $toc ? str($toc)->markdown()->toHtmlString() : null;
     }
 
-    protected static function newFactory(): \Database\Factories\PostFactory
+    protected static function newFactory(): PostFactory
     {
         return PostFactory::new();
     }

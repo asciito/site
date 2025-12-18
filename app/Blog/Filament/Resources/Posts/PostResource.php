@@ -9,6 +9,7 @@ use App\Blog\Filament\Resources\Posts\Pages\ListPosts;
 use App\Blog\Filament\Tables\Filters\StatusFilter;
 use App\Blog\Models\Post;
 use App\Site\Models\Scopes\ModelStatusScope;
+use BackedEnum;
 use Closure;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -44,15 +45,17 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Override;
 
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 50;
 
+    #[Override]
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -163,6 +166,7 @@ class PostResource extends Resource
             ]);
     }
 
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -185,7 +189,7 @@ class PostResource extends Resource
                     ->label('Last time updated')
                     ->formatStateUsing(fn (Carbon $state) => $state->diffForHumans()),
             ])
-            ->recordUrl(fn (Post $record) => ! $record->isArchived() ? route('filament.webtools.resources.posts.edit', $record) : null)
+            ->recordUrl(fn (Post $record) => $record->isArchived() ? null : route('filament.webtools.resources.posts.edit', $record))
             ->filters([
                 TrashedFilter::make(),
                 StatusFilter::make(),
@@ -211,6 +215,7 @@ class PostResource extends Resource
             ->defaultSort('created_at', 'DESC');
     }
 
+    #[Override]
     public static function getRelations(): array
     {
         return [
@@ -227,6 +232,7 @@ class PostResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

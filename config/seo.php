@@ -1,11 +1,13 @@
 <?php
 
+use App\Site\Models\SEO;
+
 return [
     /**
      * The SEO model. You can use this setting to override the model used by the package.
      * Make sure to always extend the old model, so that you'll not lose functionality during upgrades.
      */
-    'model' => \App\Site\Models\SEO::class,
+    'model' => SEO::class,
 
     /**
      * Use this setting to specify the site name that will be used in OpenGraph tags.

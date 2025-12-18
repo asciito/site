@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Middleware\CustomTrackPageView;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Torchlight\Middleware\RenderTorchlight;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,9 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware
-            ->prepend(\Torchlight\Middleware\RenderTorchlight::class)
+            ->prepend(RenderTorchlight::class)
             ->alias([
-                'track' => \App\Http\Middleware\CustomTrackPageView::class,
+                'track' => CustomTrackPageView::class,
             ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

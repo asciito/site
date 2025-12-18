@@ -19,7 +19,7 @@ class HtmlContent implements Htmlable, Stringable
             ->replaceMatches(
                 '/<pre><code(?: class="language-([^"]+)")?>(.*?)<\/code><\/pre>/s',
                 fn (array $matches) => view('site::torchlight', [
-                    'content' => trim($matches[2]),
+                    'content' => trim((string) $matches[2]),
                     'language' => $matches[1] ?? 'text', // Si no hay language, usar 'text'
                 ])
             );
@@ -29,7 +29,9 @@ class HtmlContent implements Htmlable, Stringable
 
     public function toHtml(): string
     {
-        $this->withTorchlight && $this->replacePreWithTorchlight();
+        if ($this->withTorchlight) {
+            $this->replacePreWithTorchlight();
+        }
 
         return $this->content;
     }

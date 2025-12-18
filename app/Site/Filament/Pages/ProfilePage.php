@@ -11,14 +11,17 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Override;
 
 class ProfilePage extends EditProfile
 {
+    #[Override]
     public static function isSimple(): bool
     {
         return false;
     }
 
+    #[Override]
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -39,6 +42,7 @@ class ProfilePage extends EditProfile
             ]);
     }
 
+    #[Override]
     public function getFormActionsAlignment(): string|Alignment
     {
         return Alignment::End;

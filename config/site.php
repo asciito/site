@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'allowed_emails' => explode(',', env('SITE_ALLOWED_EMAILS', '')) ?? [],
+    'allowed_emails' => explode(',', (string) env('SITE_ALLOWED_EMAILS', '')) ?? [],
 
     /*
     |--------------------------------------------------------------------------

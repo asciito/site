@@ -15,6 +15,7 @@ use Filament\Support\Exceptions\Halt;
 use Filament\Support\Facades\FilamentView;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * Base class for settings page
@@ -43,6 +44,7 @@ abstract class SettingsPage extends Page
 
     protected string $view = 'filament.pages.settings';
 
+    #[Override]
     public function getTitle(): string|Htmlable
     {
         $group = $this->settings()->group;
@@ -68,7 +70,7 @@ abstract class SettingsPage extends Page
 
     public function settings(): Settings
     {
-        if ($this->settings) {
+        if ($this->settings instanceof Settings) {
             return $this->settings;
         }
 

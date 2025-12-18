@@ -6,9 +6,11 @@ namespace App\Blog;
 
 use Illuminate\Support\ServiceProvider;
 use Livewire\Volt\Volt;
+use Override;
 
 class BlogServiceProvider extends ServiceProvider
 {
+    #[Override]
     public function register(): void
     {
         $this->loadViewsFrom(resource_path('views/blog'), 'blog');

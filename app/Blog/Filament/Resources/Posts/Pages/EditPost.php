@@ -12,6 +12,7 @@ use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Override;
 
 class EditPost extends EditRecord
 {
@@ -47,6 +48,7 @@ class EditPost extends EditRecord
         ];
     }
 
+    #[Override]
     protected function mutateFormDataBeforeFill(array $data): array
     {
         return [

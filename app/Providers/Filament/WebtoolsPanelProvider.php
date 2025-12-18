@@ -24,6 +24,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Override;
 
 class WebtoolsPanelProvider extends PanelProvider
 {
@@ -75,6 +76,7 @@ class WebtoolsPanelProvider extends PanelProvider
             ]);
     }
 
+    #[Override]
     public function register(): void
     {
         parent::register();
