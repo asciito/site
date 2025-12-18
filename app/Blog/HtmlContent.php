@@ -17,10 +17,10 @@ class HtmlContent implements Htmlable, Stringable
     {
         $this->content = Str::of($this->content)
             ->replaceMatches(
-                '/<pre><code(?: class="language-([^"]+)")?>(.*?)<\/code><\/pre>/s',
+                '~<pre>\s*<code(?:\s+class="language-([^"]+)")?>(.*?)</code>\s*</pre>~s',
                 fn (array $matches) => view('site::torchlight', [
                     'content' => trim((string) $matches[2]),
-                    'language' => $matches[1] ?? 'text', // Si no hay language, usar 'text'
+                    'language' => $matches[1] ?? 'text',
                 ])
             );
 
