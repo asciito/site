@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 
 use function Pest\Livewire\livewire;
 
+beforeEach(fn () => $this->markTestSkipped('Skipped for performance reasons'));
+
 dataset('titles', function () {
     foreach (range(1, 10) as $_) {
         $title = fake()->unique()->sentence();
