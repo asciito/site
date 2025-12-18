@@ -104,6 +104,7 @@ class ProfilePage extends EditProfile
                 if (Storage::exists($filename)) {
                     Storage::delete($filename);
                 }
-            });
+            })
+            ->panelLayout(null);
     }
 }
