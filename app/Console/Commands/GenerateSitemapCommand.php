@@ -59,7 +59,7 @@ class GenerateSitemapCommand extends Command
             $time = File::lastModified(resource_path("views/site/pages/$page.blade.php"));
             $route = route($page);
             $lastModificationDate = Carbon::createFromTimestamp($time);
-        } elseif (isset($this->updated_at) && $updated_at = $page->updated_at) {
+        } elseif ($updated_at = $page->updated_at) {
             $route = route('post', $page);
             $lastModificationDate = $updated_at;
         } else {
