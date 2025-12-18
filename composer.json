@@ -75,7 +75,7 @@
         "test": "./vendor/bin/pest",
         "test:ci": "./vendor/bin/pest --ci",
         "lint": "./vendor/bin/phpstan analyse --memory-limit=1G",
-        "style": "./vendor/bin/pint --tests --dirty",
+        "style": "./vendor/bin/pint --test --dirty",
         "style:fix": "./vendor/bin/pint --dirty",
         "lint:with-style": [
             "@lint",
