@@ -144,7 +144,7 @@ class SettingsPage extends Page
     {
         return Action::make('save')
             ->label(__('Save'))
-            ->submit('save')
+            ->action('save')
             ->keyBindings(['mod+s']);
     }
 
@@ -195,18 +195,5 @@ class SettingsPage extends Page
             ])
             ->inlineLabel($this->hasInlineLabels())
             ->statePath('data');
-    }
-
-    public function getForms(): array
-    {
-        return [
-            'form' => $this->form(
-                $this->makeForm()
-                    ->schema($this->getFormSchema())
-                    ->statePath('data')
-                    ->columns()
-                    ->inlineLabel($this->hasInlineLabels())
-            ),
-        ];
     }
 }

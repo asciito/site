@@ -8,6 +8,10 @@ use Illuminate\Support\Carbon;
 
 trait ModelStatus
 {
+    public const string STATUS_COLUMN = 'status';
+
+    public const string PUBLISHED_AT_COLUMN = 'published';
+
     public static function bootModelStatus(): void
     {
         static::restoring(function ($model) {
@@ -84,7 +88,7 @@ trait ModelStatus
 
     public function getStatusColumn(): string
     {
-        return defined(static::class.'::STATUS_COLUMN') ? static::STATUS_COLUMN : 'status';
+        return static::STATUS_COLUMN;
     }
 
     public function setPublishedAt(?Carbon $value): static
@@ -96,7 +100,7 @@ trait ModelStatus
 
     public function getPublishedAtColumn(): string
     {
-        return defined(static::class.'::PUBLISHED_AT_COLUMN') ? static::PUBLISHED_AT_COLUMN : 'published_at';
+        return static::PUBLISHED_AT_COLUMN;
     }
 
     public function getQualifiedStatusColumn(): string

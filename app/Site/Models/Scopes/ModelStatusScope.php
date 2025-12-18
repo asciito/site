@@ -37,7 +37,7 @@ class ModelStatusScope implements Scope
 
     protected function addWithoutDrafts(Builder $builder): void
     {
-        $builder->macro('withoutDrafts', function ($builder): Builder {
+        $builder->macro('withoutDrafts', function (Builder $builder): Builder {
             $model = $builder->getModel();
 
             return $builder->withoutGlobalScope($this)->whereNot(
@@ -63,10 +63,10 @@ class ModelStatusScope implements Scope
 
     protected function onlyWithStatus(Builder $builder, Status $status): Builder
     {
-        /** @var Model&ModelStatus $model */
         $model = $builder->getModel();
 
         return $builder->withoutGlobalScope($this)->where(
+            /** @phpstan-ignore-next-line */
             $model->getQualifiedStatusColumn(),
             $status,
         );

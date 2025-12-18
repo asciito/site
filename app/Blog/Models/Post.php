@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Blog\Models;
 
+use App\Blog\Enums\Status;
 use App\Blog\HtmlContent;
 use App\Site\Models\Concerns\ModelStatus;
 use App\Site\Settings\SiteSettings;
@@ -33,6 +34,16 @@ use Spatie\Sitemap\Tags\Url;
 
 use function App\Helpers\getMediaImageDimensions;
 
+/**
+ * @property string $title
+ * @property string $slug
+ * @property Status $status
+ * @property string $content
+ * @property string $excerpt
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property ?Carbon $published_at
+ */
 class Post extends Model implements HasMedia, Sitemapable
 {
     use HasFactory;
