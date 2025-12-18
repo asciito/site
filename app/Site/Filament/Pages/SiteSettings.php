@@ -15,7 +15,6 @@ class SiteSettings extends Page
 
     protected static bool $shouldRegisterNavigation = false;
 
-
     public function getSettingsFields(): array
     {
         return [
@@ -53,7 +52,7 @@ class SiteSettings extends Page
                     ]),
                 ])
                 ->aside()
-                ->columnSpanFull()
+                ->columnSpanFull(),
         ];
     }
 }

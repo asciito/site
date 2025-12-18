@@ -24,8 +24,8 @@ use Illuminate\Support\Str;
 abstract class SettingsPage extends Page
 {
     use CanUseDatabaseTransactions;
-    use InteractsWithFormActions;
     use HasUnsavedDataChangesAlert;
+    use InteractsWithFormActions;
 
     public array $data = [];
 
@@ -47,7 +47,7 @@ abstract class SettingsPage extends Page
     {
         $group = $this->settings()->group;
 
-        return "Settings ".Str::headline($group);
+        return 'Settings '.Str::headline($group);
     }
 
     public function mount(): void
