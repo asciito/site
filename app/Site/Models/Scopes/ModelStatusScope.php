@@ -48,16 +48,12 @@ class ModelStatusScope implements Scope
 
     protected function addOnlyDrafts(Builder $builder): void
     {
-        $builder->macro('onlyDrafts', function (Builder $builder): Builder {
-            return $this->onlyWithStatus($builder, Status::DRAFT);
-        });
+        $builder->macro('onlyDrafts', fn (Builder $builder): Builder => $this->onlyWithStatus($builder, Status::DRAFT));
     }
 
     protected function addOnlyPublished(Builder $builder): void
     {
-        $builder->macro('onlyPublished', function (Builder $builder): Builder {
-            return $this->onlyWithStatus($builder, Status::PUBLISHED);
-        });
+        $builder->macro('onlyPublished', fn (Builder $builder): Builder => $this->onlyWithStatus($builder, Status::PUBLISHED));
     }
 
     protected function onlyWithStatus(Builder $builder, Status $status): Builder

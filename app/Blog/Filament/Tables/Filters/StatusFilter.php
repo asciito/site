@@ -3,6 +3,7 @@
 namespace App\Blog\Filament\Tables\Filters;
 
 use Filament\Tables\Filters\TernaryFilter;
+use Override;
 
 class StatusFilter extends TernaryFilter
 {
@@ -11,6 +12,7 @@ class StatusFilter extends TernaryFilter
         return 'status';
     }
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

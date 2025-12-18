@@ -10,7 +10,5 @@ Route::middleware(['track'])->group(function () {
     Route::get('/terms-of-use', [SiteController::class, 'terms'])->name('terms');
     Route::get('/privacy-policy', [SiteController::class, 'privacy'])->name('privacy');
 
-    Route::get('/{post:slug}', function (Post $post) {
-        return view('blog::pages.post', ['post' => $post]);
-    })->name('post');
+    Route::get('/{post:slug}', fn (Post $post) => view('blog::pages.post', ['post' => $post]))->name('post');
 });

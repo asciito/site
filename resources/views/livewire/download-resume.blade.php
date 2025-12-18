@@ -1,8 +1,10 @@
 <?php
 
+use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
 
 new class extends Component {
+    #[Computed]
     public function resumeExists(): bool
     {
         return \Illuminate\Support\Facades\Storage::exists('resume.pdf');
@@ -19,8 +21,16 @@ new class extends Component {
 }; ?>
 
 <x-site::button
-    wire:click="download"
-    wire:confirm="Are you ok with downloading my resume?"
-    should-expand>
-        {{ $this->resumeExists() ? 'Download my resume' : 'Resume not available' }}
+    x-data="{
+        canBeDownloaded: {{ json_encode($this->resumeExists) }},
+        download: function () {
+            if (! this.canBeDownloaded) return;
+
+            confirm('Are you ok with downloading my resume?') && $wire.download();
+        }
+    }"
+    @click="download"
+    :should-expand="true"
+>
+    {{ $this->resumeExists ? 'Download my resume' : 'Resume not available' }}
 </x-site::button>

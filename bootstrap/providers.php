@@ -1,10 +1,17 @@
 <?php
 
+use App\Blog\BlogServiceProvider;
+use App\Providers\AppServiceProvider;
+use App\Providers\Filament\WebtoolsPanelProvider;
+use App\Providers\VoltServiceProvider;
+use App\Settings\SettingsProvider;
+use App\Site\SiteServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\Filament\WebtoolsPanelProvider::class,
-    App\Settings\SettingsProvider::class,
-    App\Site\SiteServiceProvider::class,
-    App\Providers\VoltServiceProvider::class,
-    App\Blog\BlogServiceProvider::class,
+    AppServiceProvider::class,
+    WebtoolsPanelProvider::class,
+    SettingsProvider::class,
+    SiteServiceProvider::class,
+    VoltServiceProvider::class,
+    BlogServiceProvider::class,
 ];

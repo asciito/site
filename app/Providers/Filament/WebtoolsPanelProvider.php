@@ -3,12 +3,12 @@
 namespace App\Providers\Filament;
 
 use App\Site\Filament\Pages\ProfilePage;
-use App\Site\Filament\Pages\SettingsPage;
-use App\Site\Settings\SiteSettings;
+use App\Site\Filament\Pages\SiteSettings;
+use App\Site\Settings\SiteSettings as Settings;
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\MenuItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -24,6 +24,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Override;
 
 class WebtoolsPanelProvider extends PanelProvider
 {
@@ -31,13 +32,13 @@ class WebtoolsPanelProvider extends PanelProvider
     {
         return $panel
             ->darkMode(false)
-            ->brandName(fn (SiteSettings $settings) => $settings->name)
+            ->brandName(fn (Settings $settings) => $settings->name)
             ->profile(ProfilePage::class)
             ->userMenuItems([
-                MenuItem::make()
+                Action::make('settings-page')
                     ->label('Settings')
-                    ->url(fn () => SettingsPage::getUrl())
-                    ->icon('heroicon-o-cog-6-tooth'),
+                    ->url(fn () => SiteSettings::getUrl())
+                    ->icon(SiteSettings::getNavigationIcon()),
             ])
             ->default()
             ->id('webtools')
@@ -75,6 +76,7 @@ class WebtoolsPanelProvider extends PanelProvider
             ]);
     }
 
+    #[Override]
     public function register(): void
     {
         parent::register();

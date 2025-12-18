@@ -3,6 +3,7 @@
 namespace App\Site\View\Components;
 
 use Illuminate\Contracts\View\View;
+use Override;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class ErrorLayout extends Layout
@@ -16,6 +17,7 @@ class ErrorLayout extends Layout
         );
     }
 
+    #[Override]
     public function render(): View
     {
         return view('site::pages.layout.error');

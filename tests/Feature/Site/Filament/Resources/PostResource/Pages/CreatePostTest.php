@@ -1,55 +1,66 @@
 <?php
 
+use App\Blog\Enums\Status;
+use App\Blog\Filament\Resources\Posts\Pages\CreatePost;
+use App\Blog\Filament\Resources\Posts\Pages\EditPost;
+use App\Blog\Models\Post;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+
+use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Livewire\livewire;
+
 it('can render', function () {
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
+    livewire(CreatePost::class)
         ->assertSuccessful();
 });
 
 it('can create post', function () {
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
+    livewire(CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),
         ])
         ->assertFormSet([
-            'slug' => $slug = \Illuminate\Support\Str::slug($title),
+            'slug' => $slug = Str::slug($title),
         ])
         ->call('create')
         ->assertHasNoErrors();
 
-    \Pest\Laravel\assertDatabaseCount('posts', 1);
-    \Pest\Laravel\assertDatabaseHas('posts', [
+    assertDatabaseCount('posts', 1);
+    assertDatabaseHas('posts', [
         'title' => $title,
         'slug' => $slug,
-        'status' => \App\Blog\Enums\Status::DRAFT,
+        'status' => Status::DRAFT,
     ]);
 });
 
 it('can be published', function () {
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
+    livewire(CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),
         ])
         ->assertFormSet([
-            'slug' => \Illuminate\Support\Str::slug($title),
+            'slug' => Str::slug($title),
         ])
         ->callAction('publish')
         ->assertHasNoErrors()
-        ->assertRedirectToRoute(\App\Blog\Filament\Resources\Posts\Pages\EditPost::getRouteName(), ['record' => 1]);
+        ->assertRedirectToRoute(EditPost::getRouteName(), ['record' => 1]);
 
-    \Pest\Laravel\assertDatabaseHas('posts', [
+    assertDatabaseHas('posts', [
         'title' => $title,
-        'status' => \App\Blog\Enums\Status::PUBLISHED,
+        'status' => Status::PUBLISHED,
     ]);
 });
 
 it('can add thumbnail', function () {
     Storage::fake();
 
-    $image = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 1920, 1080);
+    $image = UploadedFile::fake()->image('fake-image.jpeg', 1920, 1080);
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
+    livewire(CreatePost::class)
         ->fillForm([
             'title' => fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -58,15 +69,15 @@ it('can add thumbnail', function () {
         ->call('create')
         ->assertHasNoErrors();
 
-    expect(\App\Blog\Models\Post::withDrafts()->first())
+    expect(Post::withDrafts()->first())
         ->getMedia()
         ->toHaveCount(1);
 });
 
 it('can\'t add over-dimensioned image', function () {
-    $image = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 2640, 1485);
+    $image = UploadedFile::fake()->image('fake-image.jpeg', 2640, 1485);
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
+    livewire(CreatePost::class)
         ->fillForm([
             'title' => fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -78,11 +89,11 @@ it('can\'t add over-dimensioned image', function () {
         ])
         ->errors();
 
-    \Pest\Laravel\assertDatabaseCount('posts', 0);
+    assertDatabaseCount('posts', 0);
 });
 
 it('can add excerpt', function () {
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\Posts\Pages\CreatePost::class)
+    livewire(CreatePost::class)
         ->fillForm([
             'title' => $title = fake()->sentence(),
             'content' => fake()->randomHtml(),
@@ -94,10 +105,10 @@ it('can add excerpt', function () {
         ->call('create')
         ->assertHasNoErrors();
 
-    \Pest\Laravel\assertDatabaseCount('posts', 1);
-    \Pest\Laravel\assertDatabaseHas('posts', [
+    assertDatabaseCount('posts', 1);
+    assertDatabaseHas('posts', [
         'title' => $title,
-        'slug' => \Illuminate\Support\Str::slug($title),
+        'slug' => Str::slug($title),
         'excerpt' => $excerpt,
     ]);
 });
