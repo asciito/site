@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Blog\Models\Post;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -50,17 +49,17 @@ class GenerateSitemapCommand extends Command
     }
 
     /**
-     * @template TModel of Model
+     * @template TModel of Post
      *
      * @param  string|TModel  $page
      */
-    protected function getPageUrl(string|Model $page): Url
+    protected function getPageUrl(string|Post $page): Url
     {
         if (is_string($page)) {
             $time = File::lastModified(resource_path("views/site/pages/$page.blade.php"));
             $route = route($page);
             $lastModificationDate = Carbon::createFromTimestamp($time);
-        } elseif ($page instanceof Model && $updated_at = $page->updated_at) {
+        } elseif (isset($this->updated_at) && $updated_at = $page->updated_at) {
             $route = route('post', $page);
             $lastModificationDate = $updated_at;
         } else {
