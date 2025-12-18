@@ -77,9 +77,13 @@
         "lint": "./vendor/bin/phpstan analyse --memory-limit=1G",
         "style": "./vendor/bin/pint --test --dirty",
         "style:fix": "./vendor/bin/pint --dirty",
-        "lint:with-style": [
+        "lint:style": [
             "@lint",
             "@style"
+        ],
+        "lint:style:fix": [
+            "@lint",
+            "@style:fix"
         ]
     },
     "extra": {
