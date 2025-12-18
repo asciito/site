@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Blog\Models\Post;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -53,8 +52,7 @@ class GenerateSitemapCommand extends Command
     /**
      * @template TModel of Model
      *
-     * @param string|TModel $page
-     * @return Url
+     * @param  string|TModel  $page
      */
     protected function getPageUrl(string|Model $page): Url
     {
@@ -62,7 +60,7 @@ class GenerateSitemapCommand extends Command
             $time = File::lastModified(resource_path("views/site/pages/$page.blade.php"));
 
             $lastModificationDate = Carbon::createFromTimestamp($time);
-        } elseif(property_exists($page, 'updated_at')) {
+        } elseif (property_exists($page, 'updated_at')) {
             $lastModificationDate = $page->updated_at;
         } else {
             throw new InvalidArgumentException('The page provided does not have a updated_at property.');

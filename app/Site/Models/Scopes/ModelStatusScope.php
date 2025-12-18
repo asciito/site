@@ -3,7 +3,6 @@
 namespace App\Site\Models\Scopes;
 
 use App\Blog\Enums\Status;
-use App\Site\Models\Concerns\ModelStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
