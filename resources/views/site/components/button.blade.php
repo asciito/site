@@ -32,7 +32,7 @@
 
 <div @class(['w-full flex flex-wrap', $positionClass])>
     <{{ $type }} {{ $attributes }}>
-        <span class="flex items-center" @class(['relative' => $showLoadingIndicator])>
+        <span class="flex items-center relative"])>
             <span>{{ $slot }}</span>
 
             @if ($showLoadingIndicator)
