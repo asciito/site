@@ -25,7 +25,7 @@
                     <nav id="menu" class="p-4 md:block">
                         <ol class="flex flex-col md:flex-row md:flex-wrap justify-center items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 text-md lg:text-xl">
                             <li>
-                                <a href="{{ route('home') }}" class="relative group p-1">
+                                <a href="{{ route('home') }}" class="relative group inline-block p-1">
                                     <span class="relative z-100">HOME</span>
                                     <span @class([
                                         "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
@@ -50,7 +50,7 @@
                                         x-on:click.prevent="handleScroll"
                                     @endif
                                     href="{{ $facade::is('home') ? '#about-me' : route('home', ['#about-me']) }}"
-                                    class="relative group p-1"
+                                    class="relative group inline-block p-1"
                                 >
                                     <span class="relative z-100">ABOUT ME</span>
                                     <span @class([
@@ -63,7 +63,7 @@
                             </li>
 
                             <li>
-                                <a href="{{ route('contact') }}" class="relative group p-1">
+                                <a href="{{ route('contact') }}" class="relative group inline-block p-1">
                                     <span class="relative z-100">CONTACT</span>
                                     <span @class([
                                         "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
