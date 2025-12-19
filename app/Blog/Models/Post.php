@@ -252,7 +252,7 @@ class Post extends Model implements HasMedia, Sitemapable
                 $replacers = [$indent, $marker, $title];
 
                 if (! $withLinks) {
-                    $link .= ' <span>**%s**</span>';
+                    $link .= ' **%s**';
                 } else {
                     $link .= ' [%s](%s)';
                     $replacers = [...$replacers, str($title)->slug()];
