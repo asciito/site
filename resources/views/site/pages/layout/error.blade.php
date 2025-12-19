@@ -12,17 +12,11 @@
 
                 @if ($code < 500)
                     <div>
-                        @php
-                            $onSite = \Illuminate\Support\Str::contains(url()->previous(), request()->getHost());
-
-                            $safeBackUrl = $onSite ? url()->previous() : route('home');
-                        @endphp
-
-                        <x-site::button class="flex" :href="$safeBackUrl">
+                        <x-site::button class="flex" :href="route('home')">
                             <div class="flex gap-2 items-center">
                                 <x-heroicon-c-arrow-left class="w-5"/>
 
-                                Go Back
+                                Go Back Home
                             </div>
                         </x-site::button>
                     </div>
