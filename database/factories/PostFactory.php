@@ -24,8 +24,17 @@ class PostFactory extends Factory
         return [
             'title' => $title = fake()->unique()->realText(80),
             'slug' => Str::slug($title),
-            'content' => $this->fakeMarkdown(),
+            'content' => $this->fakeHtml(),
         ];
+    }
+
+    protected function fakeHtml(): string
+    {
+        $content = fake()->randomHtml(10, 10);
+
+        return (string) Str::of($content)
+            ->match('~<body>(.*?)</body>~s')
+            ->replaceMatches('~(<h1>.*?</h1>)~', '');
     }
 
     protected function fakeMarkdown(): string
