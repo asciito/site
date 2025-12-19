@@ -21,7 +21,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -110,7 +110,8 @@ class PostResource extends Resource
                                         ->disabled(fn (?Post $record) => $record?->isPublished()),
                                     Hidden::make('editing')
                                         ->default(false),
-                                    MarkdownEditor::make('content')
+                                    RichEditor::make('content')
+                                        ->grow()
                                         ->required()
                                         ->columnSpanFull(),
                                 ])

@@ -11,13 +11,15 @@ use App\Site\Settings\SiteSettings;
 use Database\Factories\PostFactory;
 use DOMDocument;
 use DOMElement;
+use Filament\Forms\Components\RichEditor\FileAttachmentProviders\SpatieMediaLibraryFileAttachmentProvider;
+use Filament\Forms\Components\RichEditor\Models\Concerns\InteractsWithRichContent;
+use Filament\Forms\Components\RichEditor\Models\Contracts\HasRichContent;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -45,11 +47,12 @@ use function App\Helpers\getMediaImageDimensions;
  * @property Carbon $updated_at
  * @property ?Carbon $published_at
  */
-class Post extends Model implements HasMedia, Sitemapable
+class Post extends Model implements HasMedia, HasRichContent, Sitemapable
 {
     use HasFactory;
     use HasSEO;
     use InteractsWithMedia;
+    use InteractsWithRichContent;
     use ModelStatus;
     use SoftDeletes;
 
@@ -62,20 +65,9 @@ class Post extends Model implements HasMedia, Sitemapable
         'published_at',
     ];
 
-    public function getContent(bool $withTorchlight = true): Htmlable
+    public function getContent(bool $withTorchlight = true): HtmlContent
     {
-        return new HtmlContent($this->getRawContent(), $withTorchlight);
-    }
-
-    public function getRawContent(): string
-    {
-        if (app()->isProduction()) {
-            $key = $this->calculateCacheKey('content', $this->updated_at->timestamp);
-
-            return cache()->rememberForever($key, fn () => Markdown::convert($this->content)->getContent());
-        }
-
-        return Markdown::convert($this->content)->getContent();
+        return new HtmlContent($this->renderRichContent('content'), $withTorchlight);
     }
 
     public function getExcerpt(string $end = '...'): string
@@ -86,7 +78,7 @@ class Post extends Model implements HasMedia, Sitemapable
 
         $dom = new DOMDocument;
         libxml_use_internal_errors(true);
-        $dom->loadHTML(mb_convert_encoding($this->getContent(false)->toHtml(), 'HTML-ENTITIES', 'UTF-8'));
+        $dom->loadHTML(mb_convert_encoding((string) $this->getContent(false), 'HTML-ENTITIES', 'UTF-8'));
         libxml_clear_errors();
 
         $text = collect($dom->getElementsByTagName('p'))
@@ -162,7 +154,7 @@ class Post extends Model implements HasMedia, Sitemapable
     }
 
     #[Override]
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, $field = null): ?self
     {
         return parent::resolveRouteBindingQuery($this, $value, $field)
             /** @phpstan-ignore-next-line */
@@ -174,46 +166,6 @@ class Post extends Model implements HasMedia, Sitemapable
     {
         return Url::create(route('post', $this))
             ->setLastModificationDate($this->updated_at);
-    }
-
-    public static function calculateCacheKeyUsing(?callable $callback = null): ?callable
-    {
-        return $callback;
-    }
-
-    public function calculateCacheKey(string ...$key): string
-    {
-        $calculateCacheKeyUsing = static::calculateCacheKeyUsing();
-
-        return (
-            $calculateCacheKeyUsing
-                ? $calculateCacheKeyUsing()
-                : (fn (self $post, ...$key): string => class_basename($post).'::'.$post->id.'.'.Arr::join($key, '.'))
-        )($this, ...$key);
-    }
-
-    #[Override]
-    protected static function booted(): void
-    {
-        if (app()->isProduction()) {
-            static::updating(function (Post $post) {
-                $oldKey = $post->calculateCacheKey('content', $post->getOriginal('updated_at')->timestamp);
-
-                cache()->forget($oldKey);
-            });
-
-            static::deleted(function (Post $post) {
-                $key = $post->calculateCacheKey('content', $post->updated_at->timestamp);
-
-                cache()->forget($key);
-            });
-
-            static::restored(function (Post $post) {
-                $key = $post->calculateCacheKey('content', $post->updated_at->timestamp);
-
-                cache()->forget($key);
-            });
-        }
     }
 
     public function getTableOfContent(bool $unordered = true): ?HtmlString
@@ -258,6 +210,11 @@ class Post extends Model implements HasMedia, Sitemapable
             })->join("\n");
 
         return $toc ? str($toc)->markdown()->toHtmlString() : null;
+    }
+
+    public function setUpRichContent(): void
+    {
+        $this->registerRichContent('content')->fileAttachmentProvider(SpatieMediaLibraryFileAttachmentProvider::make());
     }
 
     protected static function newFactory(): PostFactory

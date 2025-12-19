@@ -1,7 +1,7 @@
 @props(['content', 'language'])
 
 @php
-    $content = htmlspecialchars_decode($content)
+    $content = html_entity_decode($content)
 @endphp
 
 <div
