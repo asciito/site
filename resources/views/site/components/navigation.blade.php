@@ -28,7 +28,7 @@
                                 <a href="{{ route('home') }}" class="relative group inline-block p-1">
                                     <span class="relative z-100">HOME</span>
                                     <span @class([
-                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                        "absolute inset-0",
                                         "w-full h-full",
                                         "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! $facade::is('home'),
                                         "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
@@ -54,7 +54,7 @@
                                 >
                                     <span class="relative z-100">ABOUT ME</span>
                                     <span @class([
-                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                        "absolute inset-0",
                                         "w-full h-full",
                                         "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]",
                                         "transition duration-100",
@@ -66,7 +66,7 @@
                                 <a href="{{ route('contact') }}" class="relative group inline-block p-1">
                                     <span class="relative z-100">CONTACT</span>
                                     <span @class([
-                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                        "absolute inset-0",
                                         "w-full h-full",
                                         "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! $facade::is('contact'),
                                         "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
