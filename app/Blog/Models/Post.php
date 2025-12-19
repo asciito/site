@@ -216,7 +216,7 @@ class Post extends Model implements HasMedia, Sitemapable
         }
     }
 
-    public function getTableOfContent(bool $unordered = true): ?HtmlString
+    public function getTableOfContent(bool $withLinks = true, bool $unordered = true): ?HtmlString
     {
         preg_match_all('/^(?<size>#{2,6})\h+(?<title>.+)$/m', $this->content, $matches);
 
@@ -228,7 +228,7 @@ class Post extends Model implements HasMedia, Sitemapable
 
         $toc = collect($matches['size'])
             ->zip($matches['title'])
-            ->map(function (Collection $heading) use (&$counters, $unordered) {
+            ->map(function (Collection $heading) use ($withLinks, &$counters, $unordered) {
                 [$size, $title] = $heading;
 
                 $level = strlen($size);
@@ -248,12 +248,19 @@ class Post extends Model implements HasMedia, Sitemapable
                     $marker = $counters[$level].'.';
                 }
 
+                $link = '%s%s';
+                $replacers = [$indent, $marker, $title];
+
+                if (! $withLinks) {
+                    $link .= ' <span>**%s**</span>';
+                } else {
+                    $link .= ' [%s](%s)';
+                    $replacers = [...$replacers, str($title)->slug()];
+                }
+
                 return sprintf(
-                    '%s%s [%s](#%s)',
-                    $indent,
-                    $marker,
-                    $title,
-                    str($title)->slug(),
+                    $link,
+                    ...$replacers
                 );
             })->join("\n");
 
