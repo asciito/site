@@ -225,10 +225,11 @@ class Post extends Model implements HasMedia, Sitemapable
         }
 
         $counters = [];
+        $baseTemplate = '%s%s '.($withLinks ? '[%s](%s)' : '**%s**');
 
         $toc = collect($matches['size'])
             ->zip($matches['title'])
-            ->map(function (Collection $heading) use ($withLinks, &$counters, $unordered) {
+            ->map(function (Collection $heading) use ($baseTemplate, &$counters, $unordered) {
                 [$size, $title] = $heading;
 
                 $level = strlen($size);
@@ -248,20 +249,7 @@ class Post extends Model implements HasMedia, Sitemapable
                     $marker = $counters[$level].'.';
                 }
 
-                $link = '%s%s';
-                $replacers = [$indent, $marker, $title];
-
-                if (! $withLinks) {
-                    $link .= ' **%s**';
-                } else {
-                    $link .= ' [%s](%s)';
-                    $replacers = [...$replacers, str($title)->slug()];
-                }
-
-                return sprintf(
-                    $link,
-                    ...$replacers
-                );
+                return sprintf($baseTemplate, $indent, $marker, $title, str($title)->slug());
             })->join("\n");
 
         return $toc ? str($toc)->markdown()->toHtmlString() : null;
