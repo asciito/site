@@ -176,7 +176,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
         }
 
         $counters = [];
-        $baseTemplate = '%s%s '.($withLinks ? '[%s](%s)' : '**%s**');
+        $baseTemplate = '%s%s '.($withLinks ? '[%s](#%s)' : '**%s**');
 
         $toc = collect($matches['size'])
             ->zip($matches['title'])
