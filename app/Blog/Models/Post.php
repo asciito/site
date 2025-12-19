@@ -64,7 +64,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
         'published_at',
     ];
 
-    public function getContent(bool $withTorchlight = true): HtmlContent
+    public function getContent(bool $withTorchlight = true): Htmlable
     {
         return new HtmlContent($this->renderRichContent('content'), $withTorchlight);
     }
@@ -77,7 +77,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
 
         $dom = new DOMDocument;
         libxml_use_internal_errors(true);
-        $dom->loadHTML(mb_convert_encoding((string) $this->getContent(false), 'HTML-ENTITIES', 'UTF-8'));
+        $dom->loadHTML(mb_convert_encoding($this->getContent(false)->toHtml(), 'HTML-ENTITIES', 'UTF-8'));
         libxml_clear_errors();
 
         $text = collect($dom->getElementsByTagName('p'))
