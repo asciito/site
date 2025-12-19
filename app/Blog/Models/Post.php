@@ -11,13 +11,14 @@ use App\Site\Settings\SiteSettings;
 use Database\Factories\PostFactory;
 use DOMDocument;
 use DOMElement;
-use GrahamCampbell\Markdown\Facades\Markdown;
+use Filament\Forms\Components\RichEditor\FileAttachmentProviders\SpatieMediaLibraryFileAttachmentProvider;
+use Filament\Forms\Components\RichEditor\Models\Concerns\InteractsWithRichContent;
+use Filament\Forms\Components\RichEditor\Models\Contracts\HasRichContent;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -45,11 +46,12 @@ use function App\Helpers\getMediaImageDimensions;
  * @property Carbon $updated_at
  * @property ?Carbon $published_at
  */
-class Post extends Model implements HasMedia, Sitemapable
+class Post extends Model implements HasMedia, HasRichContent, Sitemapable
 {
     use HasFactory;
     use HasSEO;
     use InteractsWithMedia;
+    use InteractsWithRichContent;
     use ModelStatus;
     use SoftDeletes;
 
@@ -64,18 +66,7 @@ class Post extends Model implements HasMedia, Sitemapable
 
     public function getContent(bool $withTorchlight = true): Htmlable
     {
-        return new HtmlContent($this->getRawContent(), $withTorchlight);
-    }
-
-    public function getRawContent(): string
-    {
-        if (app()->isProduction()) {
-            $key = $this->calculateCacheKey('content', $this->updated_at->timestamp);
-
-            return cache()->rememberForever($key, fn () => Markdown::convert($this->content)->getContent());
-        }
-
-        return Markdown::convert($this->content)->getContent();
+        return new HtmlContent($this->renderRichContent('content'), $withTorchlight);
     }
 
     public function getExcerpt(string $end = '...'): string
@@ -162,7 +153,7 @@ class Post extends Model implements HasMedia, Sitemapable
     }
 
     #[Override]
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, $field = null): ?self
     {
         return parent::resolveRouteBindingQuery($this, $value, $field)
             /** @phpstan-ignore-next-line */
@@ -176,49 +167,9 @@ class Post extends Model implements HasMedia, Sitemapable
             ->setLastModificationDate($this->updated_at);
     }
 
-    public static function calculateCacheKeyUsing(?callable $callback = null): ?callable
-    {
-        return $callback;
-    }
-
-    public function calculateCacheKey(string ...$key): string
-    {
-        $calculateCacheKeyUsing = static::calculateCacheKeyUsing();
-
-        return (
-            $calculateCacheKeyUsing
-                ? $calculateCacheKeyUsing()
-                : (fn (self $post, ...$key): string => class_basename($post).'::'.$post->id.'.'.Arr::join($key, '.'))
-        )($this, ...$key);
-    }
-
-    #[Override]
-    protected static function booted(): void
-    {
-        if (app()->isProduction()) {
-            static::updating(function (Post $post) {
-                $oldKey = $post->calculateCacheKey('content', $post->getOriginal('updated_at')->timestamp);
-
-                cache()->forget($oldKey);
-            });
-
-            static::deleted(function (Post $post) {
-                $key = $post->calculateCacheKey('content', $post->updated_at->timestamp);
-
-                cache()->forget($key);
-            });
-
-            static::restored(function (Post $post) {
-                $key = $post->calculateCacheKey('content', $post->updated_at->timestamp);
-
-                cache()->forget($key);
-            });
-        }
-    }
-
     public function getTableOfContent(bool $withLinks = true, bool $unordered = true): ?HtmlString
     {
-        preg_match_all('/^(?<size>#{2,6})\h+(?<title>.+)$/m', $this->content, $matches);
+        preg_match_all('~<(?<tag>h(?<size>[2-6]))[^>]*>(?<title>(?!\s*</\k<tag>>)[\s\S]*?)</\k<tag>>~', $this->content, $matches);
 
         if (empty($matches['size']) || empty($matches['title'])) {
             return null;
@@ -232,7 +183,7 @@ class Post extends Model implements HasMedia, Sitemapable
             ->map(function (Collection $heading) use ($baseTemplate, &$counters, $unordered) {
                 [$size, $title] = $heading;
 
-                $level = strlen($size);
+                $level = (int) $size;
 
                 // Indent by 4 spaces per nesting level (Markdown convention)
                 $indent = str_repeat(' ', ($level - 2) * 4);
@@ -241,7 +192,7 @@ class Post extends Model implements HasMedia, Sitemapable
                     $marker = '-';
                 } else {
                     // Reset deeper levels when we come back up
-                    for ($l = $level + 1; $l <= 6; $l++) {
+                    for ($l = $level + 1; $l <= 3; $l++) {
                         unset($counters[$l]);
                     }
 
@@ -253,6 +204,11 @@ class Post extends Model implements HasMedia, Sitemapable
             })->join("\n");
 
         return $toc ? str($toc)->markdown()->toHtmlString() : null;
+    }
+
+    public function setUpRichContent(): void
+    {
+        $this->registerRichContent('content')->fileAttachmentProvider(SpatieMediaLibraryFileAttachmentProvider::make());
     }
 
     protected static function newFactory(): PostFactory

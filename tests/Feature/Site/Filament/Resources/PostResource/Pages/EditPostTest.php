@@ -20,7 +20,7 @@ it('can fill edit form', function () {
         ->fillForm([
             'title' => $title = 'This is a new title',
             'slug' => $slug = 'just-a-new-slug',
-            'content' => $content = fake()->randomHtml(),
+            'content' => $content = Post::factory()->fakeHtml(),
         ])
         ->assertFormSet([
             'title' => $title,
