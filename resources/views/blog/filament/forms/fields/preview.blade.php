@@ -1,4 +1,5 @@
 @php
+    /** @var \App\Blog\Models\Post $record */
     $record = $this->getRecord();
 @endphp
 
@@ -6,6 +7,16 @@
     <div class="fi-prose">
         <h1>{{ $record->title }}</h1>
 
-        {{ $record->getContent(withTorchlight: true) }}
+        <hr>
+
+        @if ($toc = $record->getTableOfContent(withLinks: false))
+            <h2>Table of Content</h2>
+
+            {!! $toc !!}
+        @endif
+
+        <hr>
+
+        {{ $record->getContent(withTorchlight: false) }}
     </div>
 </div>

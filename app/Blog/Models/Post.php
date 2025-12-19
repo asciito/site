@@ -14,7 +14,6 @@ use DOMElement;
 use Filament\Forms\Components\RichEditor\FileAttachmentProviders\SpatieMediaLibraryFileAttachmentProvider;
 use Filament\Forms\Components\RichEditor\Models\Concerns\InteractsWithRichContent;
 use Filament\Forms\Components\RichEditor\Models\Contracts\HasRichContent;
-use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -168,22 +167,23 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
             ->setLastModificationDate($this->updated_at);
     }
 
-    public function getTableOfContent(bool $unordered = true): ?HtmlString
+    public function getTableOfContent(bool $withLinks = true, bool $unordered = true): ?HtmlString
     {
-        preg_match_all('/^(?<size>#{2,6})\h+(?<title>.+)$/m', $this->content, $matches);
+        preg_match_all('~<(?<tag>h(?<size>[2-6]))[^>]*>(?<title>(?!\s*</\k<tag>>)[\s\S]*?)</\k<tag>>~', $this->content, $matches);
 
         if (empty($matches['size']) || empty($matches['title'])) {
             return null;
         }
 
         $counters = [];
+        $baseTemplate = '%s%s '.($withLinks ? '[%s](%s)' : '**%s**');
 
         $toc = collect($matches['size'])
             ->zip($matches['title'])
-            ->map(function (Collection $heading) use (&$counters, $unordered) {
+            ->map(function (Collection $heading) use ($baseTemplate, &$counters, $unordered) {
                 [$size, $title] = $heading;
 
-                $level = strlen($size);
+                $level = (int) $size;
 
                 // Indent by 4 spaces per nesting level (Markdown convention)
                 $indent = str_repeat(' ', ($level - 2) * 4);
@@ -192,7 +192,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
                     $marker = '-';
                 } else {
                     // Reset deeper levels when we come back up
-                    for ($l = $level + 1; $l <= 6; $l++) {
+                    for ($l = $level + 1; $l <= 3; $l++) {
                         unset($counters[$l]);
                     }
 
@@ -200,13 +200,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
                     $marker = $counters[$level].'.';
                 }
 
-                return sprintf(
-                    '%s%s [%s](#%s)',
-                    $indent,
-                    $marker,
-                    $title,
-                    str($title)->slug(),
-                );
+                return sprintf($baseTemplate, $indent, $marker, $title, str($title)->slug());
             })->join("\n");
 
         return $toc ? str($toc)->markdown()->toHtmlString() : null;
