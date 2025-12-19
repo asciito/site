@@ -36,9 +36,10 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $title = fake()->unique()->realText(80);
 
         return [
-            'title' => $title = fake()->unique()->realText(80),
+            'title' => trim($title, ' .'),
             'slug' => Str::slug($title),
             'content' => $this->fakeHtml(),
         ];
@@ -46,7 +47,7 @@ class PostFactory extends Factory
 
     public function fakeHtml(): string
     {
-        $content = $this->createElement(fake()->sentence(random_int(5, 8)), 'h2');
+        $content = $this->createElement(trim(fake()->sentence(random_int(5, 8)), ' .'), 'h2');
 
         foreach (range(1, random_int(2, 10)) as $_) {
             $paragraphs = fake()->paragraphs(random_int(1, 5));
@@ -59,7 +60,7 @@ class PostFactory extends Factory
                 $list = '';
 
                 foreach (range(1, random_int(1, 7)) as $_) {
-                    $list .= $this->createElement(fake()->sentence(random_int(5, 8)), 'li');
+                    $list .= $this->createElement(trim(fake()->sentence(random_int(5, 8)), ' .'), 'li');
                 }
 
                 $content .= $this->createElement($list, fake()->randomElement(['ul', 'ol']));
@@ -70,7 +71,7 @@ class PostFactory extends Factory
             }
 
             $heading = fake()->randomElement(['h2', 'h3', 'h4', 'h5', 'h6']);
-            $content .= $this->createElement(fake()->sentence(random_int(5, 8)), $heading);
+            $content .= $this->createElement(trim(fake()->sentence(random_int(5, 8)), ' .'), $heading);
 
             $content .= $this->createElement(fake()->paragraph(1), 'p');
         }
@@ -82,7 +83,7 @@ class PostFactory extends Factory
     {
         $newLines = "\n\n";
 
-        $content = $this->createElement(fake()->sentence(random_int(5, 8)), 'h2', true).$newLines;
+        $content = $this->createElement(trim(fake()->sentence(random_int(5, 8)), ' .'), 'h2', true).$newLines;
 
         foreach (range(1, random_int(2, 10)) as $_) {
             $paragraphs = fake()->paragraphs(random_int(1, 5));
@@ -95,7 +96,7 @@ class PostFactory extends Factory
                 $list = '';
 
                 foreach (range(1, random_int(1, 7)) as $_) {
-                    $list .= $this->createElement(fake()->sentence(random_int(5, 8)), 'li', true)."\n";
+                    $list .= $this->createElement(trim(fake()->sentence(random_int(5, 8)), ' .'), 'li', true)."\n";
                 }
 
                 $content .= $list ? "$list\n" : '';
@@ -106,7 +107,7 @@ class PostFactory extends Factory
             }
 
             $heading = fake()->randomElement(['h2', 'h3', 'h4']);
-            $content .= $this->createElement(fake()->sentence(random_int(5, 8)), $heading, true).$newLines;
+            $content .= $this->createElement(trim(fake()->sentence(random_int(5, 8)), ' .'), $heading, true).$newLines;
 
             $content .= $this->createElement(fake()->paragraph(1), 'p', true).$newLines;
         }
