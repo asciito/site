@@ -38,11 +38,11 @@
         x-init="handleScroll();"
         @scroll.window.throttle.50ms="handleScroll()"
     >
-        @auth
-            <livewire:adminbar />
-        @endauth
-
         @if ($shouldShowNavigation)
+            @auth
+                <livewire:adminbar />
+            @endauth
+
             <x-site::navigation />
         @endif
     </div>
