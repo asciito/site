@@ -104,6 +104,9 @@
         @apply max-w-full prose
             prose-figcaption:mt-0 has-[figcaption]:prose-img:mb-2
 
+            /** miscellanea **/
+            prose-hr:my-10
+
             /** anchor **/
             prose-a:font-semibold prose-a:underline-offset-2 prose-a:hover:text-dark-blue-200 prose-a:visited:text-dark-blue
 
