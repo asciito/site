@@ -109,6 +109,9 @@
 
             /** blockquote **/
             prose-blockquote:border-s-dark-blue/50 prose-blockquote:text-slate-800/50
+
+            /** (un)ordered list **/
+            prose-ul:pl-5 prose-ol:pl-9
     }
 }
 
