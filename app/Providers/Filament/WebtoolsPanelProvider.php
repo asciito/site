@@ -45,9 +45,9 @@ class WebtoolsPanelProvider extends PanelProvider
             ->path(config('site.webtools_path'))
             ->login()
             ->colors([
-                'primary' => '#0000AA',
-                'secondary' => '#33FF33',
-                'success' => '#33FF33',
+                'primary' => '#33ff33',
+                'secondary' => '#0000aa',
+                'success' => '#5cff5c',
             ])
             ->discoverResources(in: app_path('Site/Filament/Resources'), for: 'App\\Site\\Filament\\Resources')
             ->discoverResources(in: app_path('Blog/Filament/Resources'), for: 'App\\Blog\\Filament\\Resources')
