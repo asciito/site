@@ -1,6 +1,7 @@
 <?php
 
 use Filament\Facades\Filament;
+use Filament\Support\Enums\IconSize;
 use Illuminate\Support\Facades\Session;
 use Livewire\Volt\Component;
 
@@ -25,18 +26,17 @@ new class extends Component {
 
 <div class="relative h-16 bg-white shadow-sm z-9999">
     <div class="mx-auto h-full">
-        <nav class="h-full flex items-center justify-between text-dark-blue-600 text-sm px-4 md:px-4 lg:px-6">
+        <nav class="h-full flex items-center justify-between text-dark-blue text-sm px-4">
             <ul class="flex items-center justify-start gap-6">
                 <li>
-                    <a
-                        href="{{ route('filament.webtools.pages.dashboard') }}"
-                        class="group/link relative inline-flex items-center justify-center outline-hidden gap-1.5 cursor-pointer"
+                    <x-filament::link
+                        :href="route('filament.webtools.pages.dashboard')"
+                        :icon-size="IconSize::Small"
+                        icon="heroicon-s-wrench-screwdriver"
+                        class="cursor-pointer text-blue-700"
                     >
-                        <x-icon name="heroicon-s-wrench-screwdriver" class="w-4"/>
-
-                        <span
-                            class="font-semibold group-hover/link:underline group-focus-visible/link:underline text-sm">Webtools</span>
-                    </a>
+                        <strong>Webtools</strong>
+                    </x-filament::link>
                 </li>
 
                 @if (\Illuminate\Support\Facades\Route::is('post'))

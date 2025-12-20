@@ -80,6 +80,7 @@ class ProfilePage extends EditProfile
                 'bold',
                 'bulletList',
                 'codeBlock',
+                'h1',
                 'h2',
                 'h3',
                 'italic',

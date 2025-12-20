@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
 {
@@ -69,6 +70,29 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return "https://ui-avatars.com/api/?name={$this->name}&color=FFFFFF&background=0000AA";
+        /** @var string $colors */
+        $colors = with(
+            filament()->getPanel('webtools'),
+            function (Panel $panel): string {
+                $template = 'color=%s&background=%s';
+                $bg = $panel->getColors()['primary'];
+                $text = '0b0809';
+
+                return sprintf(
+                    $template,
+                    $text,
+                    trim($bg, '#'),
+                );
+            }
+        );
+
+        $name = Str::of($this->name)
+            ->headline()
+            ->explode(' ')
+            ->map(fn ($word) => substr($word, 0, 1))
+            ->splice(0, 2)
+            ->join(' ');
+
+        return "https://ui-avatars.com/api/?name=$name&$colors";
     }
 }
