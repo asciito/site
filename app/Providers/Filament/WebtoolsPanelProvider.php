@@ -88,8 +88,9 @@ class WebtoolsPanelProvider extends PanelProvider
                     :href="route('home')"
                     icon="heroicon-s-globe-alt"
                     class="cursor-pointer"
+                    color="secondary"
                 >
-                    Site
+                    <strong>Site</strong>
                 </x-filament::link>
             HTML)
         );
