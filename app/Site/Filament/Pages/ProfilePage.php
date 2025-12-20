@@ -4,7 +4,7 @@ namespace App\Site\Filament\Pages;
 
 use Filament\Auth\Pages\EditProfile;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\RichEditor;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -50,18 +50,21 @@ class ProfilePage extends EditProfile
 
     protected function getDescriptionFormComponent(): Component
     {
-        return MarkdownEditor::make('description')
+        return RichEditor::make('description')
             ->label(__('Description'))
             ->toolbarButtons([
                 'blockquote',
                 'bold',
                 'bulletList',
+                'codeBlock',
+                'h2',
+                'h3',
                 'italic',
                 'link',
-                'heading',
                 'orderedList',
                 'redo',
                 'strike',
+                'underline',
                 'undo',
             ])
             ->grow()
@@ -70,15 +73,21 @@ class ProfilePage extends EditProfile
 
     protected function getIntroductionComponent(): Component
     {
-        return MarkdownEditor::make('introduction')
+        return RichEditor::make('introduction')
             ->label(__('Introduction'))
             ->toolbarButtons([
+                'blockquote',
                 'bold',
+                'bulletList',
+                'codeBlock',
+                'h2',
+                'h3',
                 'italic',
                 'link',
-                'heading',
+                'orderedList',
                 'redo',
                 'strike',
+                'underline',
                 'undo',
             ])
             ->grow()
