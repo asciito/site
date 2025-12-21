@@ -1,6 +1,6 @@
 <?php
 
-use App\Blog\Models\Post;
+use App\Models\Post;
 
 use function Pest\Laravel\get;
 

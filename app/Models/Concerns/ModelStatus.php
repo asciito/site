@@ -2,7 +2,7 @@
 
 namespace App\Models\Concerns;
 
-use App\Blog\Enums\Status;
+use App\Enums\Status;
 use App\Models\Scopes\ModelStatusScope;
 use Illuminate\Support\Carbon;
 

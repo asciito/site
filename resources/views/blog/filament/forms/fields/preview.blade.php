@@ -1,5 +1,5 @@
 @php
-    /** @var \App\Blog\Models\Post $record */
+    /** @var \App\Models\Post $record */
     $record = $this->getRecord();
 @endphp
 

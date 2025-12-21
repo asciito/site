@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Blog\Filament\Tables\Filters;
+namespace App\Filament\Tables\Filters;
 
 use Filament\Tables\Filters\TernaryFilter;
 use Override;

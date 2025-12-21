@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Blog\Filament\Resources\Posts\Pages;
+namespace App\Filament\Resources\Posts\Pages;
 
-use App\Blog\Filament\Resources\Posts\PostResource;
+use App\Filament\Resources\Posts\PostResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 

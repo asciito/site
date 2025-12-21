@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Blog\Filament\Resources\Posts\Pages;
+namespace App\Filament\Resources\Posts\Pages;
 
-use App\Blog\Filament\Resources\Posts\PostResource;
-use App\Blog\Models\Post;
+use App\Filament\Resources\Posts\PostResource;
+use App\Models\Post;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Blog\Models;
+namespace App\Models;
 
-use App\Blog\Enums\Status;
-use App\Blog\HtmlContent;
+use App\Enums\Status;
+use App\HtmlContent;
 use App\Models\Concerns\ModelStatus;
 use App\Settings\SiteSettings;
 use Database\Factories\PostFactory;

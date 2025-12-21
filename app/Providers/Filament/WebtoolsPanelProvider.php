@@ -49,7 +49,6 @@ class WebtoolsPanelProvider extends PanelProvider
                 'secondary' => '#0000aa',
                 'success' => '#5cff5c',
             ])
-            ->discoverResources(in: app_path('Blog/Filament/Resources'), for: 'App\\Blog\\Filament\\Resources')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

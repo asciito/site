@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Blog\Filament\Resources\Posts;
+namespace App\Filament\Resources\Posts;
 
-use App\Blog\Enums\Status;
-use App\Blog\Filament\Resources\Posts\Pages\CreatePost;
-use App\Blog\Filament\Resources\Posts\Pages\EditPost;
-use App\Blog\Filament\Resources\Posts\Pages\ListPosts;
-use App\Blog\Filament\Tables\Filters\StatusFilter;
-use App\Blog\Models\Post;
+use App\Enums\Status;
+use App\Filament\Resources\Posts\Pages\CreatePost;
+use App\Filament\Resources\Posts\Pages\EditPost;
+use App\Filament\Resources\Posts\Pages\ListPosts;
+use App\Filament\Tables\Filters\StatusFilter;
+use App\Models\Post;
 use App\Models\Scopes\ModelStatusScope;
 use BackedEnum;
 use Closure;

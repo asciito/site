@@ -1,9 +1,9 @@
 <?php
 
-use App\Blog\Enums\Status;
-use App\Blog\Filament\Resources\Posts\Pages\CreatePost;
-use App\Blog\Filament\Resources\Posts\Pages\EditPost;
-use App\Blog\Models\Post;
+use App\Enums\Status;
+use App\Filament\Resources\Posts\Pages\CreatePost;
+use App\Filament\Resources\Posts\Pages\EditPost;
+use App\Models\Post;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
