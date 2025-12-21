@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Site\Filament\Pages;
+namespace App\Filament\Pages;
 
 use App\Filament\Pages\SettingsPage as Page;
-use App\Site\Settings\SiteSettings as Settings;
+use App\Settings\SiteSettings as Settings;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;

@@ -8,7 +8,7 @@ use App\Blog\Filament\Resources\Posts\Pages\EditPost;
 use App\Blog\Filament\Resources\Posts\Pages\ListPosts;
 use App\Blog\Filament\Tables\Filters\StatusFilter;
 use App\Blog\Models\Post;
-use App\Site\Models\Scopes\ModelStatusScope;
+use App\Models\Scopes\ModelStatusScope;
 use BackedEnum;
 use Closure;
 use Filament\Actions\Action;

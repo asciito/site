@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Site\Filament\Resources\Messages;
+namespace App\Filament\Resources\Messages;
 
+use App\Filament\Resources\Messages\Pages\ListMessages;
+use App\Filament\Resources\Messages\Pages\ViewMessage;
 use App\MessageStatusEnum;
-use App\Site\Filament\Resources\Messages\Pages\ListMessages;
-use App\Site\Filament\Resources\Messages\Pages\ViewMessage;
-use App\Site\Models\Contact;
-use App\Site\Models\Message;
+use App\Models\Contact;
+use App\Models\Message;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Site\Models\Scopes;
+namespace App\Models\Scopes;
 
 use App\Blog\Enums\Status;
 use Illuminate\Database\Eloquent\Builder;

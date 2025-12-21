@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Site\Models;
+namespace App\Models;
 
 use App\MessageStatusEnum;
 use Database\Factories\MessageFactory;

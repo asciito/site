@@ -6,8 +6,8 @@ namespace App\Blog\Models;
 
 use App\Blog\Enums\Status;
 use App\Blog\HtmlContent;
-use App\Site\Models\Concerns\ModelStatus;
-use App\Site\Settings\SiteSettings;
+use App\Models\Concerns\ModelStatus;
+use App\Settings\SiteSettings;
 use Database\Factories\PostFactory;
 use DOMDocument;
 use DOMElement;

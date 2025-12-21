@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Site\Models\Message;
+use App\Models\Message;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Site\Models\Message>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Message>
  */
 class MessageFactory extends Factory
 {

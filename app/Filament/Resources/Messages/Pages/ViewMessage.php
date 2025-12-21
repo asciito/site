@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Site\Filament\Resources\Messages\Pages;
+namespace App\Filament\Resources\Messages\Pages;
 
+use App\Filament\Resources\Messages\MessageResource;
 use App\MessageStatusEnum;
-use App\Site\Filament\Resources\Messages\MessageResource;
-use App\Site\Models\Message;
+use App\Models\Message;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 
