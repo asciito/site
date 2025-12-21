@@ -13,4 +13,4 @@ parameters:
 #        - '#PHPDoc tag @var#'
 #
     excludePaths:
-        - ./app/Site/Models/Scopes/ModelStatusScope.php
+        - ./app/Models/Scopes/ModelStatusScope.php

@@ -1,6 +1,6 @@
 <?php
 
-use App\Site\Models\SEO;
+use App\Models\SEO;
 
 return [
     /**

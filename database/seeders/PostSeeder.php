@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Blog\Models\Post;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;

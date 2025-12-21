@@ -1,7 +1,7 @@
 <?php
 
-use App\Blog\Filament\Resources\Posts\Pages\ListPosts;
-use App\Blog\Models\Post;
+use App\Filament\Resources\Posts\Pages\ListPosts;
+use App\Models\Post;
 
 use function Pest\Livewire\livewire;
 

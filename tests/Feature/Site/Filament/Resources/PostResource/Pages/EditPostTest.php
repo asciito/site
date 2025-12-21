@@ -1,7 +1,7 @@
 <?php
 
-use App\Blog\Filament\Resources\Posts\Pages\EditPost;
-use App\Blog\Models\Post;
+use App\Filament\Resources\Posts\Pages\EditPost;
+use App\Models\Post;
 use Illuminate\Http\UploadedFile;
 
 use function Pest\Livewire\livewire;

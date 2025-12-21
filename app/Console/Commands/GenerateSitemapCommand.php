@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Blog\Models\Post;
+use App\Models\Post;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Carbon;

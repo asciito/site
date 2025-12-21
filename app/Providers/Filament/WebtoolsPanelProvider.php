@@ -2,9 +2,9 @@
 
 namespace App\Providers\Filament;
 
-use App\Site\Filament\Pages\ProfilePage;
-use App\Site\Filament\Pages\SiteSettings;
-use App\Site\Settings\SiteSettings as Settings;
+use App\Filament\Pages\ProfilePage;
+use App\Filament\Pages\SiteSettings;
+use App\Settings\SiteSettings as Settings;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -49,9 +49,8 @@ class WebtoolsPanelProvider extends PanelProvider
                 'secondary' => '#0000aa',
                 'success' => '#5cff5c',
             ])
-            ->discoverResources(in: app_path('Site/Filament/Resources'), for: 'App\\Site\\Filament\\Resources')
-            ->discoverResources(in: app_path('Blog/Filament/Resources'), for: 'App\\Blog\\Filament\\Resources')
-            ->discoverPages(in: app_path('Site/Filament/Pages'), for: 'App\\Site\\Filament\\Pages')
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Dashboard::class,
             ])
