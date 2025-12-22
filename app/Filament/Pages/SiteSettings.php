@@ -14,6 +14,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Validation\Rule;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SiteSettings extends Page
 {
@@ -56,7 +57,14 @@ class SiteSettings extends Page
                             ])
                             ->hintIcon(Heroicon::InformationCircle)
                             ->hintColor(Color::Zinc)
-                            ->hintIconTooltip('Width (min: 1200px - max: 1920px) - Ration (1.91:1)'),
+                            ->hintIconTooltip('Width (min: 1200px - max: 1920px) - Ration (1.91:1)')
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                $host = parse_url((string) config('app.url'), PHP_URL_HOST) ?: 'site';
+
+                                $ext = $file->guessExtension();
+
+                                return $host.'-open-graph.'.$ext;
+                            }),
                         FileUpload::make('favicon')
                             ->label(__('Favicon'))
                             ->validationAttribute('favicon')
@@ -77,7 +85,12 @@ class SiteSettings extends Page
                             ])
                             ->hintIcon(Heroicon::InformationCircle)
                             ->hintColor(Color::Zinc)
-                            ->hintIconTooltip('Size (min: 16px  - max: 512px) - Ration (1:1)'),
+                            ->hintIconTooltip('Size (min: 16px  - max: 512px) - Ration (1:1)')
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file) {
+                                $ext = $file->guessExtension();
+
+                                return 'favicon.'.$ext;
+                            }),
                     ])->columns([
                         'default' => 1,
                         'sm' => 1,
