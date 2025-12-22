@@ -1,9 +1,6 @@
 @php
     use Illuminate\Support\Facades\Storage;
     use function Coyotito\LaravelSettings\Helpers\settings;
-
-    $favicon = settings('favicon');
-    $faviconExtension = str(pathinfo($favicon, PATHINFO_EXTENSION))->lower();
 @endphp
 
 <!doctype html>
@@ -13,10 +10,6 @@
     <meta name="theme-color" content="#33ff33">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    @if ($favicon)
-        <link rel="icon" href="{{ Storage::url($favicon) }}" type="{{ (string) $faviconExtension === 'png' ? 'image/png' : 'image/vnd.microsoft.icon' }}">
-    @endif
 
     {!! seo($page ?? null) !!}
 
