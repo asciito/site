@@ -1,4 +1,5 @@
 @php
+    use Illuminate\Support\Facades\Storage;
     use function Coyotito\LaravelSettings\Helpers\settings;
 @endphp
 
@@ -9,7 +10,6 @@
     <meta name="theme-color" content="#33ff33">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     {!! seo($page ?? null) !!}
 
