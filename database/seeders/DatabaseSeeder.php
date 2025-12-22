@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->command->call('make:filament-user', [
             '--name' => 'Test User',
-            '--email' => 'example@test.com',
+            '--email' => 'test@example.com',
             '--password' => 'password',
         ]);
     }
