@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PostSeeder::class,
+            ContactSeeder::class,
         ]);
     }
 
@@ -30,22 +31,11 @@ class DatabaseSeeder extends Seeder
             return;
         }
 
-        $this->seedWithPost();
-
-        $this->seedWithMessages();
-    }
-
-    protected function seedWithPost(): void
-    {
         $this->command->call('make:filament-user', [
             '--name' => 'Test User',
-            '--email' => 'example@test.com',
+            '--email' => 'test@example.com',
             '--password' => 'password',
         ]);
-    }
 
-    protected function seedWithMessages(): void
-    {
-        $this->call(ContactSeeder::class);
     }
 }
