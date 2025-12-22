@@ -77,7 +77,7 @@ class ContactForm extends Form
     {
         $this->withValidator(function ($validator) {
             $validator->after(function () {
-                if (in_array(Str::lower($this->email), config('site.allowed_emails'))) {
+                if (filled($this->email) && in_array(Str::lower($this->email), config('site.allowed_emails'))) {
                     throw ValidationException::withMessages([
                         "{$this->getPropertyName()}.email" => 'AHA! nice try',
                     ]);
