@@ -37,8 +37,8 @@ class SiteSettings extends Page
                         FileUpload::make('image')
                             ->label(__('SEO image'))
                             ->validationAttribute('image')
-                            ->image()
                             ->imageEditor()
+                            ->acceptedFileTypes(['image/webp', 'image/jpeg', 'image/png'])
                             ->imageEditorAspectRatios([
                                 null,
                                 '1.91:1',
@@ -73,6 +73,7 @@ class SiteSettings extends Page
                                     ->ratio(1)
                                     ->minWidth(16)
                                     ->maxWidth(512),
+                                'mimes:ico,png',
                             ])
                             ->hintIcon(Heroicon::InformationCircle)
                             ->hintColor(Color::Zinc)
