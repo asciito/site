@@ -23,6 +23,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Override;
 
@@ -31,6 +32,7 @@ class WebtoolsPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->favicon(fn (Settings $settings) => $settings->favicon ? Storage::url($settings->favicon) : null)
             ->darkMode(false)
             ->brandName(fn (Settings $settings) => $settings->name)
             ->profile(ProfilePage::class)
