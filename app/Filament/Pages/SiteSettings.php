@@ -13,6 +13,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -59,11 +60,11 @@ class SiteSettings extends Page
                             ->hintColor(Color::Zinc)
                             ->hintIconTooltip('Width (min: 1200px - max: 1920px) - Ration (1.91:1)')
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                $host = parse_url((string) config('app.url'), PHP_URL_HOST) ?: 'site';
+                                $host = parse_url((string) config('app.url'), PHP_URL_HOST);
 
                                 $ext = $file->guessExtension();
 
-                                return $host.'-open-graph.'.$ext;
+                                return Str::before($host, '.').'-open-graph.'.$ext;
                             }),
                         FileUpload::make('favicon')
                             ->label(__('Favicon'))
