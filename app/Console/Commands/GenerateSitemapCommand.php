@@ -2,10 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Blog\Models\Post;
+use App\Models\Post;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use InvalidArgumentException;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
@@ -15,7 +18,7 @@ class GenerateSitemapCommand extends Command
 
     protected $description = 'Generate the sitemap xml file';
 
-    protected \Illuminate\Contracts\Filesystem\Filesystem $files;
+    protected Filesystem $files;
 
     protected string $disk = 'public';
 
@@ -40,19 +43,30 @@ class GenerateSitemapCommand extends Command
 
         return collect($pages)
             ->map(fn (string $page) => $this->getPageUrl($page))
-            ->merge(Post::all());
+            ->merge(
+                Post::all()->map(fn (Post $post): Url => $this->getPageUrl($post))
+            );
     }
 
-    protected function getPageUrl(string $page): Url
+    /**
+     * @template TModel of Post
+     *
+     * @param  string|TModel  $page
+     */
+    protected function getPageUrl(string|Post $page): Url
     {
-        $lastModificationDate = File::lastModified(
-            resource_path("views/site/pages/{$page}.blade.php")
-        );
+        if (is_string($page)) {
+            $time = File::lastModified(resource_path("views/site/pages/$page.blade.php"));
+            $route = route($page);
+            $lastModificationDate = Carbon::createFromTimestamp($time);
+        } elseif ($updated_at = $page->updated_at) {
+            $route = route('post', $page);
+            $lastModificationDate = $updated_at;
+        } else {
+            throw new InvalidArgumentException('The page provided does not have a updated_at property.');
+        }
 
-        return Url::create(route($page))
-            ->setLastModificationDate(
-                \Illuminate\Support\Carbon::createFromTimestamp($lastModificationDate, config('app.timezone')),
-            );
+        return Url::create($route)->setLastModificationDate($lastModificationDate);
     }
 
     protected function generateSitemap(Collection $collection): void

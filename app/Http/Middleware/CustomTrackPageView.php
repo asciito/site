@@ -5,11 +5,13 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Override;
 use Pirsch\Http\Middleware\TrackPageview;
 use Symfony\Component\HttpFoundation\Response;
 
 class CustomTrackPageView extends TrackPageview
 {
+    #[Override]
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check() || ! app()->isProduction()) {

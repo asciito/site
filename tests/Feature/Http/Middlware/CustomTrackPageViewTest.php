@@ -1,5 +1,12 @@
 <?php
 
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Http;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
+
 beforeEach(fn () => $this->app->detectEnvironment(fn () => 'production'));
 afterEach(fn () => $this->app->detectEnvironment(fn () => 'testing'));
 
@@ -10,20 +17,20 @@ dataset('routes', fn () => [
     'privacy',
 ]);
 
-dataset('draft posts', fn () => \App\Blog\Models\Post::factory(10)->create());
+dataset('draft posts', fn () => Post::factory(10)->create());
 
 it('track page visited by non-login user', function (string $route) {
-    $fake = \Illuminate\Support\Facades\Http::fake();
+    $fake = Http::fake();
 
-    \Pest\Laravel\get(route($route))->assertOk();
+    get(route($route))->assertOk();
 
     $fake->assertSentCount(1);
 })->with('routes');
 
 it('does not track page visited by login user', function (string $route) {
-    $fake = \Illuminate\Support\Facades\Http::fake();
+    $fake = Http::fake();
 
-    \Pest\Laravel\actingAs(\App\Models\User::factory()->create())
+    actingAs(User::factory()->create())
         ->get(route($route))
         ->assertOk();
 

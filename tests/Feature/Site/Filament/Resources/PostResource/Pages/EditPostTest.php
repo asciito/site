@@ -1,20 +1,26 @@
 <?php
 
-it('can render', function () {
-    $post = \App\Blog\Models\Post::factory()->create();
+use App\Filament\Resources\Posts\Pages\EditPost;
+use App\Models\Post;
+use Illuminate\Http\UploadedFile;
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
+use function Pest\Livewire\livewire;
+
+it('can render', function () {
+    $post = Post::factory()->create();
+
+    livewire(EditPost::class, ['record' => $post->id])
         ->assertSuccessful();
 });
 
 it('can fill edit form', function () {
-    $post = \App\Blog\Models\Post::factory()->create();
+    $post = Post::factory()->create();
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
+    livewire(EditPost::class, ['record' => $post->id])
         ->fillForm([
             'title' => $title = 'This is a new title',
             'slug' => $slug = 'just-a-new-slug',
-            'content' => $content = fake()->randomHtml(),
+            'content' => $content = Post::factory()->fakeHtml(),
         ])
         ->assertFormSet([
             'title' => $title,
@@ -26,17 +32,17 @@ it('can fill edit form', function () {
         ->assertSuccessful();
 
     expect($post)
-        ->not->toBe(\App\Blog\Models\Post::first());
+        ->not->toBe(Post::first());
 });
 
 it('can add missing thumbnail', function () {
     $storage = Storage::fake();
 
-    $newImage = \Illuminate\Http\UploadedFile::fake()->image('fake-image.jpeg', 1920, 1080);
+    $newImage = UploadedFile::fake()->image('fake-image.jpeg', 1920, 1080);
 
-    $post = \App\Blog\Models\Post::factory()->create();
+    $post = Post::factory()->create();
 
-    \Pest\Livewire\livewire(\App\Blog\Filament\Resources\PostResource\Pages\EditPost::class, ['record' => $post->id])
+    livewire(EditPost::class, ['record' => $post->id])
         ->fillForm([
             'thumbnail' => $newImage,
         ])

@@ -1,7 +1,7 @@
 @props(['content', 'language'])
 
 @php
-    $content = htmlspecialchars_decode($content)
+    $content = html_entity_decode($content)
 @endphp
 
 <div
@@ -19,7 +19,7 @@
             setTimeout(() => this.show = false, 2000);
         }
     }"
-    class="relative pb-[1px] bg-slate-800/80">
+    class="relative pb-px bg-slate-800/80">
     <div class="absolute top-0 right-0 m-2">
         <span
             x-cloak
@@ -39,13 +39,13 @@
     </div>
 
     <pre class="block p-0 whitespace-nowrap overflow-hidden rounded-none selection:bg-white/20 bg-[#292D3E]">
-        <div class="torchlight-wrapper w-full max-h-[30rem] p-4 overflow-y-scroll overflow-x-scroll">
+        <div class="torchlight-wrapper w-full max-h-120 p-4 overflow-y-scroll overflow-x-scroll">
             <x-torchlight-code :language="$language" class="whitespace-pre" :contents="$content"/>
         </div>
     </pre>
 
     <p class="absolute -bottom-[10px] left-2 flex text-xs text-white">
         <span>Powered by <a href="https://torchlight.dev" target="_blank" class="font-semibold text-white hover:text-harlequin-400 visited:text-harlequin-600">Torchlight</a></span>
-        <img src="{{ asset('img/torchlight-logo.svg') }}" class="w-4 h-4 !m-0" alt="Torchlight logo"/>
+        <img src="{{ asset('img/torchlight-logo.svg') }}" class="w-4 h-4 m-0!" alt="Torchlight logo"/>
     </p>
 </div>

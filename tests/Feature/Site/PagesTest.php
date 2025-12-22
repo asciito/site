@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Post;
+
 use function Pest\Laravel\get;
 
 it('can render home page', function () {
@@ -9,7 +11,7 @@ it('can render home page', function () {
 });
 
 test('home can render posts', function () {
-    \App\Blog\Models\Post::factory(10)
+    Post::factory(10)
         ->create()
         ->each
         ->publish();

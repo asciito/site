@@ -1,31 +1,49 @@
-name: blog-testing
+name: Run Tests
 
 on:
+  push:
+    branches: [main]
   pull_request:
-    branches: [main, staging, develop]
+    branches: [main, develop, 'hotfix/**']
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
-          coverage: none
+          php-version: 8.4
+          tools: composer
 
-      - name: Install dependencies
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install PHP dependencies
         run: |
-          composer install --prefer-dist --no-interaction
+          composer install \
+            --prefer-dist \
+            --no-progress \
+            --no-interaction \
+            --optimize-autoloader
 
-      - name: Setup application
-        run: |
-          cp .env.example .env
+      - name: Copy environment file
+        run: cp .env.example .env
 
-      - name: Run test
+      - name: Generate app key
+        run: php artisan key:generate
+
+      - name: Run tests
         run: |
           PIRSCH_TOKEN=${{ secrets.PIRSCH_TOKEN }} vendor/bin/pest

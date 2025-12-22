@@ -1,11 +1,17 @@
 <?php
 
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\File;
+use Spatie\TestTime\TestTime;
+
+use function Pest\Laravel\actingAs;
 use function Pest\Laravel\artisan;
 
 beforeEach(function () {
-    \Spatie\TestTime\TestTime::freeze('Y-m-d\TH:i:sP', '2024-01-01T00:00:00+00:00');
+    TestTime::freeze('Y-m-d\TH:i:sP', '2024-01-01T00:00:00+00:00');
 
-    Pest\Laravel\actingAs(\App\Models\User::factory()->create());
+    actingAs(User::factory()->create());
 });
 
 function xml_to_array(string $xml): array
@@ -22,7 +28,7 @@ it('generate sitemap', function () {
     $storage = Storage::fake('public');
     $site_url = config('app.url');
 
-    \Illuminate\Support\Facades\File::partialMock()
+    File::partialMock()
         ->shouldReceive('lastModified')
         ->andReturn(
             now()->getTimestamp()
@@ -64,7 +70,7 @@ it('generate site map with posts', function () {
     $titles = ['fake-title-one', 'fake-title-two'];
 
     foreach ($titles as $title) {
-        \App\Blog\Models\Post::factory()->published()->create([
+        Post::factory()->published()->create([
             'slug' => $title,
         ]);
     }

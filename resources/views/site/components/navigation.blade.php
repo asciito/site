@@ -21,14 +21,14 @@
                     <span class="block w-10 h-1 bg-dark-blue-600"></span>
                 </div>
 
-                <div x-ref="nav" class="md:grid md:grid-cols-subgrid md:col-span-2 items-center hidden absolute z-[100] md:static top-full left-0 bg-slate-50 p-4 md:p-0 md:bg-transparent w-full md:justify-between shadow-md md:shadow-none">
+                <div x-ref="nav" class="md:grid md:grid-cols-subgrid md:col-span-2 items-center hidden absolute z-100 md:static top-full left-0 bg-slate-50 p-4 md:p-0 md:bg-transparent w-full md:justify-between shadow-md md:shadow-none">
                     <nav id="menu" class="p-4 md:block">
                         <ol class="flex flex-col md:flex-row md:flex-wrap justify-center items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 text-md lg:text-xl">
                             <li>
-                                <a href="{{ route('home') }}" class="relative group p-1">
-                                    <span class="relative z-[100]">HOME</span>
+                                <a href="{{ route('home') }}" class="relative group inline-block p-1">
+                                    <span class="relative z-100">HOME</span>
                                     <span @class([
-                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                        "absolute inset-0",
                                         "w-full h-full",
                                         "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! $facade::is('home'),
                                         "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
@@ -50,11 +50,11 @@
                                         x-on:click.prevent="handleScroll"
                                     @endif
                                     href="{{ $facade::is('home') ? '#about-me' : route('home', ['#about-me']) }}"
-                                    class="relative group p-1"
+                                    class="relative group inline-block p-1"
                                 >
-                                    <span class="relative z-[100]">ABOUT ME</span>
+                                    <span class="relative z-100">ABOUT ME</span>
                                     <span @class([
-                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                        "absolute inset-0",
                                         "w-full h-full",
                                         "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]",
                                         "transition duration-100",
@@ -63,10 +63,10 @@
                             </li>
 
                             <li>
-                                <a href="{{ route('contact') }}" class="relative group p-1">
-                                    <span class="relative z-[100]">CONTACT</span>
+                                <a href="{{ route('contact') }}" class="relative group inline-block p-1">
+                                    <span class="relative z-100">CONTACT</span>
                                     <span @class([
-                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+                                        "absolute inset-0",
                                         "w-full h-full",
                                         "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent = ! $facade::is('contact'),
                                         "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
