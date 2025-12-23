@@ -30,6 +30,7 @@ class JobExperience extends Model
     ];
 
     protected $casts = [
+        'meta' => 'array',
         'start_date' => 'date',
         'end_date' => 'date',
     ];
