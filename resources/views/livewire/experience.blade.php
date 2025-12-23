@@ -13,18 +13,13 @@ use Livewire\WithPagination;
 new class extends Component {
     use WithPagination;
 
-    protected const int INCREMENT_BY = 2;
-    public int $perPage = 5;
-
+    /**
+     * @return Collection<JobExperience>
+     **/
     #[Computed]
-    public function experience(): LengthAwarePaginator
+    public function experience(): Collection
     {
-        return JobExperience::paginate($this->perPage);
-    }
-
-    public function loadMore(): void
-    {
-        $this->perPage += static::INCREMENT_BY;
+        return JobExperience::all();
     }
 }; ?>
 
@@ -93,9 +88,4 @@ new class extends Component {
             </div>
         @endforeach
     </div>
-
-    @if ($this->experience->hasMorePages())
-        <x-site::button position="center" :show-loading-indicator="true" wire:click="loadMore">Load More
-        </x-site::button>
-    @endif
 </div>
