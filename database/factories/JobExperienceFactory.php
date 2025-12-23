@@ -21,7 +21,7 @@ class JobExperienceFactory extends Factory
 
         return [
             'title' => fake()->jobTitle(),
-            'description' => fake()->text(),
+            'description' => fake()->text(random_int(256, 2048)),
             'meta' => [
                 'technologies' => $this->randomTechnologies(),
             ],
