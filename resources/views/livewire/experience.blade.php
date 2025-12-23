@@ -25,8 +25,6 @@ new class extends Component {
     public function loadMore(): void
     {
         $this->perPage += static::INCREMENT_BY;
-
-        $this->dispatch('more-loaded');
     }
 }; ?>
 
@@ -78,6 +76,7 @@ new class extends Component {
                                 <template x-if="! amIOpened()">
                                     <x-filament::icon class="text-zinc-900" :icon="Heroicon::ChevronRight"/>
                                 </template>
+
                                 <template x-if="amIOpened()">
                                     <x-filament::icon class="text-zinc-900" :icon="Heroicon::ChevronDown"/>
                                 </template>
@@ -100,15 +99,3 @@ new class extends Component {
         </x-site::button>
     @endif
 </div>
-
-@script
-<script>
-    // Still testing if it's look good, or not... maybe not...
-    // Livewire.on('more-loaded', function () {
-    //     window.scrollBy({
-    //         top: window.innerHeight,
-    //         behaviour: "smooth",
-    //     });
-    // })
-</script>
-@endscript
