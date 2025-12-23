@@ -46,7 +46,9 @@ class ProfilePage extends EditProfile
                     ->aside()
                     ->description('Update the your profile information and provide the needed information.'),
                 Group::make([
-                    Section::make()
+                    Section::make('Job Experience')
+                        ->collapsed()
+                        ->collapsible()
                         ->schema([
                             Repeater::make('experience')
                                 ->live(debounce: 250)
