@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * @property string $title
- * @property string $description
- * @property int $order
- * @property array $meta
- * @property bool $working_here
- * @property Carbon $start_date
- * @property Carbon $end_date
+ * @property string $title The job title (position)
+ * @property ?string $description The thing you do in that job
+ * @property ?int $order The order in which should be display
+ * @property ?array $meta Embedded information
+ * @property bool $working_here If still working in this position
+ * @property ?Carbon $start_date The start date
+ * @property ?Carbon $end_date The end date
+ * @property array $technologies The technologies you use (or used) in this position
  */
 class JobExperience extends Model
 {
@@ -43,20 +44,6 @@ class JobExperience extends Model
                 }
 
                 $this->meta['technologies'] = $technologies;
-            }
-        );
-    }
-
-    public function categories(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->meta['categories'] ?? [],
-            set: function (array $categories): void {
-                if (blank($categories)) {
-                    return;
-                }
-
-                $this->meta['categories'] = $categories;
             }
         );
     }
