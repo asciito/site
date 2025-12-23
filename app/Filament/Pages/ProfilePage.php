@@ -3,9 +3,15 @@
 namespace App\Filament\Pages;
 
 use Filament\Auth\Pages\EditProfile;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
@@ -39,6 +45,60 @@ class ProfilePage extends EditProfile
                     ])
                     ->aside()
                     ->description('Update the your profile information and provide the needed information.'),
+                Group::make([
+                    Section::make()
+                        ->schema([
+                            Repeater::make('experience')
+                                ->live(debounce: 250)
+                                ->relationship()
+                                ->inlineLabel(false)
+                                ->hiddenLabel()
+                                ->collapsed()
+                                ->collapsible()
+                                ->itemLabel(fn (array $state) => $state['title'] ?? null)
+                                ->orderColumn('order')
+                                ->reorderableWithButtons()
+                                ->schema([
+                                    Hidden::make('id')->default(0),
+                                    TextInput::make('title'),
+                                    RichEditor::make('description')
+                                        ->disableToolbarButtons([
+                                            'h2',
+                                            'h3',
+                                            'codeBlock',
+                                        ])
+                                        ->fileAttachments(false),
+                                    Toggle::make('working_here'),
+                                    Group::make([
+                                        DatePicker::make('start_date'),
+                                        DatePicker::make('end_date'),
+                                    ]),
+                                ])->columnSpanFull(),
+                        ])
+                        ->columnStart([
+                            'default' => 1,
+                            'sm' => 1,
+                            'md' => 2,
+                            'lg' => 2,
+                            'xl' => 2,
+                            '2xl' => 2,
+                        ])
+                        ->columnSpan([
+                            'default' => 'full',
+                            'sm' => 'full',
+                            'md' => 2,
+                            'lg' => 2,
+                            'xl' => 2,
+                            '2xl' => 2,
+                        ]),
+                ])->columns([
+                    'default' => 1,
+                    'sm' => 3,
+                    'md' => 3,
+                    'lg' => 3,
+                    'xl' => 3,
+                    '2xl' => 3,
+                ]),
             ]);
     }
 

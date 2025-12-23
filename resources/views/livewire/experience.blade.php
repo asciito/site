@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\JobExperience;
+use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Icons\Heroicon;
@@ -19,7 +20,7 @@ new class extends Component {
     #[Computed]
     public function experience(): Collection
     {
-        return JobExperience::all();
+        return JobExperience::orderBy('order')->get();
     }
 }; ?>
 
@@ -81,7 +82,7 @@ new class extends Component {
 
                     <div class="mt-4 space-y-6" x-cloak x-show="amIOpened()">
                         <div class="content">
-                            {{ $job->description }}
+                            {{ RichContentRenderer::make($job->description) }}
                         </div>
 
                         <div class="space-y-2">

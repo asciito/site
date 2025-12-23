@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\JobExperience;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -37,5 +38,11 @@ class DatabaseSeeder extends Seeder
             '--password' => 'password',
         ]);
 
+        $user = User::first();
+
+        JobExperience::factory()
+            ->count(10)
+            ->for($user)
+            ->create();
     }
 }
