@@ -85,7 +85,7 @@ new class extends Component {
                         </div>
                     </div>
 
-                    <div x-show="amIOpened()">
+                    <div x-cloak x-show="amIOpened()">
                         <p>
                             {{ $job->description }}
                         </p>
