@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->unsignedTinyInteger('order');
-            $table->json('meta');
+            $table->unsignedTinyInteger('order')->nullable();
+            $table->json('meta')->nullable();
             $table->boolean('working_here')->default(false);
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
         });
     }
