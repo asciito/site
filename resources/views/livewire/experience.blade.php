@@ -23,9 +23,9 @@ new class extends Component {
     }
 }; ?>
 
-<div class="grid gap-8">
+<div class="grid gap-10">
     <div
-        class="grid grid-cols-1 gap-8 content"
+        class="grid grid-cols-1 gap-8"
         x-data="{
             currentlyOpen: null,
             showMe(id) {
@@ -52,9 +52,9 @@ new class extends Component {
                 <section x-data="{ amIOpened: () => currentlyOpen == {{ $job->id }} }"> <!-- Content -->
                     <div class="flex justify-between">
                         <div class="grid mt-2">
-                            <h3 class="m-0">{{ $job->title }}</h3>
+                            <h2 class="text-xl bold">{{ $job->title }}</h2>
 
-                            <p class="shrink-0 text-sm mt-[.225rem] text-zinc-500 self-start m-0">
+                            <p class="shrink-0 text-xs mt-[.225rem] text-dark-blue/50 self-start m-0">
                                 <time>Jan, 2018</time>
                                 -
                                 <time>{{ now()->format('M, Y') }}</time>
@@ -79,10 +79,20 @@ new class extends Component {
                         </div>
                     </div>
 
-                    <div x-cloak x-show="amIOpened()">
-                        <p>
+                    <div class="mt-4 space-y-6" x-cloak x-show="amIOpened()">
+                        <div class="content">
                             {{ $job->description }}
-                        </p>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="font-semibold">Technologies</h3>
+
+                            <ul class="flex flex-wrap gap-2">
+                                @foreach($job->technologies as $tech)
+                                    <li class="text-xs uppercase shink-0 bg-dark-blue text-white px-2 py-1">{{ $tech }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </section>
             </div>
