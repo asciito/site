@@ -74,6 +74,21 @@
                                     ])></span>
                                 </a>
                             </li>
+
+                            <li>
+                                @php $notCurrent = ! $facade::is('experience') @endphp
+                                <a href="{{ route('experience') }}" class="relative group inline-block p-1">
+                                    <span class="relative z-100">{{ $notCurrent ? 'PSSSS! 👈' : 'Experience'}}</span>
+
+                                    <span @class([
+                                        "absolute inset-0",
+                                        "w-full h-full",
+                                        "scale-0 group-hover:scale-110 bg-transparent group-hover:bg-[rgba(51,255,51,1.0)]" => $notCurrent,
+                                        "bg-[rgba(51,255,51,1.0)]" => ! $notCurrent,
+                                        "transition duration-100",
+                                    ])></span>
+                                </a>
+                            </li>
                         </ol>
                     </nav>
 
