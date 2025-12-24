@@ -49,7 +49,6 @@ class ProfilePage extends EditProfile
                     ->description('Update the your profile information and provide the needed information.'),
                 Group::make([
                     Section::make('Job Experience')
-                        ->collapsed()
                         ->collapsible()
                         ->schema($this->getJobExperienceComponents())->columnStart([
                             'md' => 2,
@@ -155,9 +154,9 @@ class ProfilePage extends EditProfile
                 ->hiddenLabel()
                 ->collapsed()
                 ->collapsible()
-                ->itemLabel(fn (array $state) => $state['title'] ?? null)
+                ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                ->reorderable()
                 ->orderColumn('order')
-                ->reorderableWithButtons()
                 ->schema([
                     Hidden::make('id')
                         ->dehydratedWhenHidden(false),
@@ -177,43 +176,43 @@ class ProfilePage extends EditProfile
                             ->live()
                             ->inlineLabel()
                             ->afterStateUpdatedJs(RawJs::make(<<<'JS'
-                        (
-                            /**
-                             * Handle the `working here` feature which only allow me to set
-                             * at most one `job experience` as my current job position.
-                             *
-                             * @param {null|number} current
-                             * @param {boolean} workingHere
-                             **/
-                            (current, workingHere) => {
-                                if (! workingHere) {
-                                    return;
-                                }
-
+                            (
                                 /**
-                                * @typedef {object} TJobExperience
-                                * @property {string} title The position
-                                * @property {(string|null)} description What you do in that job
-                                * @property {boolean} working_here if you're still working here
-                                **/
-
-                                /**
-                                * @var {Proxy<TJobExperience>} record
-                                */
-                                const records = $get('../');
-
-                                for (let record in records) {
-                                    const recordStatePath = `../${record}`;
-
-                                    if ($get(`${recordStatePath}.working_here`) === false || $get(`${recordStatePath}.id`) === current) {
-                                        continue;
+                                 * Handle the `working here` feature which only allow me to set
+                                 * at most one `job experience` as my current job position.
+                                 *
+                                 * @param {null|number} current
+                                 * @param {boolean} workingHere
+                                 **/
+                                (current, workingHere) => {
+                                    if (! workingHere) {
+                                        return;
                                     }
 
-                                    // Will reset the previously `working here` record to false
-                                    $set(`${recordStatePath}.working_here`, false);
+                                    /**
+                                    * @typedef {object} TJobExperience
+                                    * @property {string} title The position
+                                    * @property {(string|null)} description What you do in that job
+                                    * @property {boolean} working_here if you're still working here
+                                    **/
+
+                                    /**
+                                    * @var {Proxy<TJobExperience>} record
+                                    */
+                                    const records = $get('../');
+
+                                    for (let record in records) {
+                                        const recordStatePath = `../${record}`;
+
+                                        if ($get(`${recordStatePath}.working_here`) === false || $get(`${recordStatePath}.id`) === current) {
+                                            continue;
+                                        }
+
+                                        // Will reset the previously `working here` record to false
+                                        $set(`${recordStatePath}.working_here`, false);
+                                    }
                                 }
-                            }
-                        )($get('id'), $get('working_here')); // IIFE
+                            )($get('id'), $get('working_here')); // IIFE
                         JS)),
                     ])->columns(['default' => 2]),
                     Group::make([
