@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('working_here')->default(false);
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->boolean('date_range_as_relative')->default(false);
             $table->timestamps();
         });
     }

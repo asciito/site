@@ -169,9 +169,14 @@ class ProfilePage extends EditProfile
                             'codeBlock',
                         ])
                         ->fileAttachments(false),
-                    Toggle::make('working_here')
-                        ->live()
-                        ->afterStateUpdatedJs(RawJs::make(<<<'JS'
+                    Group::make([
+                        Toggle::make('date_range_as_relative')
+                            ->label(__('As relative'))
+                            ->inlineLabel(),
+                        Toggle::make('working_here')
+                            ->live()
+                            ->inlineLabel()
+                            ->afterStateUpdatedJs(RawJs::make(<<<'JS'
                         (
                             /**
                              * Handle the `working here` feature which only allow me to set
@@ -210,6 +215,7 @@ class ProfilePage extends EditProfile
                             }
                         )($get('id'), $get('working_here')); // IIFE
                         JS)),
+                    ])->columns(['default' => 2]),
                     Group::make([
                         DatePicker::make('start_date')
                             ->native(false)

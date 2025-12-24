@@ -33,6 +33,7 @@ class JobExperience extends Model
         'working_here',
         'start_date',
         'end_date',
+        'date_range_as_relative',
     ];
 
     protected $casts = [
