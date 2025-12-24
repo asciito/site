@@ -38,7 +38,7 @@ new class extends Component {
 
 <div class="grid gap-10">
     <div
-        class="grid grid-cols-1 gap-8"
+        class="grid grid-cols-1 gap-12"
         x-data="{
             currentlyOpen: null,
             showMe(id) {
@@ -47,27 +47,27 @@ new class extends Component {
         }"
     >
         @forelse($this->experience as $job)
-            <div wire:key="{{ $job->id }}" class="grid grid-cols-[5rem_1fr] group"> <!-- Main container -->
+            <div wire:key="{{ $job->id }}" class="grid grid-cols-[3rem_1fr] gap-2 group"> <!-- Main container -->
                 <div class="flex flex-col items-center"> <!-- Connector -->
                     <div> <!-- Icon -->
-                        <div class="bg-harlequin size-10 grid place-content-center">
+                        <div class="bg-harlequin size-12 grid place-content-center">
                             <x-filament::icon :icon="Heroicon::Briefcase" class="text-zinc-900"/>
                         </div>
                     </div>
 
                     <div class="w-full h-full grid grid-cols-[1fr_auto_1fr] group-last:hidden"> <!-- Divider -->
                         <div></div>
-                        <div class="w-1 h-[calc(100%+theme('gap.8'))] bg-harlequin"></div>
+                        <div class="w-1 h-[calc(100%+theme('gap.12'))] bg-harlequin"></div>
                         <div></div>
                     </div>
                 </div>
 
                 <section x-data="{ amIOpened: () => currentlyOpen == {{ $job->id }} }"> <!-- Content -->
                     <div class="flex justify-between gap-x-2">
-                        <div class="grid mt-2 cursor-pointer" @click="showMe({{ $job->id }})">
+                        <div class="grid cursor-pointer" @click="showMe({{ $job->id }})">
                             <h2 class="text-xl bold flex space-x-2">{{ $job->title }}</h2>
 
-                            <p class="shrink-0 text-sm mt-[.225rem] text-dark-blue/50 self-start m-0">
+                            <p class="shrink-0 text-xs text-dark-blue/50 self-start m-0">
                                 <x-site::date-range
                                     :from="$job->start_date"
                                     :to="$job->end_date"
