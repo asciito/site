@@ -52,81 +52,7 @@ class ProfilePage extends EditProfile
                     Section::make('Job Experience')
                         ->collapsed()
                         ->collapsible()
-                        ->schema([
-                            Repeater::make('experience')
-                                ->relationship()
-                                ->inlineLabel(false)
-                                ->hiddenLabel()
-                                ->collapsed()
-                                ->collapsible()
-                                ->itemLabel(fn (array $state) => $state['title'] ?? null)
-                                ->orderColumn('order')
-                                ->reorderableWithButtons()
-                                ->schema([
-                                    Hidden::make('id')
-                                        ->default(0)
-                                        ->dehydratedWhenHidden(false),
-                                    TextInput::make('title'),
-                                    RichEditor::make('description')
-                                        ->disableToolbarButtons([
-                                            'h2',
-                                            'h3',
-                                            'codeBlock',
-                                        ])
-                                        ->fileAttachments(false),
-                                    Toggle::make('working_here')
-                                        ->live()
-                                        ->afterStateUpdated(fn (Set $set) => $set('end_date', null))
-                                        ->afterStateUpdatedJs(RawJs::make(<<<'JS'
-                                            (
-                                                /**
-                                                 * Handle the `working here` feature which only allow me to set
-                                                 * at most one `job experience` as my current job position.
-                                                 *
-                                                 * @param {null|number} current
-                                                 * @param {boolean} workingHere
-                                                 **/
-                                                (current, workingHere) => {
-                                                    if (! workingHere) {
-                                                        return;
-                                                    }
-
-                                                    /**
-                                                    * @typedef {object} TJobExperience
-                                                    * @property {string} title The position
-                                                    * @property {(string|null)} description What you do in that job
-                                                    * @property {boolean} working_here if you're still working here
-                                                    **/
-
-                                                    /**
-                                                    * @var {Proxy<TJobExperience>} record
-                                                    */
-                                                    const records = $get('../');
-
-                                                    for (let record in records) {
-                                                        const recordStatePath = `../${record}`;
-
-                                                        if ($get(`${recordStatePath}.working_here`) === false || $get(`${recordStatePath}.id`) === current) {
-                                                            continue;
-                                                        }
-
-                                                        // Will reset the previously `working here` record to false
-                                                        $set(`${recordStatePath}.working_here`, false);
-                                                    }
-                                                }
-                                            )($get('id'), $get('working_here')); // IIFE
-                                        JS)),
-                                    Group::make([
-                                        DatePicker::make('start_date')
-                                            ->placeholder('Jan 1, 1977')
-                                            ->native(false),
-                                        DatePicker::make('end_date')
-                                            ->placeholder(fn (Get $get) => $get('working_here') ? 'Not needed' : 'Jan 1, 1977')
-                                            ->native(false)
-                                            ->disabled(fn (Get $get) => $get('working_here')),
-                                    ])->columns(['default' => 2]),
-                                ])->columnSpanFull(),
-                        ])->columnStart([
+                        ->schema($this->getJobExperienceComponents())->columnStart([
                             'md' => 2,
                         ])
                         ->columnSpan([
@@ -219,5 +145,83 @@ class ProfilePage extends EditProfile
                 }
             })
             ->panelLayout(null);
+    }
+
+    protected function getJobExperienceComponents(): array
+    {
+        return [
+            Repeater::make('experience')
+                ->relationship()
+                ->inlineLabel(false)
+                ->hiddenLabel()
+                ->collapsed()
+                ->collapsible()
+                ->itemLabel(fn (array $state) => $state['title'] ?? null)
+                ->orderColumn('order')
+                ->reorderableWithButtons()
+                ->schema([
+                    Hidden::make('id')
+                        ->dehydratedWhenHidden(false),
+                    TextInput::make('title'),
+                    RichEditor::make('description')
+                        ->disableToolbarButtons([
+                            'h2',
+                            'h3',
+                            'codeBlock',
+                        ])
+                        ->fileAttachments(false),
+                    Toggle::make('working_here')
+                        ->live()
+                        ->afterStateUpdated(fn (Set $set) => $set('end_date', null))
+                        ->afterStateUpdatedJs(RawJs::make(<<<'JS'
+                        (
+                            /**
+                             * Handle the `working here` feature which only allow me to set
+                             * at most one `job experience` as my current job position.
+                             *
+                             * @param {null|number} current
+                             * @param {boolean} workingHere
+                             **/
+                            (current, workingHere) => {
+                                if (! workingHere) {
+                                    return;
+                                }
+
+                                /**
+                                * @typedef {object} TJobExperience
+                                * @property {string} title The position
+                                * @property {(string|null)} description What you do in that job
+                                * @property {boolean} working_here if you're still working here
+                                **/
+
+                                /**
+                                * @var {Proxy<TJobExperience>} record
+                                */
+                                const records = $get('../');
+
+                                for (let record in records) {
+                                    const recordStatePath = `../${record}`;
+
+                                    if ($get(`${recordStatePath}.working_here`) === false || $get(`${recordStatePath}.id`) === current) {
+                                        continue;
+                                    }
+
+                                    // Will reset the previously `working here` record to false
+                                    $set(`${recordStatePath}.working_here`, false);
+                                }
+                            }
+                        )($get('id'), $get('working_here')); // IIFE
+                        JS)),
+                    Group::make([
+                        DatePicker::make('start_date')
+                            ->native(false)
+                            ->placeholder('Jan 1, 1977'),
+                        DatePicker::make('end_date')
+                            ->native(false)
+                            ->disabled(fn (Get $get) => $get('working_here'))
+                            ->placeholder(fn (Get $get) => $get('working_here') ? 'Not needed' : 'Jan 1, 1977'),
+                    ])->columns(['default' => 2]),
+                ])->columnSpanFull(),
+        ];
     }
 }
