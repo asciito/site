@@ -8,6 +8,7 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Pluralizer;
 use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
@@ -49,8 +50,8 @@ new class extends Component {
             <div wire:key="{{ $job->id }}" class="grid grid-cols-[5rem_1fr] group"> <!-- Main container -->
                 <div class="flex flex-col items-center"> <!-- Connector -->
                     <div> <!-- Icon -->
-                        <div class="bg-harlequin rounded-full size-12 grid place-content-center">
-                            <x-filament::icon :icon="Heroicon::User" class="text-zinc-900 "/>
+                        <div class="bg-harlequin size-10 grid place-content-center">
+                            <x-filament::icon :icon="Heroicon::Briefcase" class="text-zinc-900"/>
                         </div>
                     </div>
 
@@ -62,9 +63,9 @@ new class extends Component {
                 </div>
 
                 <section x-data="{ amIOpened: () => currentlyOpen == {{ $job->id }} }"> <!-- Content -->
-                    <div class="flex justify-between">
-                        <div class="grid mt-2">
-                            <h2 class="text-xl bold">{{ $job->title }}</h2>
+                    <div class="flex justify-between gap-x-2">
+                        <div class="grid mt-2 cursor-pointer" @click="showMe({{ $job->id }})">
+                            <h2 class="text-xl bold flex space-x-2">{{ $job->title }}</h2>
 
                             <p class="shrink-0 text-sm mt-[.225rem] text-dark-blue/50 self-start m-0">
                                 <x-site::date-range
@@ -75,12 +76,12 @@ new class extends Component {
                             </p>
                         </div>
 
-                        <div class="grid items-center">
+                        <div class="grid items-start">
                             <x-site::button
                                 class="px-2! py-1!"
                                 x-bind:class="{ 'bg-harlequin-800/10!': amIOpened() }"
                                 :size="Size::ExtraSmall"
-                                @click="showMe({{ $job->id }})"
+                                @click.stop="showMe({{ $job->id }})"
                             >
                                 <template x-if="! amIOpened()">
                                     <x-filament::icon class="text-zinc-900" :icon="Heroicon::ChevronRight"/>
