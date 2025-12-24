@@ -34,7 +34,7 @@ new class extends Component {
             }
         }"
     >
-        @foreach($this->experience as $job)
+        @forelse($this->experience as $job)
             <div wire:key="{{ $job->id }}" class="grid grid-cols-[5rem_1fr] group"> <!-- Main container -->
                 <div class="flex flex-col items-center"> <!-- Connector -->
                     <div> <!-- Icon -->
@@ -55,10 +55,17 @@ new class extends Component {
                         <div class="grid mt-2">
                             <h2 class="text-xl bold">{{ $job->title }}</h2>
 
-                            <p class="shrink-0 text-xs mt-[.225rem] text-dark-blue/50 self-start m-0">
+                            <p class="shrink-0 text-sm mt-[.225rem] text-dark-blue/50 self-start m-0">
                                 <time>Jan, 2018</time>
                                 -
-                                <time>{{ now()->format('M, Y') }}</time>
+                                @php
+                                    $message = ! $job->working_here ? ($job->end_date?->format('M d, Y') ?? 'Not set') : 'Currently Working';
+                                @endphp
+                                @if ($job->working_here || ! $job->end_date)
+                                    <span class="font-bold">{!! $message !!}</span>
+                                @else
+                                    <time datetime="{{ $job->end_date->format('Y-m-d') }}">{{ $message }}</time>
+                                @endif
                             </p>
                         </div>
 
@@ -85,18 +92,26 @@ new class extends Component {
                             {{ RichContentRenderer::make($job->description) }}
                         </div>
 
-                        <div class="space-y-2">
-                            <h3 class="font-semibold">Technologies</h3>
+                        @if ($technologies = $job->technologies)
+                            <div class="space-y-2">
+                                <h3 class="font-semibold">Technologies</h3>
 
-                            <ul class="flex flex-wrap gap-2">
-                                @foreach($job->technologies as $tech)
-                                    <li class="text-xs uppercase shink-0 bg-dark-blue text-white px-2 py-1">{{ $tech }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                                <ul class="flex flex-wrap gap-2">
+                                    @foreach($technologies as $tech)
+                                        <li class="text-xs uppercase shink-0 bg-dark-blue text-white px-2 py-1">{{ $tech }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </div>
                 </section>
             </div>
-        @endforeach
+        @empty
+            <div class="text-center">
+                <h2 class="text-4xl">No work experience... added yet</h2>
+
+                <p class="mt-4">Please wait while I add all my past experience</p>
+            </div>
+        @endforelse
     </div>
 </div>
