@@ -13,6 +13,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\RawJs;
@@ -73,6 +75,8 @@ class ProfilePage extends EditProfile
                                         ])
                                         ->fileAttachments(false),
                                     Toggle::make('working_here')
+                                        ->live()
+                                        ->afterStateUpdated(fn (Set $set) => $set('end_date', null))
                                         ->afterStateUpdatedJs(RawJs::make(<<<'JS'
                                             (
                                                 /**
@@ -113,9 +117,15 @@ class ProfilePage extends EditProfile
                                             )($get('id'), $get('working_here')); // IIFE
                                         JS)),
                                     Group::make([
-                                        DatePicker::make('start_date'),
-                                        DatePicker::make('end_date'),
-                                    ]),
+                                        DatePicker::make('start_date')
+                                            ->placeholder('Jan 1, 1977')
+                                            ->native(false),
+                                        DatePicker::make('end_date')
+                                            ->placeholder(fn (Get $get) => $get('working_here') ? 'Not needed' : 'Jan 1, 1977')
+                                            ->native(false)
+                                            ->disabled(fn (Get $get) => $get('working_here')),
+                                    ])
+                                        ->columns(['default' => 2]),
                                 ])->columnSpanFull(),
                         ])
                         ->columnStart([
