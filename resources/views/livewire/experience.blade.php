@@ -47,7 +47,7 @@ new class extends Component {
         }"
     >
         @forelse($this->experience as $job)
-            <div wire:key="{{ $job->id }}" class="grid grid-cols-[3rem_1fr] gap-2 group"> <!-- Main container -->
+            <div wire:key="{{ $job->id }}" class="grid grid-cols-[3rem_1fr] gap-3 group"> <!-- Main container -->
                 <div class="flex flex-col items-center"> <!-- Connector -->
                     <div> <!-- Icon -->
                         <div class="bg-harlequin size-12 grid place-content-center">
