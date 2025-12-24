@@ -33,6 +33,7 @@ class JobExperience extends Model
         'working_here',
         'start_date',
         'end_date',
+        'meta',
         'date_range_as_relative',
     ];
 
@@ -56,7 +57,9 @@ class JobExperience extends Model
                     return;
                 }
 
-                $this->meta['technologies'] = $technologies;
+                $this->meta = [
+                    'technologies' => $this->meta['technologies'] ?? $technologies,
+                ];
             }
         );
     }

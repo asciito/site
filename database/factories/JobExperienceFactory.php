@@ -34,7 +34,7 @@ class JobExperienceFactory extends Factory
 
     protected function randomTechnologies(): array
     {
-        $techologies = [
+        $technologies = [
             'JS', 'NodeJS', 'BunJS', 'NextJS', 'ReactJS', 'ReactNative',
             'PHP', 'Laravel', 'Symfony', 'CodeIgniter',
             'Python', 'Django', 'Flask',
@@ -42,6 +42,6 @@ class JobExperienceFactory extends Factory
             'SQL', 'MySQL', 'SQLite', 'PostgreSQL', 'NoSQL', 'MongoDB',
         ];
 
-        return fake()->randomElements($techologies, random_int(0, count($techologies)));
+        return fake()->randomElements($technologies, random_int(0, count($technologies)));
     }
 }

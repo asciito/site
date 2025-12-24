@@ -8,6 +8,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Component;
@@ -23,6 +24,14 @@ use Override;
 
 class ProfilePage extends EditProfile
 {
+    protected static array $technologies = [
+        'JS', 'NodeJS', 'BunJS', 'NextJS', 'ReactJS', 'ReactNative',
+        'PHP', 'Laravel', 'Symfony', 'CodeIgniter',
+        'Python', 'Django', 'Flask',
+        'CSS', 'TailwindCSS', 'Bootstrap', 'Styled Components',
+        'SQL', 'MySQL', 'SQLite', 'PostgreSQL', 'NoSQL', 'MongoDB',
+    ];
+
     #[Override]
     public static function isSimple(): bool
     {
@@ -232,7 +241,28 @@ class ProfilePage extends EditProfile
                             'codeBlock',
                         ])
                         ->fileAttachments(false),
-                ])->columnSpanFull(),
+                    Select::make('technologies')
+                        ->native(false)
+                        ->multiple()
+                        ->unique()
+                        ->options(array_combine(static::$technologies, static::$technologies)),
+                ])
+                ->columnSpanFull()
+                ->mutateRelationshipDataBeforeFillUsing(fn (array $data): array => [
+                    ...$data,
+                    'technologies' => $data['meta']['technologies'] ?? [],
+                ])
+                ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
+                    $technologies = $data['technologies'] ?? [];
+                    unset($data['technologies']);
+
+                    return [
+                        ...$data,
+                        'meta' => [
+                            'technologies' => $technologies,
+                        ],
+                    ];
+                }),
         ];
     }
 }
