@@ -51,7 +51,6 @@ class ProfilePage extends EditProfile
                         ->collapsible()
                         ->schema([
                             Repeater::make('experience')
-                                ->live(debounce: 250)
                                 ->relationship()
                                 ->inlineLabel(false)
                                 ->hiddenLabel()
