@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->text('content')->nullable()->change();
+            if (! $this->runningInSqlite()) {
+                $table->text('content')->nullable()->change();
+            }
         });
     }
 
@@ -21,8 +23,18 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('null', function (Blueprint $table) {
-            $table->text('content')->change();
+        Schema::table('posts', function (Blueprint $table) {
+            if (! $this->runningInSqlite()) {
+                $table->text('content')->nullable(false)->change();
+            }
         });
+    }
+
+    /**
+     * Check if running on SQLite
+     */
+    protected function runningInSqlite(): bool
+    {
+        return Schema::getConnection()->getDriverName() === 'sqlite';
     }
 };
