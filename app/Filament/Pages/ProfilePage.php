@@ -124,33 +124,19 @@ class ProfilePage extends EditProfile
                                             ->placeholder(fn (Get $get) => $get('working_here') ? 'Not needed' : 'Jan 1, 1977')
                                             ->native(false)
                                             ->disabled(fn (Get $get) => $get('working_here')),
-                                    ])
-                                        ->columns(['default' => 2]),
+                                    ])->columns(['default' => 2]),
                                 ])->columnSpanFull(),
-                        ])
-                        ->columnStart([
-                            'default' => 1,
-                            'sm' => 1,
+                        ])->columnStart([
                             'md' => 2,
-                            'lg' => 2,
-                            'xl' => 2,
-                            '2xl' => 2,
                         ])
                         ->columnSpan([
                             'default' => 'full',
-                            'sm' => 'full',
+                            'sm' => 3,
                             'md' => 2,
-                            'lg' => 2,
-                            'xl' => 2,
-                            '2xl' => 2,
                         ]),
                 ])->columns([
                     'default' => 1,
                     'sm' => 3,
-                    'md' => 3,
-                    'lg' => 3,
-                    'xl' => 3,
-                    '2xl' => 3,
                 ]),
             ]);
     }
