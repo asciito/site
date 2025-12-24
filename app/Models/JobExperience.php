@@ -31,6 +31,8 @@ class JobExperience extends Model
         'description',
         'order',
         'working_here',
+        'start_date',
+        'end_date',
     ];
 
     protected $casts = [
@@ -81,7 +83,7 @@ class JobExperience extends Model
                     return;
                 }
 
-                $old->updateQuietly(['working_here' => false]);
+                $old->updateQuietly(['working_here' => false, 'end_date' => null]);
             });
         };
 
