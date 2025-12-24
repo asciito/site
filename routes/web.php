@@ -9,6 +9,8 @@ Route::middleware(['track'])->group(function () {
     Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
     Route::get('/terms-of-use', [SiteController::class, 'terms'])->name('terms');
     Route::get('/privacy-policy', [SiteController::class, 'privacy'])->name('privacy');
+    Route::get('/experience', [SiteController::class, 'experience'])->name('experience');
 
     Route::get('/{post:slug}', fn (Post $post) => view('blog::pages.post', ['post' => $post]))->name('post');
+
 });
