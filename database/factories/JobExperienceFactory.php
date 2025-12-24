@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\JobExperience;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Random\RandomException;
 
 /**
  * @extends Factory<JobExperience>
@@ -14,6 +15,8 @@ class JobExperienceFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     *
+     * @throws RandomException
      */
     public function definition(): array
     {
@@ -25,6 +28,7 @@ class JobExperienceFactory extends Factory
             'meta' => [
                 'technologies' => $this->randomTechnologies(),
             ],
+            'start_date' => $start_date,
         ];
     }
 

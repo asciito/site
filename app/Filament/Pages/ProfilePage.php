@@ -218,6 +218,7 @@ class ProfilePage extends EditProfile
                     ])->columns(['default' => 2]),
                     Group::make([
                         DatePicker::make('start_date')
+                            ->required()
                             ->native(false)
                             ->placeholder('Jan 1, 1977'),
                         DatePicker::make('end_date')

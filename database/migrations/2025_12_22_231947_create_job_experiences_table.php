@@ -20,7 +20,7 @@ return new class extends Migration
             $table->json('meta')->nullable();
             $table->foreignIdFor(User::class)->constrained();
             $table->boolean('working_here')->default(false);
-            $table->date('start_date')->nullable();
+            $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->boolean('date_range_as_relative')->default(false);
             $table->timestamps();

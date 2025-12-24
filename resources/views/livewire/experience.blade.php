@@ -7,6 +7,8 @@ use Filament\Support\Enums\Size;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Pluralizer;
 use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
@@ -21,6 +23,15 @@ new class extends Component {
     public function experience(): Collection
     {
         return JobExperience::orderBy('order')->get();
+    }
+
+    protected function calculateLessSpecificDateRange(Carbon $from, Carbon $to): string
+    {
+        $fullYearDecimals = $from->diffInYears($to);
+        $years = (int)$fullYearDecimals;
+        $labelForYears = $fullYearDecimals > $years ? $years + 1 : $years;
+
+        return ($fullYearDecimals > $years ? "Less than " : "") . "$labelForYears " . Pluralizer::plural('year', $labelForYears);
     }
 }; ?>
 
@@ -56,16 +67,11 @@ new class extends Component {
                             <h2 class="text-xl bold">{{ $job->title }}</h2>
 
                             <p class="shrink-0 text-sm mt-[.225rem] text-dark-blue/50 self-start m-0">
-                                <time>Jan, 2018</time>
-                                -
-                                @php
-                                    $message = ! $job->working_here ? ($job->end_date?->format('M d, Y') ?? 'Not set') : 'Currently Working';
-                                @endphp
-                                @if ($job->working_here || ! $job->end_date)
-                                    <span class="font-bold">{!! $message !!}</span>
-                                @else
-                                    <time datetime="{{ $job->end_date->format('Y-m-d') }}">{{ $message }}</time>
-                                @endif
+                                <x-site::date-range
+                                    :from="$job->start_date"
+                                    :to="$job->end_date"
+                                    :relative="$job->date_range_as_relative"
+                                />
                             </p>
                         </div>
 
