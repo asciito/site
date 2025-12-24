@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Override;
 
 /**
  * @property string $title The job title (position)
@@ -28,6 +30,7 @@ class JobExperience extends Model
         'title',
         'description',
         'order',
+        'working_here',
     ];
 
     protected $casts = [
@@ -53,5 +56,36 @@ class JobExperience extends Model
                 $this->meta['technologies'] = $technologies;
             }
         );
+    }
+
+    #[Override]
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        $currentJobHandling = static function (self $recent): void {
+            if (! $recent->working_here || ($recent->exists && ! $recent->isDirty('working_here'))) {
+                return;
+            }
+
+            DB::transaction(function () use ($recent): void {
+                $query = static::query()->whereWorkingHere(true);
+
+                if ($recent->getKey()) {
+                    $query->whereKeyNot($recent->getKey());
+                }
+
+                $old = $query->first();
+
+                if (! $old) {
+                    return;
+                }
+
+                $old->updateQuietly(['working_here' => false]);
+            });
+        };
+
+        static::creating($currentJobHandling);
+        static::updating($currentJobHandling);
     }
 }

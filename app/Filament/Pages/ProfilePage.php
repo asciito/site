@@ -15,6 +15,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
+use Filament\Support\RawJs;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Override;
@@ -60,7 +61,9 @@ class ProfilePage extends EditProfile
                                 ->orderColumn('order')
                                 ->reorderableWithButtons()
                                 ->schema([
-                                    Hidden::make('id')->default(0),
+                                    Hidden::make('id')
+                                        ->default(0)
+                                        ->dehydratedWhenHidden(false),
                                     TextInput::make('title'),
                                     RichEditor::make('description')
                                         ->disableToolbarButtons([
@@ -69,7 +72,46 @@ class ProfilePage extends EditProfile
                                             'codeBlock',
                                         ])
                                         ->fileAttachments(false),
-                                    Toggle::make('working_here'),
+                                    Toggle::make('working_here')
+                                        ->afterStateUpdatedJs(RawJs::make(<<<'JS'
+                                            (
+                                                /**
+                                                 * Handle the `working here` feature which only allow me to set
+                                                 * at most one `job experience` as my current job position.
+                                                 *
+                                                 * @param {null|number} current
+                                                 * @param {boolean} workingHere
+                                                 **/
+                                                (current, workingHere) => {
+                                                    if (! workingHere) {
+                                                        return;
+                                                    }
+
+                                                    /**
+                                                    * @typedef {object} TJobExperience
+                                                    * @property {string} title The position
+                                                    * @property {(string|null)} description What you do in that job
+                                                    * @property {boolean} working_here if you're still working here
+                                                    **/
+
+                                                    /**
+                                                    * @var {Proxy<TJobExperience>} record
+                                                    */
+                                                    const records = $get('../');
+
+                                                    for (let record in records) {
+                                                        const recordStatePath = `../${record}`;
+
+                                                        if ($get(`${recordStatePath}.working_here`) === false || $get(`${recordStatePath}.id`) === current) {
+                                                            continue;
+                                                        }
+
+                                                        // Will reset the previously `working here` record to false
+                                                        $set(`${recordStatePath}.working_here`, false);
+                                                    }
+                                                }
+                                            )($get('id'), $get('working_here')); // IIFE
+                                        JS)),
                                     Group::make([
                                         DatePicker::make('start_date'),
                                         DatePicker::make('end_date'),
