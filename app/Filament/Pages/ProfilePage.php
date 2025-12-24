@@ -14,7 +14,6 @@ use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\RawJs;
@@ -172,7 +171,6 @@ class ProfilePage extends EditProfile
                         ->fileAttachments(false),
                     Toggle::make('working_here')
                         ->live()
-                        ->afterStateUpdated(fn (Set $set) => $set('end_date', null))
                         ->afterStateUpdatedJs(RawJs::make(<<<'JS'
                         (
                             /**
@@ -219,7 +217,7 @@ class ProfilePage extends EditProfile
                         DatePicker::make('end_date')
                             ->native(false)
                             ->disabled(fn (Get $get) => $get('working_here'))
-                            ->placeholder(fn (Get $get) => $get('working_here') ? 'Not needed' : 'Jan 1, 1977'),
+                            ->placeholder(fn (Get $get) => $get('working_here') ? '' : 'Jan 1, 1977'),
                     ])->columns(['default' => 2]),
                 ])->columnSpanFull(),
         ];

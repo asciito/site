@@ -83,7 +83,7 @@ class JobExperience extends Model
                     return;
                 }
 
-                $old->updateQuietly(['working_here' => false, 'end_date' => null]);
+                $old->updateQuietly(['working_here' => false]);
             });
         };
 
