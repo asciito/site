@@ -72,7 +72,7 @@ it('render provided `empty` state', function (string $from) {
         ->assertSee('<p>Nothing to see here</p>', false);
 })->with('dates');
 
-it('fail to render `empty` state when both dates are given', function (string $from, string $to) {
+it('will not render `empty` state when both dates are given', function (string $from, string $to) {
     $from = Carbon::createFromFormat('Y-m-d', $from);
     $to = Carbon::createFromFormat('Y-m-d', $to);
 
