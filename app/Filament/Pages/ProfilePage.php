@@ -241,28 +241,13 @@ class ProfilePage extends EditProfile
                             'codeBlock',
                         ])
                         ->fileAttachments(false),
-                    Select::make('technologies')
+                    Select::make('meta.technologies')
                         ->native(false)
                         ->multiple()
-                        ->unique()
-                        ->options(array_combine(static::$technologies, static::$technologies)),
+                        ->options(array_combine(static::$technologies, static::$technologies))
+                        ->dehydrateStateUsing(static fn (?array $state): array => array_values(array_unique($state ?? []))),
                 ])
-                ->columnSpanFull()
-                ->mutateRelationshipDataBeforeFillUsing(fn (array $data): array => [
-                    ...$data,
-                    'technologies' => $data['meta']['technologies'] ?? [],
-                ])
-                ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
-                    $technologies = $data['technologies'] ?? [];
-                    unset($data['technologies']);
-
-                    return [
-                        ...$data,
-                        'meta' => [
-                            'technologies' => $technologies,
-                        ],
-                    ];
-                }),
+                ->columnSpanFull(),
         ];
     }
 }
