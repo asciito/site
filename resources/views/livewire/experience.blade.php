@@ -71,6 +71,7 @@ new class extends Component {
                                 <x-site::date-range
                                     :from="$job->start_date"
                                     :to="$job->end_date"
+                                    :empty-state-to="$job->working_here ? new HtmlString('<strong>Working Here®</strong>') : null"
                                     :relative="$job->date_range_as_relative"
                                 />
                             </p>
