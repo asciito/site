@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Concerns\HasCategories;
 use Database\Factories\JobExperienceFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +25,7 @@ use Override;
 class JobExperience extends Model
 {
     /** @use HasFactory<JobExperienceFactory> */
-    use HasFactory;
+    use HasCategories, HasFactory;
 
     protected $fillable = [
         'title',
