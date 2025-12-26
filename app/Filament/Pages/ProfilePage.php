@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Actions\Action;
 use Filament\Auth\Pages\EditProfile;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -17,6 +18,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\Width;
 use Filament\Support\RawJs;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -241,11 +243,20 @@ class ProfilePage extends EditProfile
                             'codeBlock',
                         ])
                         ->fileAttachments(false),
-                    Select::make('meta.technologies')
+                    Select::make('categories')
+                        ->relationship(titleAttribute: 'name')
+                        ->label(__('Technologies'))
                         ->native(false)
                         ->multiple()
-                        ->options(array_combine(static::$technologies, static::$technologies))
-                        ->dehydrateStateUsing(static fn (?array $state): array => array_values(array_unique($state ?? []))),
+                        ->unique()
+                        ->createOptionForm([
+                            TextInput::make('name'),
+                        ])
+                        ->createOptionAction(function (Action $action) {
+                            $action
+                                ->modalWidth(Width::Small)
+                                ->extraModalFooterActions([]);
+                        }),
                 ])
                 ->columnSpanFull(),
         ];

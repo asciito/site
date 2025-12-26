@@ -25,23 +25,7 @@ class JobExperienceFactory extends Factory
         return [
             'title' => fake()->jobTitle(),
             'description' => fake()->text(random_int(256, 2048)),
-            'meta' => [
-                'technologies' => $this->randomTechnologies(),
-            ],
             'start_date' => $start_date,
         ];
-    }
-
-    protected function randomTechnologies(): array
-    {
-        $technologies = [
-            'JS', 'NodeJS', 'BunJS', 'NextJS', 'ReactJS', 'ReactNative',
-            'PHP', 'Laravel', 'Symfony', 'CodeIgniter',
-            'Python', 'Django', 'Flask',
-            'CSS', 'TailwindCSS', 'Bootstrap', 'Styled Components',
-            'SQL', 'MySQL', 'SQLite', 'PostgreSQL', 'NoSQL', 'MongoDB',
-        ];
-
-        return fake()->randomElements($technologies, random_int(0, count($technologies)));
     }
 }

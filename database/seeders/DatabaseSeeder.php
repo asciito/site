@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
         JobExperience::factory()
             ->count(10)
             ->for($user)
+            ->hasCategories(random_int(2, 10))
             ->create();
     }
 }
