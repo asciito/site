@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\Category;
 use Filament\Actions\Action;
 use Filament\Auth\Pages\EditProfile;
 use Filament\Forms\Components\DatePicker;
@@ -20,7 +21,10 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Width;
 use Filament\Support\RawJs;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Override;
 
@@ -256,6 +260,18 @@ class ProfilePage extends EditProfile
                             $action
                                 ->modalWidth(Width::Small)
                                 ->extraModalFooterActions([]);
+                        })
+                        ->createOptionUsing(function (Schema $schema, array $data) {
+                            $name = $data['name'];
+                            $slug = Str::slug($name);
+
+                            try {
+                                return Category::create(['name' => $name, 'slug' => $slug])->getKey();
+                            } catch (UniqueConstraintViolationException) {
+                                throw ValidationException::withMessages([
+                                    'categories' => 'The technology "'.$name.'" already exists.',
+                                ]);
+                            }
                         }),
                 ])
                 ->columnSpanFull(),
