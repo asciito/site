@@ -61,10 +61,10 @@ namespace App\Helpers {
         }
 
         if ($years === 0) {
-            if ($months <= 3) {
+            if ($months < 3) {
                 return 'Less than 3 months';
             }
-            if ($months <= 6) {
+            if ($months < 6) {
                 return 'Less than 6 months';
             }
 
