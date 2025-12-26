@@ -25,6 +25,52 @@ it('can render range', function (string $from, string $to) {
         ->assertSeeText($to->format('M d, Y'));
 })->with('dates');
 
+it('render relative date', function (string $from, string $to, string $relativeMessage) {
+    $from = Carbon::createFromFormat('Y-m-d', $from);
+    $to = Carbon::createFromFormat('Y-m-d', $to);
+
+    $this
+        ->view('site::components.date-range', ['from' => $from, 'to' => $to, 'relative' => true])
+        ->assertDontSee($from->format('M d, Y'))
+        ->assertDontSee($to->format('M d, Y'))
+        ->assertSeeText($relativeMessage);
+})->with([
+    'lest than one year' => [
+        'from' => '2018-01-01',
+        'to' => '2018-01-02',
+        'relativeMessage' => 'Less than 1 year',
+    ],
+    'less than one year' => [
+        'from' => '2018-01-01',
+        'to' => '2018-03-01',
+        'relativeMessage' => 'Less than 1 year',
+    ],
+    'one year' => [
+        'from' => '2018-01-01',
+        'to' => '2019-01-01',
+        'relativeMessage' => '1 year',
+    ],
+    'less than two years' => [
+        'from' => '2018-01-01',
+        'to' => '2019-02-01',
+        'relativeMessage' => 'Less than 2 years',
+    ],
+    'two years' => [
+        'from' => '2018-01-01',
+        'to' => '2020-01-01',
+        'relativeMessage' => '2 years',
+    ],
+]);
+
+it('will not render relative date if `to` date is not given', function (string $from) {
+    $from = Carbon::createFromFormat('Y-m-d', $from);
+
+    $this
+        ->view('site::components.date-range', ['from' => $from])
+        ->assertSeeText($from->format('M d, Y'))
+        ->assertSeeText('Not available');
+})->with('dates');
+
 it('can render range without to date', function (string $from, string $to) {
     $from = Carbon::createFromFormat('Y-m-d', $from);
     $to = Carbon::createFromFormat('Y-m-d', $to);
