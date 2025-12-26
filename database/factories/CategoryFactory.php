@@ -19,7 +19,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $name = trim(fake()->sentence(1), '.'),
+            'name' => $name = trim(fake()->unique()->sentence(1), '.'),
             'slug' => Str::slug($name),
             'description' => fake()->boolean() ? fake()->text() : null,
         ];
