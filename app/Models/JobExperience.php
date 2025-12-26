@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Concerns\HasCategories;
 use Database\Factories\JobExperienceFactory;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,12 +33,10 @@ class JobExperience extends Model
         'working_here',
         'start_date',
         'end_date',
-        'meta',
         'date_range_as_relative',
     ];
 
     protected $casts = [
-        'meta' => 'array',
         'start_date' => 'date',
         'end_date' => 'date',
     ];
@@ -47,22 +44,6 @@ class JobExperience extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function technologies(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->meta['technologies'] ?? [],
-            set: function (array $technologies): void {
-                if (blank($technologies)) {
-                    return;
-                }
-
-                $this->meta = [
-                    'technologies' => $this->meta['technologies'] ?? $technologies,
-                ];
-            }
-        );
     }
 
     #[Override]
