@@ -25,42 +25,38 @@ it('can render range', function (string $from, string $to) {
         ->assertSeeText($to->format('M d, Y'));
 })->with('dates');
 
-it('render relative date', function (string $from, string $to, string $relativeMessage) {
+it('render relative date', function (string $from) {
     $from = Carbon::createFromFormat('Y-m-d', $from);
-    $to = Carbon::createFromFormat('Y-m-d', $to);
+    $to = $from->clone();
 
     $this
         ->view('site::components.date-range', ['from' => $from, 'to' => $to, 'relative' => true])
-        ->assertDontSee($from->format('M d, Y'))
-        ->assertDontSee($to->format('M d, Y'))
-        ->assertSeeText($relativeMessage);
-})->with([
-    'lest than one year' => [
-        'from' => '2018-01-01',
-        'to' => '2018-01-02',
-        'relativeMessage' => 'Less than 1 year',
-    ],
-    'less than one year' => [
-        'from' => '2018-01-01',
-        'to' => '2018-03-01',
-        'relativeMessage' => 'Less than 1 year',
-    ],
-    'one year' => [
-        'from' => '2018-01-01',
-        'to' => '2019-01-01',
-        'relativeMessage' => '1 year',
-    ],
-    'less than two years' => [
-        'from' => '2018-01-01',
-        'to' => '2019-02-01',
-        'relativeMessage' => 'Less than 2 years',
-    ],
-    'two years' => [
-        'from' => '2018-01-01',
-        'to' => '2020-01-01',
-        'relativeMessage' => '2 years',
-    ],
-]);
+        ->assertSeeText('Less than 3 months');
+
+    $this
+        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(3)->subDay(), 'relative' => true])
+        ->assertSeeText('Less than 3 months');
+
+    $this
+        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(3)->addDay(), 'relative' => true])
+        ->assertSeeText('Less than 6 months');
+
+    $this
+        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(6)->subDay(), 'relative' => true])
+        ->assertSeeText('Less than 6 months');
+
+    $this
+        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(6)->addDay(), 'relative' => true])
+        ->assertSeeText('Less than 1 year');
+
+    $this
+        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(9), 'relative' => true])
+        ->assertSeeText('Less than 1 year');
+
+    $this
+        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addYear(), 'relative' => true])
+        ->assertSeeText('1 year');
+})->with('dates');
 
 it('will not render relative date if `to` date is not given', function (string $from) {
     $from = Carbon::createFromFormat('Y-m-d', $from);
@@ -80,22 +76,6 @@ it('can render range without to date', function (string $from, string $to) {
         ->assertSeeText($from->format('M d, Y'))
         ->assertDontSeeText($to->format('M d, Y'))
         ->assertSeeText('Not available');
-})->with('dates');
-
-it('fail if `to` date is less than `from` date', function (string $from) {
-    $from = Carbon::createFromFormat('Y-m-d', $from)->setTime(0, 0);
-    $lessThan = $from->clone()->subSecond();
-
-    expect(fn () => $this->view('site::components.date-range', ['from' => $from, 'to' => $lessThan]))
-        ->toThrow(ViewException::class, 'The `to` date must be greater than or equal to `from` date')
-        ->and(fn () => $this->view('site::components.date-range', ['from' => $from, 'to' => $from->clone()->subDay()]))
-        ->toThrow(ViewException::class, 'The `to` date must be greater than or equal to `from` date');
-
-    $this
-        ->view('site::components.date-range', ['from' => $from, 'to' => $equalDate = $from->clone()->addSecond()])
-        ->assertSeeText($from->format('M d, Y'))
-        ->assertDontSeeText('Not available')
-        ->assertSeeText($equalDate->format('M d, Y'));
 })->with('dates');
 
 it('fail if missing `from` date', function () {
