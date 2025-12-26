@@ -14,9 +14,8 @@ return new class extends Migration
     {
         Schema::create('categoryables', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Category::class);
             $table->morphs('categoryable');
-            $table->unique(['category_id', 'categoryable_id']);
             $table->timestamps();
         });
     }
