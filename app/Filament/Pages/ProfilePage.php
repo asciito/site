@@ -29,13 +29,27 @@ use Override;
 
 class ProfilePage extends EditProfile
 {
-    protected static array $technologies = [
-        'JS', 'NodeJS', 'BunJS', 'NextJS', 'ReactJS', 'ReactNative',
-        'PHP', 'Laravel', 'Symfony', 'CodeIgniter',
-        'Python', 'Django', 'Flask',
-        'CSS', 'TailwindCSS', 'Bootstrap', 'Styled Components',
-        'SQL', 'MySQL', 'SQLite', 'PostgreSQL', 'NoSQL', 'MongoDB',
-    ];
+    /**
+     * Cached [id => name] options to avoid repeating relationship label queries.
+     *
+     * @var array<int, string>
+     */
+    protected array $categoryOptions = [];
+
+    /**
+     * @return array<int, string>
+     */
+    protected function getCategoryOptions(): array
+    {
+        if ($this->categoryOptions !== []) {
+            return $this->categoryOptions;
+        }
+
+        return $this->categoryOptions = Category::query()
+            ->orderBy('name')
+            ->pluck('name', 'id')
+            ->all();
+    }
 
     #[Override]
     public static function isSimple(): bool
@@ -219,6 +233,7 @@ class ProfilePage extends EditProfile
                         ->label(__('Technologies'))
                         ->native(false)
                         ->multiple()
+                        ->options(fn () => $this->getCategoryOptions())
                         ->createOptionForm([
                             TextInput::make('name')
                                 ->required()
@@ -233,8 +248,7 @@ class ProfilePage extends EditProfile
                                 ->modalWidth(Width::Small)
                                 ->extraModalFooterActions([]);
                         }),
-                ])
-                ->columnSpanFull(),
+                ]),
         ];
     }
 }
