@@ -34,30 +34,22 @@ use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Override;
 
-class SiteSettings extends Page implements HasTable
+class Configuration extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected static ?string $title = 'Site Settings';
+    protected string $view = 'site::pages.configuration';
+
+    protected static ?string $title = 'Configuration';
 
     protected static string $settingsClass = Settings::class;
 
     protected static bool $shouldRegisterNavigation = false;
 
-    protected string $view = 'site::pages.settings';
-
-    #[Override]
-    public function save(): void
-    {
-        parent::save();
-
-        $this->skipRender();
-    }
-
     public function getSettingsFields(): array
     {
         return [
-            Section::make(__('Configuration'))
+            Section::make(__('Basic Settings'))
                 ->description('Configure the basic settings for your site.')
                 ->schema([
                     TextInput::make('name')
@@ -130,37 +122,40 @@ class SiteSettings extends Page implements HasTable
                         'lg' => 2,
                         'xl' => 2,
                     ]),
+                    Section::make(__('Social Media Handlers'))
+                        ->description('Configure the social media handlers for your site.')
+                        ->schema([
+                            Group::make([
+                                TextInput::make('twitter_handler')
+                                    ->label('X/Twitter')
+                                    ->required()
+                                    ->prefixIcon('fab-x-twitter'),
+                                TextInput::make('facebook_handler')
+                                    ->label('Facebook')
+                                    ->required()
+                                    ->prefixIcon('fab-facebook-f'),
+                                TextInput::make('instagram_handler')
+                                    ->label('Instagram')
+                                    ->required()
+                                    ->prefixIcon('fab-instagram'),
+                                TextInput::make('linkedin_handler')
+                                    ->label('LinkedIn')
+                                    ->required()
+                                    ->prefixIcon('fab-linkedin'),
+                                TextInput::make('github_handler')
+                                    ->label('Github')
+                                    ->required()
+                                    ->prefixIcon('fab-github'),
+                            ]),
+                        ])
+                        ->inlineLabel()
+                        ->compact()
+                        ->collapsed()
+                        ->collapsible()
+                        ->contained(false)
+                        ->columnSpanFull(),
                 ])
                 ->aside()
-                ->columnSpanFull(),
-            Section::make(__('Social Media'))
-                ->description('Information related to the available social media configuration')
-                ->schema([
-                    Group::make([
-                        TextInput::make('twitter_handler')
-                            ->label('X/Twitter')
-                            ->required()
-                            ->prefixIcon('fab-x-twitter'),
-                        TextInput::make('facebook_handler')
-                            ->label('Facebook')
-                            ->required()
-                            ->prefixIcon('fab-facebook-f'),
-                        TextInput::make('instagram_handler')
-                            ->label('Instagram')
-                            ->required()
-                            ->prefixIcon('fab-instagram'),
-                        TextInput::make('linkedin_handler')
-                            ->label('LinkedIn')
-                            ->required()
-                            ->prefixIcon('fab-linkedin'),
-                        TextInput::make('github_handler')
-                            ->label('Github')
-                            ->required()
-                            ->prefixIcon('fab-github'),
-                    ]),
-                ])
-                ->aside()
-                ->inlineLabel()
                 ->columnSpanFull(),
         ];
     }
@@ -206,11 +201,6 @@ class SiteSettings extends Page implements HasTable
             ->defaultSort('created_at', 'DESC');
     }
 
-    protected function safeDeleteCategory(Category $category): bool
-    {
-        return tap($category, fn (Category $cat) => $cat->assignments()->delete())->delete();
-    }
-
     protected function categoryForm(): array
     {
         return [
@@ -236,8 +226,21 @@ class SiteSettings extends Page implements HasTable
         ];
     }
 
+    protected function safeDeleteCategory(Category $category): bool
+    {
+        return tap($category, fn (Category $cat) => $cat->assignments()->delete())->delete();
+    }
+
     public function categoriesQuery(): Builder
     {
         return Category::withCount('assignments')->newQuery();
+    }
+
+    #[Override]
+    public function save(): void
+    {
+        parent::save();
+
+        $this->skipRender();
     }
 }

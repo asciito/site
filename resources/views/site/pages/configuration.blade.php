@@ -9,11 +9,11 @@
         :contained="false"
     >
         <x-slot:heading>
-            Site Categories
+            Categories
         </x-slot:heading>
 
         <x-slot:description>
-            Manage the categories used to organize your site's content.
+            Manage the categories available for your site, you can add, edit or delete categories as needed.
         </x-slot:description>
 
         {{ $this->table }}
