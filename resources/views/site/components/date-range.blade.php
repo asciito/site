@@ -2,18 +2,31 @@
     'from',
     'to' => null,
     'relative' => false,
+    'showDates' => true,
     'emptyStateTo' => null,
 ])
 
 @php
+    use Illuminate\Support\Carbon;
     use Illuminate\Support\HtmlString;
-    use Illuminate\View\ViewException;use function App\Helpers\relativeRangeDate;
+    use Illuminate\View\ViewException;
+    use function App\Helpers\relativeRangeDate;
+
+    /**
+    * @var Carbon $from
+    * @var Carbon|null $to
+    * @var bool $relative
+    * @var bool $showDates
+    * @var string|HtmlString|null $emptyStateTo
+    */
 
     throw_if($to?->lessThan($from), ViewException::class, 'The `to` date must be greater than or equal to `from` date');
 @endphp
 
 @if ($to && $relative)
-    <time datetime="{{$from->format('Y-m-d')}}/{{ $to->format('Y-m-d') }}">{{ relativeRangeDate($from, $to) }}</time>
+    <time datetime="{{$from->format('Y-m-d')}}/{{ $to->format('Y-m-d') }}">
+        @if ($showDates) {{ $from->format('M Y') }} - {{ $to->format('M Y') }} <span>&#8231;<span> @endif  {{ relativeRangeDate($from, $to) }}
+    </time>
 @else
     <time datetime="{{ $from->format('Y-m-d') }}">{{ $from->format('M d, Y') }}</time>
     -
