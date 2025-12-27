@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Override;
 
 /**
  * @property string $title The job title (position)
@@ -42,5 +43,21 @@ class JobExperience extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    #[Override]
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        $avoidRelativeWhenWorkingHere = static function (self $model) {
+            if ($model->working_here) {
+                $model->date_range_as_relative = false;
+            }
+        };
+
+        static::updating($avoidRelativeWhenWorkingHere(...));
+
+        static::creating($avoidRelativeWhenWorkingHere(...));
     }
 }
