@@ -29,13 +29,27 @@ use Override;
 
 class ProfilePage extends EditProfile
 {
-    protected static array $technologies = [
-        'JS', 'NodeJS', 'BunJS', 'NextJS', 'ReactJS', 'ReactNative',
-        'PHP', 'Laravel', 'Symfony', 'CodeIgniter',
-        'Python', 'Django', 'Flask',
-        'CSS', 'TailwindCSS', 'Bootstrap', 'Styled Components',
-        'SQL', 'MySQL', 'SQLite', 'PostgreSQL', 'NoSQL', 'MongoDB',
-    ];
+    /**
+     * Cached [id => name] options to avoid repeating relationship label queries.
+     *
+     * @var array<int, string>
+     */
+    protected array $categoryOptions = [];
+
+    /**
+     * @return array<int, string>
+     */
+    protected function getCategoryOptions(): array
+    {
+        if ($this->categoryOptions !== []) {
+            return $this->categoryOptions;
+        }
+
+        return $this->categoryOptions = Category::query()
+            ->orderBy('name')
+            ->pluck('name', 'id')
+            ->all();
+    }
 
     #[Override]
     public static function isSimple(): bool
@@ -60,22 +74,13 @@ class ProfilePage extends EditProfile
                         $this->getDescriptionFormComponent(),
                     ])
                     ->aside()
+                    ->inlineLabel(false)
                     ->description('Update the your profile information and provide the needed information.'),
-                Group::make([
-                    Section::make('Job Experience')
-                        ->collapsible()
-                        ->schema($this->getJobExperienceComponents())->columnStart([
-                            'md' => 2,
-                        ])
-                        ->columnSpan([
-                            'default' => 'full',
-                            'sm' => 3,
-                            'md' => 2,
-                        ]),
-                ])->columns([
-                    'default' => 1,
-                    'sm' => 3,
-                ]),
+                Section::make('Job Experience')
+                    ->schema($this->getJobExperienceComponents())
+                    ->aside()
+                    ->inlineLabel(false)
+                    ->description('Manage your job experience that will be displayed on the home page.'),
             ]);
     }
 
@@ -89,20 +94,10 @@ class ProfilePage extends EditProfile
     {
         return RichEditor::make('description')
             ->label(__('Description'))
-            ->toolbarButtons([
-                'blockquote',
-                'bold',
-                'bulletList',
-                'codeBlock',
-                'h2',
-                'h3',
-                'italic',
-                'link',
-                'orderedList',
-                'redo',
-                'strike',
-                'underline',
-                'undo',
+            ->disableToolbarButtons([
+                'h1',
+                'table',
+                'attachFiles',
             ])
             ->grow()
             ->helperText('This text will be display in the `About me` section of the home page');
@@ -112,21 +107,9 @@ class ProfilePage extends EditProfile
     {
         return RichEditor::make('introduction')
             ->label(__('Introduction'))
-            ->toolbarButtons([
-                'blockquote',
-                'bold',
-                'bulletList',
-                'codeBlock',
-                'h1',
-                'h2',
-                'h3',
-                'italic',
-                'link',
-                'orderedList',
-                'redo',
-                'strike',
-                'underline',
-                'undo',
+            ->disableToolbarButtons([
+                'table',
+                'attachFiles',
             ])
             ->grow()
             ->helperText('This text will be display at the beginning of the home page');
@@ -219,6 +202,7 @@ class ProfilePage extends EditProfile
                         ->label(__('Technologies'))
                         ->native(false)
                         ->multiple()
+                        ->options(fn () => $this->getCategoryOptions())
                         ->createOptionForm([
                             TextInput::make('name')
                                 ->required()
@@ -233,8 +217,7 @@ class ProfilePage extends EditProfile
                                 ->modalWidth(Width::Small)
                                 ->extraModalFooterActions([]);
                         }),
-                ])
-                ->columnSpanFull(),
+                ]),
         ];
     }
 }

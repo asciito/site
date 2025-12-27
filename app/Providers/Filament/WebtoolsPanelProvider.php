@@ -2,9 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Configuration;
 use App\Filament\Pages\ProfilePage;
-use App\Filament\Pages\SiteSettings;
-use App\Settings\SiteSettings as Settings;
+use App\Settings\SiteSettings;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,15 +32,15 @@ class WebtoolsPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->favicon(fn (Settings $settings) => $settings->favicon ? Storage::url($settings->favicon) : null)
+            ->favicon(fn (SiteSettings $settings) => $settings->favicon ? Storage::url($settings->favicon) : null)
             ->darkMode(false)
-            ->brandName(fn (Settings $settings) => $settings->name)
+            ->brandName(fn (SiteSettings $settings) => $settings->name)
             ->profile(ProfilePage::class)
             ->userMenuItems([
                 Action::make('settings-page')
                     ->label('Settings')
-                    ->url(fn () => SiteSettings::getUrl())
-                    ->icon(SiteSettings::getNavigationIcon()),
+                    ->url(fn () => Configuration::getUrl())
+                    ->icon(Configuration::getNavigationIcon()),
             ])
             ->default()
             ->id('webtools')

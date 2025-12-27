@@ -9,6 +9,8 @@ use App\Models\Category;
 use App\Settings\SiteSettings as Settings;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Textarea;
@@ -25,24 +27,29 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Override;
 
-class SiteSettings extends Page implements HasTable
+class Configuration extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    protected string $view = 'site::pages.configuration';
+
+    protected static ?string $title = 'Configuration';
 
     protected static string $settingsClass = Settings::class;
 
     protected static bool $shouldRegisterNavigation = false;
 
-    protected string $view = 'site::pages.settings';
-
     public function getSettingsFields(): array
     {
         return [
-            Section::make(__('Site Configuration'))
+            Section::make(__('Basic Settings'))
                 ->description('Configure the basic settings for your site.')
                 ->schema([
                     TextInput::make('name')
@@ -115,13 +122,8 @@ class SiteSettings extends Page implements HasTable
                         'lg' => 2,
                         'xl' => 2,
                     ]),
-                ])
-                ->aside()
-                ->columnSpanFull(),
-            Section::make(__('Social Media'))
-                ->description('Information related to the available social media configuration')
-                ->schema([
-                    Section::make(__('Handlers'))
+                    Section::make(__('Social Media Handlers'))
+                        ->description('Configure the social media handlers for your site.')
                         ->schema([
                             Group::make([
                                 TextInput::make('twitter_handler')
@@ -146,8 +148,12 @@ class SiteSettings extends Page implements HasTable
                                     ->prefixIcon('fab-github'),
                             ]),
                         ])
+                        ->inlineLabel()
+                        ->compact()
                         ->collapsed()
-                        ->collapsible(),
+                        ->collapsible()
+                        ->contained(false)
+                        ->columnSpanFull(),
                 ])
                 ->aside()
                 ->columnSpanFull(),
@@ -176,29 +182,65 @@ class SiteSettings extends Page implements HasTable
             ->headerActions([
                 CreateAction::make()
                     ->modalWidth(Width::Medium)
-                    ->schema([
-                        Group::make([
-                            TextInput::make('name')
-                                ->required()
-                                ->afterStateUpdated(fn (?string $state, Set $set) => $state ? $set('slug', Str::slug($state)) : null)
-                                ->unique(modifyRuleUsing: fn (string $state) => Rule::unique(Category::class, 'slug')->where('slug', Str::slug($state))),
-                            Hidden::make('slug')
-                                ->dehydratedWhenHidden()
-                                ->dehydrateStateUsing(fn (Get $get) => Str::slug($get('name'))),
-                        ]),
-                    ]),
+                    ->schema($this->categoryForm()),
+            ])
+            ->toolbarActions([
+                DeleteBulkAction::make('delete')
+                    ->databaseTransaction()
+                    ->using(fn (Collection $selectedRecords) => $selectedRecords->each(fn (Category $category) => $this->safeDeleteCategory($category))),
             ])
             ->recordActions([
                 DeleteAction::make()
-                    ->using(fn (Category $record): bool => tap($record, fn (Category $category) => $category->assignments()->delete())->delete())
+                    ->using($this->safeDeleteCategory(...))
                     ->databaseTransaction(),
+                EditAction::make()
+                    ->modalWidth(Width::Medium)
+                    ->schema($this->categoryForm()),
             ])
             ->query($this->categoriesQuery())
             ->defaultSort('created_at', 'DESC');
     }
 
+    protected function categoryForm(): array
+    {
+        return [
+            Group::make([
+                TextInput::make('name')
+                    ->required()
+                    ->afterStateUpdated(fn (?string $state, Set $set) => $state ? $set('slug', Str::slug($state)) : null)
+                    ->unique(
+                        modifyRuleUsing: fn (string $state, ?Category $record) => Rule::unique(Category::class, 'slug')
+                            ->when(
+                                $record,
+                                fn (Unique $rule) => $rule->ignore(
+                                    $record->getOriginal($record->getKeyName()),
+                                    $record->getQualifiedKeyName(),
+                                ),
+                            )
+                            ->where('slug', Str::slug($state))
+                    ),
+                Hidden::make('slug')
+                    ->dehydratedWhenHidden()
+                    ->dehydrateStateUsing(fn (Get $get) => Str::slug($get('name'))),
+            ]),
+        ];
+    }
+
+    protected function safeDeleteCategory(Category $category): bool
+    {
+        return tap($category, fn (Category $cat) => $cat->assignments()->delete())->delete();
+    }
+
     public function categoriesQuery(): Builder
     {
         return Category::withCount('assignments')->newQuery();
+    }
+
+    #[Override]
+    public function save(): void
+    {
+        parent::save();
+
+        $this->skipRender();
     }
 }
