@@ -5,23 +5,38 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Filament\Pages\SettingsPage as Page;
+use App\Models\Category;
 use App\Settings\SiteSettings as Settings;
+use Filament\Actions\CreateAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-class SiteSettings extends Page
+class SiteSettings extends Page implements HasTable
 {
+    use InteractsWithTable;
+
     protected static string $settingsClass = Settings::class;
 
     protected static bool $shouldRegisterNavigation = false;
+
+    protected string $view = 'site::pages.settings';
 
     public function getSettingsFields(): array
     {
@@ -136,5 +151,49 @@ class SiteSettings extends Page
                 ->aside()
                 ->columnSpanFull(),
         ];
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('name')
+                    ->formatStateUsing(fn (string $state): string => Str::upper($state))
+                    ->searchable(),
+                TextColumn::make('slug')
+                    ->label('Unique Identifier')
+                    ->badge()
+                    ->color(Color::Zinc)
+                    ->searchable(),
+                TextColumn::make('assignments_count')
+                    ->label('Assigned Items')
+                    ->sortable()
+                    ->badge()
+                    ->color(Color::Green)
+                    ->alignCenter(),
+            ])
+            ->headerActions([
+                CreateAction::make()
+                    ->modalWidth(Width::Medium)
+                    ->schema([
+                        Group::make([
+                            TextInput::make('name')
+                                ->required()
+                                ->afterStateUpdated(fn (?string $state, Set $set) => $state ? $set('slug', Str::slug($state)) : null)
+                                ->unique(modifyRuleUsing: fn (string $state) => Rule::unique(Category::class, 'slug')->where('slug', Str::slug($state))),
+                            Hidden::make('slug')
+                                ->dehydratedWhenHidden()
+                                ->dehydrateStateUsing(fn (Get $get) => Str::slug($get('name'))),
+                        ]),
+                    ])
+                    ->beforeFormValidated(function () {}),
+            ])
+            ->query($this->categoriesQuery())
+            ->defaultSort('created_at', 'DESC');
+    }
+
+    public function categoriesQuery(): Builder
+    {
+        return Category::withCount('assignments')->newQuery();
     }
 }
