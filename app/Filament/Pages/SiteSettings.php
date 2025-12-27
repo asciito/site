@@ -24,7 +24,6 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -195,14 +194,6 @@ class SiteSettings extends Page implements HasTable
 
     public function categoriesQuery(): Builder
     {
-        $category = new Category;
-
-        return Category::query()
-            ->addSelect([
-                'assignments_count' => DB::table('categoryables')
-                    ->selectRaw('COUNT(*)')
-                    ->whereColumn($category->qualifyColumn('id'), 'category_id')
-                    ->limit(1),
-            ]);
+        return Category::withCount('assignments')->newQuery();
     }
 }
