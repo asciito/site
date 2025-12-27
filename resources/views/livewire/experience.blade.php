@@ -37,6 +37,8 @@ new class extends Component {
             }
         }"
     >
+        @php($alreadyWorking = false)
+
         @forelse($this->experience as $job)
             <div wire:key="{{ $job->id }}" class="grid grid-cols-[3rem_1fr] gap-3 group"> <!-- Main container -->
                 <div class="flex flex-col items-center"> <!-- Connector -->
@@ -62,7 +64,7 @@ new class extends Component {
                                 <x-site::date-range
                                     :from="$job->start_date"
                                     :to="! $job->working_here ? $job->end_date : null"
-                                    :empty-state-to="$job->working_here ? new HtmlString('<strong>Working Here®'. (! $loop->first ? ' too' : '') .'</strong>') : null"
+                                    :empty-state-to="$job->working_here ? new HtmlString('<strong>Working Here®'. ($alreadyWorking  ? ' too' : '') .'</strong>') : null"
                                     :relative="! $job->working_here && $job->date_range_as_relative"
                                 />
                             </p>
@@ -105,6 +107,8 @@ new class extends Component {
                     </div>
                 </section>
             </div>
+
+            @php($alreadyWorking = $alreadyWorking || $job->working_here)
         @empty
             <div class="text-center">
                 <h2 class="text-4xl">No work experience... added yet</h2>
