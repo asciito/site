@@ -10,6 +10,7 @@ use App\Settings\SiteSettings as Settings;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Textarea;
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Override;
 
@@ -53,7 +55,7 @@ class SiteSettings extends Page implements HasTable
     public function getSettingsFields(): array
     {
         return [
-            Section::make(__('Site Configuration'))
+            Section::make(__('Configuration'))
                 ->description('Configure the basic settings for your site.')
                 ->schema([
                     TextInput::make('name')
@@ -183,17 +185,7 @@ class SiteSettings extends Page implements HasTable
             ->headerActions([
                 CreateAction::make()
                     ->modalWidth(Width::Medium)
-                    ->schema([
-                        Group::make([
-                            TextInput::make('name')
-                                ->required()
-                                ->afterStateUpdated(fn (?string $state, Set $set) => $state ? $set('slug', Str::slug($state)) : null)
-                                ->unique(modifyRuleUsing: fn (string $state) => Rule::unique(Category::class, 'slug')->where('slug', Str::slug($state))),
-                            Hidden::make('slug')
-                                ->dehydratedWhenHidden()
-                                ->dehydrateStateUsing(fn (Get $get) => Str::slug($get('name'))),
-                        ]),
-                    ]),
+                    ->schema($this->categoryForm()),
             ])
             ->toolbarActions([
                 DeleteBulkAction::make('delete')
@@ -204,6 +196,9 @@ class SiteSettings extends Page implements HasTable
                 DeleteAction::make()
                     ->using($this->safeDeleteCategory(...))
                     ->databaseTransaction(),
+                EditAction::make()
+                    ->modalWidth(Width::Medium)
+                    ->schema($this->categoryForm()),
             ])
             ->query($this->categoriesQuery())
             ->defaultSort('created_at', 'DESC');
@@ -212,6 +207,31 @@ class SiteSettings extends Page implements HasTable
     protected function safeDeleteCategory(Category $category): bool
     {
         return tap($category, fn (Category $cat) => $cat->assignments()->delete())->delete();
+    }
+
+    protected function categoryForm(): array
+    {
+        return [
+            Group::make([
+                TextInput::make('name')
+                    ->required()
+                    ->afterStateUpdated(fn (?string $state, Set $set) => $state ? $set('slug', Str::slug($state)) : null)
+                    ->unique(
+                        modifyRuleUsing: fn (string $state, ?Category $record) => Rule::unique(Category::class, 'slug')
+                            ->when(
+                                $record,
+                                fn (Unique $rule) => $rule->ignore(
+                                    $record->getOriginal($record->getKeyName()),
+                                    $record->getQualifiedKeyName(),
+                                ),
+                            )
+                            ->where('slug', Str::slug($state))
+                    ),
+                Hidden::make('slug')
+                    ->dehydratedWhenHidden()
+                    ->dehydrateStateUsing(fn (Get $get) => Str::slug($get('name'))),
+            ]),
+        ];
     }
 
     public function categoriesQuery(): Builder
