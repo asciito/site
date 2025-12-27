@@ -74,23 +74,13 @@ class ProfilePage extends EditProfile
                         $this->getDescriptionFormComponent(),
                     ])
                     ->aside()
+                    ->inlineLabel(false)
                     ->description('Update the your profile information and provide the needed information.'),
-                Group::make([
-                    Section::make('Job Experience')
-                        ->collapsible()
-                        ->compact()
-                        ->schema($this->getJobExperienceComponents())->columnStart([
-                            'md' => 2,
-                        ])
-                        ->columnSpan([
-                            'default' => 'full',
-                            'sm' => 3,
-                            'md' => 2,
-                        ]),
-                ])->columns([
-                    'default' => 1,
-                    'sm' => 3,
-                ]),
+                Section::make('Job Experience')
+                    ->schema($this->getJobExperienceComponents())
+                    ->aside()
+                    ->inlineLabel(false)
+                    ->description('Manage your job experience that will be displayed on the home page.'),
             ]);
     }
 
@@ -104,20 +94,10 @@ class ProfilePage extends EditProfile
     {
         return RichEditor::make('description')
             ->label(__('Description'))
-            ->toolbarButtons([
-                'blockquote',
-                'bold',
-                'bulletList',
-                'codeBlock',
-                'h2',
-                'h3',
-                'italic',
-                'link',
-                'orderedList',
-                'redo',
-                'strike',
-                'underline',
-                'undo',
+            ->disableToolbarButtons([
+                'h1',
+                'table',
+                'attachFiles',
             ])
             ->grow()
             ->helperText('This text will be display in the `About me` section of the home page');
@@ -127,21 +107,9 @@ class ProfilePage extends EditProfile
     {
         return RichEditor::make('introduction')
             ->label(__('Introduction'))
-            ->toolbarButtons([
-                'blockquote',
-                'bold',
-                'bulletList',
-                'codeBlock',
-                'h1',
-                'h2',
-                'h3',
-                'italic',
-                'link',
-                'orderedList',
-                'redo',
-                'strike',
-                'underline',
-                'undo',
+            ->disableToolbarButtons([
+                'table',
+                'attachFiles',
             ])
             ->grow()
             ->helperText('This text will be display at the beginning of the home page');
