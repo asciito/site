@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\JobExperience;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -40,10 +41,17 @@ class DatabaseSeeder extends Seeder
 
         $user = User::first();
 
-        JobExperience::factory()
+        $categories = Category::factory($max = random_int(2, 10))->create();
+
+        $experiences = JobExperience::factory()
             ->count(10)
             ->for($user)
-            ->hasCategories(random_int(2, 10))
             ->create();
+
+        foreach ($experiences as $experience) {
+            $experience
+                ->categories()
+                ->attach($categories->random(random_int(1, $max)));
+        }
     }
 }
