@@ -38,6 +38,8 @@ class SiteSettings extends Page implements HasTable
 {
     use InteractsWithTable;
 
+    protected static ?string $title = 'Site Settings';
+
     protected static string $settingsClass = Settings::class;
 
     protected static bool $shouldRegisterNavigation = false;
