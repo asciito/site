@@ -31,26 +31,32 @@ it('render relative date', function (string $from) {
 
     $this
         ->view('site::components.date-range', ['from' => $from, 'to' => $to, 'relative' => true])
+        ->assertSeeText($from->format('M Y').' - '.$to->format('M Y'))
         ->assertSeeText('Less than 3 months');
 
     $this
-        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(3)->subDay(), 'relative' => true])
+        ->view('site::components.date-range', ['from' => $from, 'to' => $cloned = $to->clone()->addMonths(3)->subDay(), 'relative' => true])
+        ->assertSeeText($from->format('M Y').' - '.$cloned->format('M Y'))
         ->assertSeeText('Less than 3 months');
 
     $this
-        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(3)->addDay(), 'relative' => true])
+        ->view('site::components.date-range', ['from' => $from, 'to' => $cloned = $to->clone()->addMonths(3)->addDay(), 'relative' => true])
+        ->assertSeeText($from->format('M Y').' - '.$cloned->format('M Y'))
         ->assertSeeText('Less than 6 months');
 
     $this
-        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(6)->subDay(), 'relative' => true])
+        ->view('site::components.date-range', ['from' => $from, 'to' => $cloned = $to->clone()->addMonths(6)->subDay(), 'relative' => true])
+        ->assertSeeText($from->format('M Y').' - '.$cloned->format('M Y'))
         ->assertSeeText('Less than 6 months');
 
     $this
-        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(6)->addDay(), 'relative' => true])
+        ->view('site::components.date-range', ['from' => $from, 'to' => $cloned = $to->clone()->addMonths(6)->addDay(), 'relative' => true])
+        ->assertSeeText($from->format('M Y').' - '.$cloned->format('M Y'))
         ->assertSeeText('Less than 1 year');
 
     $this
-        ->view('site::components.date-range', ['from' => $from, 'to' => $to->clone()->addMonths(9), 'relative' => true])
+        ->view('site::components.date-range', ['from' => $from, 'to' => $cloned = $to->clone()->addMonths(9), 'relative' => true])
+        ->assertSeeText($from->format('M Y').' - '.$cloned->format('M Y'))
         ->assertSeeText('Less than 1 year');
 
     $this

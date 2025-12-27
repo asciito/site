@@ -61,7 +61,7 @@ new class extends Component {
                             <p class="shrink-0 text-xs text-dark-blue/50 self-start m-0">
                                 <x-site::date-range
                                     :from="$job->start_date"
-                                    :to="$job->end_date"
+                                    :to="! $job->working_here ? $job->end_date : null"
                                     :empty-state-to="$job->working_here ? new HtmlString('<strong>Working Here®'. (! $loop->first ? ' too' : '') .'</strong>') : null"
                                     :relative="! $job->working_here && $job->date_range_as_relative"
                                 />
