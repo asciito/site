@@ -17,14 +17,14 @@ use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Width;
 use Filament\Support\RawJs;
-use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Override;
 
@@ -247,31 +247,24 @@ class ProfilePage extends EditProfile
                             'codeBlock',
                         ])
                         ->fileAttachments(false),
-                    Select::make('categories')
-                        ->relationship(titleAttribute: 'name')
+                    Select::make('technologies')
+                        ->relationship('categories', titleAttribute: 'name')
                         ->label(__('Technologies'))
                         ->native(false)
                         ->multiple()
-                        ->unique()
                         ->createOptionForm([
-                            TextInput::make('name'),
+                            TextInput::make('name')
+                                ->required()
+                                ->afterStateUpdated(fn (?string $state, Set $set) => $state ? $set('slug', Str::slug($state)) : null)
+                                ->unique(modifyRuleUsing: fn (string $state) => Rule::unique(Category::class, 'slug')->where('slug', Str::slug($state))),
+                            Hidden::make('slug')
+                                ->dehydratedWhenHidden()
+                                ->dehydrateStateUsing(fn (Get $get) => Str::slug($get('name'))),
                         ])
                         ->createOptionAction(function (Action $action) {
                             $action
                                 ->modalWidth(Width::Small)
                                 ->extraModalFooterActions([]);
-                        })
-                        ->createOptionUsing(function (Schema $schema, array $data) {
-                            $name = $data['name'];
-                            $slug = Str::slug($name);
-
-                            try {
-                                return Category::create(['name' => $name, 'slug' => $slug])->getKey();
-                            } catch (UniqueConstraintViolationException) {
-                                throw ValidationException::withMessages([
-                                    'categories' => 'The technology "'.$name.'" already exists.',
-                                ]);
-                            }
                         }),
                 ])
                 ->columnSpanFull(),
