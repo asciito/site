@@ -8,6 +8,7 @@ use App\Filament\Pages\SettingsPage as Page;
 use App\Models\Category;
 use App\Settings\SiteSettings as Settings;
 use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Textarea;
@@ -185,8 +186,12 @@ class SiteSettings extends Page implements HasTable
                                 ->dehydratedWhenHidden()
                                 ->dehydrateStateUsing(fn (Get $get) => Str::slug($get('name'))),
                         ]),
-                    ])
-                    ->beforeFormValidated(function () {}),
+                    ]),
+            ])
+            ->recordActions([
+                DeleteAction::make()
+                    ->using(fn (Category $record): bool => tap($record, fn (Category $category) => $category->assignments()->delete())->delete())
+                    ->databaseTransaction(),
             ])
             ->query($this->categoriesQuery())
             ->defaultSort('created_at', 'DESC');

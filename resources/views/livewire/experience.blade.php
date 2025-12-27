@@ -93,12 +93,12 @@ new class extends Component {
                             {{ RichContentRenderer::make($job->description) }}
                         </div>
 
-                        @if ($technologies = $job->categories)
+                        @if ($job->categories->isNotEmpty())
                             <div class="space-y-2">
                                 <h3 class="font-semibold">Technologies</h3>
 
                                 <ul class="flex flex-wrap gap-2">
-                                    @foreach($technologies as $tech)
+                                    @foreach($job->categories as $tech)
                                         <li class="text-xs uppercase shink-0 bg-dark-blue text-white px-2 py-1">{{ $tech->name }}</li>
                                     @endforeach
                                 </ul>
