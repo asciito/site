@@ -78,6 +78,7 @@ class ProfilePage extends EditProfile
                 Group::make([
                     Section::make('Job Experience')
                         ->collapsible()
+                        ->compact()
                         ->schema($this->getJobExperienceComponents())->columnStart([
                             'md' => 2,
                         ])
