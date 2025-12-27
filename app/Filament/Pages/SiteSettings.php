@@ -130,35 +130,31 @@ class SiteSettings extends Page implements HasTable
             Section::make(__('Social Media'))
                 ->description('Information related to the available social media configuration')
                 ->schema([
-                    Section::make(__('Handlers'))
-                        ->schema([
-                            Group::make([
-                                TextInput::make('twitter_handler')
-                                    ->label('X/Twitter')
-                                    ->required()
-                                    ->prefixIcon('fab-x-twitter'),
-                                TextInput::make('facebook_handler')
-                                    ->label('Facebook')
-                                    ->required()
-                                    ->prefixIcon('fab-facebook-f'),
-                                TextInput::make('instagram_handler')
-                                    ->label('Instagram')
-                                    ->required()
-                                    ->prefixIcon('fab-instagram'),
-                                TextInput::make('linkedin_handler')
-                                    ->label('LinkedIn')
-                                    ->required()
-                                    ->prefixIcon('fab-linkedin'),
-                                TextInput::make('github_handler')
-                                    ->label('Github')
-                                    ->required()
-                                    ->prefixIcon('fab-github'),
-                            ]),
-                        ])
-                        ->collapsed()
-                        ->collapsible(),
+                    Group::make([
+                        TextInput::make('twitter_handler')
+                            ->label('X/Twitter')
+                            ->required()
+                            ->prefixIcon('fab-x-twitter'),
+                        TextInput::make('facebook_handler')
+                            ->label('Facebook')
+                            ->required()
+                            ->prefixIcon('fab-facebook-f'),
+                        TextInput::make('instagram_handler')
+                            ->label('Instagram')
+                            ->required()
+                            ->prefixIcon('fab-instagram'),
+                        TextInput::make('linkedin_handler')
+                            ->label('LinkedIn')
+                            ->required()
+                            ->prefixIcon('fab-linkedin'),
+                        TextInput::make('github_handler')
+                            ->label('Github')
+                            ->required()
+                            ->prefixIcon('fab-github'),
+                    ]),
                 ])
                 ->aside()
+                ->inlineLabel()
                 ->columnSpanFull(),
         ];
     }
