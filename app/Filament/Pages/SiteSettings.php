@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Override;
 
 class SiteSettings extends Page implements HasTable
 {
@@ -38,6 +39,14 @@ class SiteSettings extends Page implements HasTable
     protected static bool $shouldRegisterNavigation = false;
 
     protected string $view = 'site::pages.settings';
+
+    #[Override]
+    public function save(): void
+    {
+        parent::save();
+
+        $this->skipRender();
+    }
 
     public function getSettingsFields(): array
     {
