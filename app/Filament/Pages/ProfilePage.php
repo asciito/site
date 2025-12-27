@@ -21,7 +21,6 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Width;
-use Filament\Support\RawJs;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -182,47 +181,7 @@ class ProfilePage extends EditProfile
                         ->collapsible()
                         ->schema([
                             Group::make([
-                                Toggle::make('working_here')
-                                    ->live()
-                                    ->afterStateUpdatedJs(RawJs::make(<<<'JS'
-                                    (
-                                        /**
-                                         * Handle the `working here` feature which only allow me to set
-                                         * at most one `job experience` as my current job position.
-                                         *
-                                         * @param {null|number} current
-                                         * @param {boolean} workingHere
-                                         **/
-                                        (current, workingHere) => {
-                                            if (! workingHere) {
-                                                return;
-                                            }
-
-                                            /**
-                                            * @typedef {object} TJobExperience
-                                            * @property {string} title The position
-                                            * @property {(string|null)} description What you do in that job
-                                            * @property {boolean} working_here if you're still working here
-                                            **/
-
-                                            /**
-                                            * @var {Proxy<TJobExperience>} record
-                                            */
-                                            const records = $get('../');
-
-                                            for (let record in records) {
-                                                const recordStatePath = `../${record}`;
-
-                                                if ($get(`${recordStatePath}.working_here`) === false || $get(`${recordStatePath}.id`) === current) {
-                                                    continue;
-                                                }
-
-                                                // Will reset the previously `working here` record to false
-                                                $set(`${recordStatePath}.working_here`, false);
-                                            }
-                                        }
-                                    )($get('id'), $get('working_here')); // IIFE
-                                    JS)),
+                                Toggle::make('working_here')->live(),
                                 Toggle::make('date_range_as_relative')->label(__('Show as relative')),
                             ])->columns(['default' => 2]),
                             Group::make([

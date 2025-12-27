@@ -25,15 +25,6 @@ new class extends Component {
     {
         return JobExperience::orderBy('order')->get();
     }
-
-    protected function calculateLessSpecificDateRange(Carbon $from, Carbon $to): string
-    {
-        $fullYearDecimals = $from->diffInYears($to);
-        $years = (int)$fullYearDecimals;
-        $labelForYears = $fullYearDecimals > $years ? $years + 1 : $years;
-
-        return ($fullYearDecimals > $years ? "Less than " : "") . "$labelForYears " . Pluralizer::plural('year', $labelForYears);
-    }
 }; ?>
 
 <div class="grid gap-10">
@@ -72,7 +63,7 @@ new class extends Component {
                                     :from="$job->start_date"
                                     :to="$job->end_date"
                                     :empty-state-to="$job->working_here ? new HtmlString('<strong>Working Here®</strong>') : null"
-                                    :relative="$job->date_range_as_relative"
+                                    :relative="! $job->working_here && $job->date_range_as_relative"
                                 />
                             </p>
                         </div>
