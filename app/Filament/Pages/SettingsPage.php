@@ -12,7 +12,6 @@ use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 use Filament\Schemas\Schema;
 use Filament\Support\Exceptions\Halt;
-use Filament\Support\Facades\FilamentView;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 use Override;
@@ -118,8 +117,6 @@ abstract class SettingsPage extends Page
         $this->rememberData();
 
         $this->getSaveNotification()->send();
-
-        $this->redirect(static::getNavigationUrl(), navigate: FilamentView::hasSpaMode());
     }
 
     protected function mutateFormDataBeforeFill(array $data): array
