@@ -181,8 +181,15 @@ class ProfilePage extends EditProfile
                         ->collapsible()
                         ->schema([
                             Group::make([
-                                Toggle::make('working_here')->live(),
-                                Toggle::make('date_range_as_relative')->label(__('Show as relative')),
+                                Toggle::make('working_here')
+                                    ->live()
+                                    ->afterStateUpdatedJs(<<<'JS'
+                                        if ($get('working_here')) $set('date_range_as_relative', false);
+                                    JS),
+                                Toggle::make('date_range_as_relative')
+                                    ->label(__('Show as relative'))
+                                    ->disabled(fn (Get $get) => $get('working_here'))
+                                    ->dehydrated(), // This allows to dehydrate the field when `working_here` is true, and the field is disabled
                             ])->columns(['default' => 2]),
                             Group::make([
                                 DatePicker::make('start_date')
@@ -190,6 +197,7 @@ class ProfilePage extends EditProfile
                                     ->native(false)
                                     ->placeholder('Jan 1, 1977'),
                                 DatePicker::make('end_date')
+                                    ->required(fn (Get $get) => ! $get('working_here'))
                                     ->native(false)
                                     ->disabled(fn (Get $get) => $get('working_here'))
                                     ->placeholder(fn (Get $get) => $get('working_here') ? '' : 'Jan 1, 1977'),
