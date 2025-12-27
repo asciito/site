@@ -46,4 +46,4 @@ jobs:
 
       - name: Run tests
         run: |
-          PIRSCH_TOKEN=${{ secrets.PIRSCH_TOKEN }} vendor/bin/pest
+          PIRSCH_TOKEN=${{ secrets.PIRSCH_TOKEN }} vendor/bin/pest --parallel
