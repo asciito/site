@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->unsignedTinyInteger('order')->nullable();
             $table->json('meta')->nullable();
+            $table->string('company');
+            $table->string('company_website')->nullable();
             $table->foreignIdFor(User::class)->constrained();
             $table->boolean('working_here')->default(false);
             $table->date('start_date');
