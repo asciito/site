@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers {
 
-    use Exception;
+    use App\Exceptions\InvalidRangeException;
     use Illuminate\Support\Carbon;
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Pluralizer;
@@ -101,16 +101,5 @@ namespace App\Helpers {
         }
 
         return "Less than $years $yearLabel and $monthsBucket";
-    }
-
-    /**
-     * Thrown when the `end date` is less than the `start date`
-     */
-    class InvalidRangeException extends Exception
-    {
-        public function __construct()
-        {
-            parent::__construct('The end date must be greater than the start date');
-        }
     }
 }

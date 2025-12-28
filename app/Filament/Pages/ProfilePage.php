@@ -21,6 +21,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -159,6 +160,15 @@ class ProfilePage extends EditProfile
                         ->dehydratedWhenHidden(false),
                     TextInput::make('title')
                         ->required(),
+                    Group::make([
+                        TextInput::make('company')
+                            ->label(__('Company or Organization'))
+                            ->required(),
+                        TextInput::make('company_website')
+                            ->label(__('Company URL'))
+                            ->prefixIcon(Heroicon::GlobeAlt)
+                            ->url(),
+                    ]),
                     Section::make('Date related information')
                         ->compact()
                         ->collapsible()
