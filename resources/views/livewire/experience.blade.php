@@ -76,6 +76,11 @@ new class extends Component {
                                 x-bind:class="{ 'bg-harlequin-800/10!': amIOpened() }"
                                 :size="Size::ExtraSmall"
                                 @click.stop="showMe({{ $job->id }})"
+                                ::aria-label="
+                                    amIOpened()
+                                        ? 'Collapse details for {{ $job->title }}'
+                                        : 'Expand details for {{ $job->title }}'
+                                "
                             >
                                 <template x-if="! amIOpened()">
                                     <x-filament::icon class="text-zinc-900" :icon="Heroicon::ChevronRight"/>
