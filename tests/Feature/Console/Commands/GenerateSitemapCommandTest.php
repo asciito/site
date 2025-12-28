@@ -53,15 +53,15 @@ it('generate sitemap', function () {
                     <lastmod>2024-01-01T00:00:00+00:00</lastmod>
                 </url>
                 <url>
+                    <loc>{$site_url}/experience</loc>
+                    <lastmod>2024-01-01T00:00:00+00:00</lastmod>
+                </url>
+                <url>
                     <loc>{$site_url}/terms-of-use</loc>
                     <lastmod>2024-01-01T00:00:00+00:00</lastmod>
                 </url>
                 <url>
                     <loc>{$site_url}/privacy-policy</loc>
-                    <lastmod>2024-01-01T00:00:00+00:00</lastmod>
-                </url>
-                <url>
-                    <loc>{$site_url}/experience</loc>
                     <lastmod>2024-01-01T00:00:00+00:00</lastmod>
                 </url>
             </urlset>
