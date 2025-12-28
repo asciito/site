@@ -39,7 +39,7 @@ class GenerateSitemapCommand extends Command
 
     protected function getSitemappables(): Collection
     {
-        $pages = ['home', 'contact', 'terms', 'privacy'];
+        $pages = ['home', 'contact', 'terms', 'privacy', 'experience'];
 
         return collect($pages)
             ->map(fn (string $page) => $this->getPageUrl($page))
