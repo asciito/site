@@ -67,7 +67,7 @@ new #[\Livewire\Attributes\Layout('site::pages.Layout.site')] class extends Comp
         x-transition:leave-end="opacity-0 scale-90"
     >
         <div class="flex justify-center">
-            <p class="uppercase font-bold font-mono text-dark-blue-200 text-2xl px-4 py-0 bg-gray-300">MESSAGE SEND</p>
+            <p class="uppercase font-bold font-mono text-dark-blue-200 text-2xl px-4 py-0 bg-gray-300">MESSAGE SENT</p>
         </div>
     </div>
 
