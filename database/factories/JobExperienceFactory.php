@@ -21,10 +21,13 @@ class JobExperienceFactory extends Factory
     public function definition(): array
     {
         $start_date = fake()->date('2018-01-01 00:00:00');
+        $url = fake()->boolean() ? 'https://'.parse_url(fake()->url(), PHP_URL_HOST) : null;
 
         return [
             'title' => fake()->jobTitle(),
             'description' => fake()->text(random_int(256, 2048)),
+            'company' => fake()->company(),
+            'company_website' => $url,
             'start_date' => $start_date,
         ];
     }

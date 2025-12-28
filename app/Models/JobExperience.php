@@ -29,6 +29,8 @@ class JobExperience extends Model
         'title',
         'description',
         'order',
+        'company',
+        'company_website',
         'working_here',
         'start_date',
         'end_date',

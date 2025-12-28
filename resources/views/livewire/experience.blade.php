@@ -57,10 +57,22 @@ new class extends Component {
 
                 <section x-data="{ amIOpened: () => currentlyOpen == {{ $job->id }} }"> <!-- Content -->
                     <div class="flex justify-between gap-x-2">
-                        <div class="grid cursor-pointer" @click="showMe({{ $job->id }})">
-                            <h2 class="text-xl bold flex space-x-2">{{ $job->title }}</h2>
+                        <header class="grid gap-1">
+                            <h2 class="text-2xl font-semibold leading-6">{{ $job->title }}</h2>
 
-                            <p class="shrink-0 text-xs text-dark-blue/50 self-start m-0">
+                            <p class="text-base!">
+                                <span>At</span>
+
+                                @if ($job->company_website)
+                                    <x-filament::link :href="$job->company_website" class="text-blue-600" target="_blank" rel="noopener noreferrer">
+                                        {{ $job->company }}
+                                    </x-filament::link>
+                                @else
+                                    <span>{{ $job->company }}</span>
+                                @endif
+                            </p>
+
+                            <p class="text-sm text-dark-blue/60 leading-snug m-0">
                                 <x-site::date-range
                                     :from="$job->start_date"
                                     :to="! $job->working_here ? $job->end_date : null"
@@ -68,7 +80,7 @@ new class extends Component {
                                     :relative="! $job->working_here && $job->date_range_as_relative"
                                 />
                             </p>
-                        </div>
+                        </header>
 
                         <div class="grid items-start">
                             <x-site::button
