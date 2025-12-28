@@ -1,6 +1,6 @@
 <?php
 
-use App\Helpers\InvalidRangeException;
+use App\Exceptions\InvalidRangeException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Pluralizer;
 
