@@ -118,7 +118,9 @@
             class="fixed bottom-5 right-5 h-10 w-10 drop-shadow-sm">
             <x-site::button
                 @click="window.scroll({top: 0, behavior: 'smooth'})"
-                class="relative rounded-full h-10 w-10 p-0!">
+                class="relative rounded-full h-10 w-10 p-0!"
+                aria-label="Scroll to top"
+            >
                 <x-icon name="heroicon-s-arrow-up" class="w-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"/>
             </x-site::button>
         </div>
