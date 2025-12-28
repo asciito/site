@@ -32,7 +32,6 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Override;
 
 class Configuration extends Page implements HasTable
 {
@@ -234,13 +233,5 @@ class Configuration extends Page implements HasTable
     public function categoriesQuery(): Builder
     {
         return Category::withCount('assignments')->newQuery();
-    }
-
-    #[Override]
-    public function save(): void
-    {
-        parent::save();
-
-        $this->skipRender();
     }
 }
