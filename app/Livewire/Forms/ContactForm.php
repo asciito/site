@@ -3,7 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Events\Contacted;
-use App\Models\User;
+use App\Models\Contact;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Form;
@@ -52,7 +52,7 @@ class ContactForm extends Form
         $this->sanitizeMessage();
 
         Contacted::dispatch(
-            $this->resolveUser(),
+            $this->resolveContact(),
             $this->message,
         );
     }
@@ -62,13 +62,12 @@ class ContactForm extends Form
         $this->message = strip_tags($this->message);
     }
 
-    public function resolveUser(): User
+    public function resolveContact(): Contact
     {
-        return User::firstOrCreate(
+        return Contact::firstOrCreate(
             ['email' => $this->email],
             [
                 'name' => "{$this->name} {$this->lastName}",
-                'password' => bcrypt(Str::random(32)),
             ]
         );
     }
