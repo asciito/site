@@ -52,25 +52,13 @@
 
                     const headings = document.querySelectorAll('#content h2, #content h3, #content h4, #content h5, #content h6');
 
-                    const slugify = text => {
-                        return text
-                            .trim()
-                            .replace(/\s+/g, ' ')
-                            .toLowerCase()
-                            .normalize('NFD')
-                            .replace(/[\u0300-\u036f]/g, '')
-                            .replace(/['’]/g, '')
-                            .replace(/[^a-z0-9]+/g, '-')
-                            .replace(/^-+|-+$/g, '');
-                    };
-
                     toc.querySelectorAll('a').forEach(link => {
                         link.addEventListener('click', event => {
                             event.preventDefault();
 
-                            const targetSlug = link.getAttribute('href').slice(1);
+                            const target = link.getAttribute('href').slice(1);
 
-                        const targetHeading = Array.from(headings).find(h => slugify(h.innerText) === targetSlug);
+                            const targetHeading = Array.from(headings).find(h => h.innerText === target);
 
                             if (targetHeading) {
                                 window.scrollTo({ top: targetHeading.offsetTop, behavior: 'smooth' });
