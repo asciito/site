@@ -95,10 +95,22 @@ class ProfilePage extends EditProfile
     {
         return RichEditor::make('description')
             ->label(__('Description'))
-            ->disableToolbarButtons([
-                'h1',
-                'table',
-                'attachFiles',
+            ->toolbarButtons([
+                'bold',
+                'italic',
+                'underline',
+                'strike',
+                'h2',
+                'h3',
+                'alignStart',
+                'alignCenter',
+                'alignEnd',
+                'blockquote',
+                'bulletList',
+                'orderedList',
+                'link',
+                'undo',
+                'redo',
             ])
             ->grow()
             ->helperText('This text will be display in the `About me` section of the home page');
@@ -108,9 +120,23 @@ class ProfilePage extends EditProfile
     {
         return RichEditor::make('introduction')
             ->label(__('Introduction'))
-            ->disableToolbarButtons([
-                'table',
-                'attachFiles',
+            ->toolbarButtons([
+                'bold',
+                'italic',
+                'underline',
+                'strike',
+                'h1',
+                'h2',
+                'h3',
+                'alignStart',
+                'alignCenter',
+                'alignEnd',
+                'blockquote',
+                'bulletList',
+                'orderedList',
+                'link',
+                'undo',
+                'redo',
             ])
             ->grow()
             ->helperText('This text will be display at the beginning of the home page');
