@@ -13,7 +13,12 @@
 
     {!! seo($page ?? null) !!}
 
-    @filamentStyles
+    @auth
+        @filamentStyles
+
+        @vite('resources/css/filament.css')
+    @endauth
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
@@ -126,7 +131,10 @@
         </div>
     @endif
 
-    @filamentScripts
+    @auth
+        @filamentScripts
+    @endauth
+
     @stack('scripts')
 </body>
 </html>
