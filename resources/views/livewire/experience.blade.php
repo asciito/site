@@ -6,9 +6,11 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Pluralizer;
+use Illuminate\View\ComponentAttributeBag;
 use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
+use function Filament\Support\generate_icon_html;
 
 new class extends Component {
     use WithPagination;
@@ -40,7 +42,7 @@ new class extends Component {
                 <div class="flex flex-col items-center"> <!-- Connector -->
                     <div> <!-- Icon -->
                         <div class="bg-harlequin size-12 grid place-content-center">
-                            <x-filament::icon :icon="Heroicon::Briefcase" class="text-zinc-900"/>
+                            {{ generate_icon_html(Heroicon::Briefcase, attributes: new ComponentAttributeBag(['class' => 'text-zinc-900 size-6'])) }}
                         </div>
                     </div>
 
@@ -52,7 +54,8 @@ new class extends Component {
                 </div>
 
                 <details name="job-experience" class="group"> <!-- Content -->
-                    <summary class="flex items-start justify-between gap-4 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-blue-600">
+                    <summary
+                        class="flex items-start justify-between gap-4 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-blue-600">
                         <span class="grid gap-1">
                             <span class="text-2xl font-semibold leading-6">{{ $job->title }}</span>
 
@@ -60,7 +63,9 @@ new class extends Component {
                                 <span>At</span>
 
                                 @if ($job->company_website)
-                                    <a href="{{ $job->company_website }}" class="text-dark-blue-100 hover:text-dark-blue-400 active:text-dark-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                                    <a href="{{ $job->company_website }}"
+                                       class="text-dark-blue-100 hover:text-dark-blue-400 active:text-dark-blue-400 hover:underline"
+                                       target="_blank" rel="noopener noreferrer">
                                         {{ $job->company }}
                                     </a>
                                 @else
@@ -79,8 +84,10 @@ new class extends Component {
                         </span>
 
                         <span class="relative mt-1 shrink-0 size-6" aria-controls="job-description-{{ $job->id }}">
-                            <span class="absolute inline-block w-6 h-[.1875rem] bg-zinc-900 origin-center top-1/2 group-hover:bg-dark-blue-200"></span>
-                            <span class="absolute inline-block w-6 h-[.1875rem] bg-zinc-900 origin-center top-1/2 group-hover:bg-dark-blue-200 group-open:bg-dark-blue-200 transition-transform ease-in duration-100 group-not-open:rotate-90 group-open:rotate-180"></span>
+                            <span
+                                class="absolute inline-block w-6 h-[.1875rem] bg-zinc-900 origin-center top-1/2 group-hover:bg-dark-blue-200"></span>
+                            <span
+                                class="absolute inline-block w-6 h-[.1875rem] bg-zinc-900 origin-center top-1/2 group-hover:bg-dark-blue-200 group-open:bg-dark-blue-200 transition-transform ease-in duration-100 group-not-open:rotate-90 group-open:rotate-180"></span>
                         </span>
                     </summary>
 

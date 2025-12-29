@@ -1,8 +1,4 @@
 @import 'tailwindcss';
-@import '../../vendor/filament/support/resources/css/index.css';
-@import '../../vendor/filament/filament/resources/css/components/theme-switcher.css';
-@import '../../vendor/filament/filament/resources/css/components/user-menu.css';
-@import '../../vendor/filament/support/resources/css/components/avatar.css';
 
 @plugin '@tailwindcss/typography';
 
