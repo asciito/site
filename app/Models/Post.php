@@ -110,7 +110,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
         }
 
         return $asHtml ? new HtmlString(<<<HTML
-        <time datetime="{$date->format('Y-m-d')}">
+        <time datetime="{$date->format('Y-m-d H:i:s')}">
             $message
         </time>
         HTML) : $date;
@@ -176,7 +176,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
         }
 
         $counters = [];
-        $baseTemplate = '%s%s '.($withLinks ? '[%s](#%s)' : '**%s**');
+        $baseTemplate = '%s%s '.($withLinks ? '<a href="#%s" class="group"><span class="item-marker">→</span><span>%s</span></a>' : '**%s**');
 
         $toc = collect($matches['size'])
             ->zip($matches['title'])
@@ -192,7 +192,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
                     $marker = '-';
                 } else {
                     // Reset deeper levels when we come back up
-                    for ($l = $level + 1; $l <= 3; $l++) {
+                    for ($l = $level + 1; $l <= 6; $l++) {
                         unset($counters[$l]);
                     }
 
@@ -200,7 +200,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
                     $marker = $counters[$level].'.';
                 }
 
-                return sprintf($baseTemplate, $indent, $marker, $title, str($title)->slug());
+                return sprintf($baseTemplate, $indent, $marker, str(html_entity_decode($title))->stripTags()->slug(), $title);
             })->join("\n");
 
         return $toc ? str($toc)->markdown()->toHtmlString() : null;

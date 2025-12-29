@@ -58,6 +58,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
         return $this->hasMany(Message::class);
     }
 
+    public function experience(): HasMany
+    {
+        return $this->hasMany(JobExperience::class);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         if (! app()->isProduction()) {

@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\MessageStatusEnum;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Message>
+ * @extends Factory<Message>
  */
 class MessageFactory extends Factory
 {
@@ -21,14 +22,7 @@ class MessageFactory extends Factory
     {
         return [
             'message' => $this->faker->text(random_int(32, 512)),
-            'status' => \App\MessageStatusEnum::UNREAD,
+            'status' => fake()->randomElement([MessageStatusEnum::READ, MessageStatusEnum::UNREAD]),
         ];
-    }
-
-    public function markAsRead(): self
-    {
-        return $this->state([
-            'status' => \App\MessageStatusEnum::READ,
-        ]);
     }
 }

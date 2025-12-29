@@ -29,4 +29,9 @@ class SiteController extends Controller
     {
         return view('site::pages.privacy');
     }
+
+    public function experience(): Request|View
+    {
+        return view('site::pages.experience');
+    }
 }

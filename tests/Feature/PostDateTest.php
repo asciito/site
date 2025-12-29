@@ -10,7 +10,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 beforeEach(function () {
-    TestTime::freeze('Y-m-d', '2024-01-01');
+    TestTime::freeze('Y-m-d H:i:s', '2024-01-01 00:00:00');
 
     actingAs(User::factory()->create());
 });
@@ -21,7 +21,7 @@ function toVisit(Post $post): Expectation
 
     expect()
         ->extend('toSeeTimeTag', function (Carbon|string $date) use ($response) {
-            $formatted_date = is_string($date) ? $date : $date->format('Y-m-d');
+            $formatted_date = is_string($date) ? $date : $date->format('Y-m-d H:i:s');
 
             $response->assertSee("<time datetime=\"$formatted_date\">", false);
 
@@ -42,7 +42,7 @@ it('`Created Today`', function () {
 
     toVisit($post)
         ->isPublished()->toBeFalse()
-        ->toSeeTimeTag('2024-01-01')
+        ->toSeeTimeTag('2024-01-01 00:00:00')
         ->toSeeText('Created Today');
 
     TestTime::addMinute();
@@ -60,7 +60,7 @@ it('`Created on`', function () {
     toVisit($post)
         ->isPublished()
         ->toBeFalse()
-        ->toSeeTimeTag('2024-01-01')
+        ->toSeeTimeTag('2024-01-01 00:00:00')
         ->toSeeText('Created on January 01, 2024');
 
     toVisit(
@@ -78,7 +78,7 @@ it('`Updated Today`', function () {
     toVisit($post)
         ->isPublished()
         ->toBeFalse()
-        ->toSeeTimeTag('2024-01-02')
+        ->toSeeTimeTag('2024-01-02 00:00:00')
         ->toSeeText('Updated Today');
 
     toVisit(
@@ -98,7 +98,7 @@ it('`Updated on`', function () {
     toVisit($post)
         ->isPublished()
         ->toBeFalse()
-        ->toSeeTimeTag('2024-01-02')
+        ->toSeeTimeTag('2024-01-02 00:00:00')
         ->toSeeText('Updated on January 02, 2024');
 
     tap($post, fn ($post) => $post->delete())->restore();
@@ -114,7 +114,7 @@ it('`Published Today`', function () {
     toVisit($post)
         ->isPublished()
         ->toBeTrue()
-        ->toSeeTimeTag('2024-01-01')
+        ->toSeeTimeTag('2024-01-01 00:00:00')
         ->toSeeText('Published Today');
 
     TestTime::addDay();
@@ -132,7 +132,7 @@ it('`Published on`', function () {
     toVisit($post)
         ->isPublished()
         ->toBeTrue()
-        ->toSeeTimeTag('2024-01-01')
+        ->toSeeTimeTag('2024-01-01 00:00:00')
         ->toSeeText('Published on January 01, 2024');
 
     tap($post, fn ($post) => $post->archive())->restore();
@@ -154,7 +154,7 @@ it('Published but updated', function () {
     toVisit($post)
         ->isPublished()
         ->toBeTrue()
-        ->toSeeTimeTag('2024-01-02')
+        ->toSeeTimeTag('2024-01-02 00:00:00')
         ->toSeeText('Updated on January 02, 2024');
 
     TestTime::addDay();

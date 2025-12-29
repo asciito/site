@@ -1,0 +1,237 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Pages;
+
+use App\Filament\Pages\SettingsPage as Page;
+use App\Models\Category;
+use App\Settings\SiteSettings as Settings;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+
+class Configuration extends Page implements HasTable
+{
+    use InteractsWithTable;
+
+    protected string $view = 'site::pages.configuration';
+
+    protected static ?string $title = 'Configuration';
+
+    protected static string $settingsClass = Settings::class;
+
+    protected static bool $shouldRegisterNavigation = false;
+
+    public function getSettingsFields(): array
+    {
+        return [
+            Section::make(__('Basic Settings'))
+                ->description('Configure the basic settings for your site.')
+                ->schema([
+                    TextInput::make('name')
+                        ->required()
+                        ->maxLength(32),
+                    Textarea::make('description')
+                        ->required()
+                        ->maxLength(120),
+                    Group::make([
+                        FileUpload::make('image')
+                            ->label(__('SEO image'))
+                            ->validationAttribute('image')
+                            ->imageEditor()
+                            ->acceptedFileTypes(['image/webp', 'image/jpeg', 'image/png'])
+                            ->imageEditorAspectRatios([
+                                null,
+                                '1.91:1',
+                            ])
+                            ->imageResizeTargetWidth('1200')
+                            ->imageResizeTargetHeight('630')
+                            ->imageCropAspectRatio('1.91:1')
+                            ->panelLayout(null)
+                            ->previewable(false)
+                            ->rules([
+                                Rule::dimensions()
+                                    ->ratio(1.91)
+                                    ->minWidth(1200)
+                                    ->maxWidth(1920),
+                            ])
+                            ->hintIcon(Heroicon::InformationCircle)
+                            ->hintColor(Color::Zinc)
+                            ->hintIconTooltip('Width (min: 1200px - max: 1920px) - Ration (1.91:1)')
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                $host = parse_url((string) config('app.url'), PHP_URL_HOST);
+
+                                $ext = $file->guessExtension();
+
+                                return Str::before($host, '.').'-open-graph.'.$ext;
+                            }),
+                        FileUpload::make('favicon')
+                            ->label(__('Favicon'))
+                            ->validationAttribute('favicon')
+                            ->image()
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                '1:1',
+                            ])
+                            ->imageCropAspectRatio('1:1')
+                            ->panelLayout(null)
+                            ->previewable(false)
+                            ->rules([
+                                Rule::dimensions()
+                                    ->ratio(1)
+                                    ->minWidth(16)
+                                    ->maxWidth(512),
+                                'mimes:ico,png',
+                            ])
+                            ->hintIcon(Heroicon::InformationCircle)
+                            ->hintColor(Color::Zinc)
+                            ->hintIconTooltip('Size (min: 16px  - max: 512px) - Ration (1:1)')
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file) {
+                                $ext = $file->guessExtension();
+
+                                return 'favicon.'.$ext;
+                            }),
+                    ])->columns([
+                        'default' => 1,
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 2,
+                        'xl' => 2,
+                    ]),
+                    Section::make(__('Social Media Handlers'))
+                        ->description('Configure the social media handlers for your site.')
+                        ->schema([
+                            Group::make([
+                                TextInput::make('twitter_handler')
+                                    ->label('X/Twitter')
+                                    ->required()
+                                    ->prefixIcon('fab-x-twitter'),
+                                TextInput::make('facebook_handler')
+                                    ->label('Facebook')
+                                    ->required()
+                                    ->prefixIcon('fab-facebook-f'),
+                                TextInput::make('instagram_handler')
+                                    ->label('Instagram')
+                                    ->required()
+                                    ->prefixIcon('fab-instagram'),
+                                TextInput::make('linkedin_handler')
+                                    ->label('LinkedIn')
+                                    ->required()
+                                    ->prefixIcon('fab-linkedin'),
+                                TextInput::make('github_handler')
+                                    ->label('Github')
+                                    ->required()
+                                    ->prefixIcon('fab-github'),
+                            ]),
+                        ])
+                        ->inlineLabel()
+                        ->compact()
+                        ->collapsed()
+                        ->collapsible()
+                        ->contained(false)
+                        ->columnSpanFull(),
+                ])
+                ->aside()
+                ->columnSpanFull(),
+        ];
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('name')
+                    ->formatStateUsing(fn (string $state): string => Str::upper($state))
+                    ->searchable(),
+                TextColumn::make('slug')
+                    ->label('Unique Identifier')
+                    ->badge()
+                    ->color(Color::Zinc)
+                    ->searchable(),
+                TextColumn::make('assignments_count')
+                    ->label('Assigned Items')
+                    ->sortable()
+                    ->badge()
+                    ->color(Color::Green)
+                    ->alignCenter(),
+            ])
+            ->headerActions([
+                CreateAction::make()
+                    ->modalWidth(Width::Medium)
+                    ->schema($this->categoryForm()),
+            ])
+            ->toolbarActions([
+                DeleteBulkAction::make('delete')
+                    ->databaseTransaction()
+                    ->using(fn (Collection $selectedRecords) => $selectedRecords->each(fn (Category $category) => $this->safeDeleteCategory($category))),
+            ])
+            ->recordActions([
+                DeleteAction::make()
+                    ->using($this->safeDeleteCategory(...))
+                    ->databaseTransaction(),
+                EditAction::make()
+                    ->modalWidth(Width::Medium)
+                    ->schema($this->categoryForm()),
+            ])
+            ->query($this->categoriesQuery())
+            ->defaultSort('created_at', 'DESC');
+    }
+
+    protected function categoryForm(): array
+    {
+        return [
+            Group::make([
+                TextInput::make('name')
+                    ->required()
+                    ->afterStateUpdated(fn (?string $state, Set $set) => $state ? $set('slug', Str::slug($state)) : null)
+                    ->unique(
+                        modifyRuleUsing: fn (string $state, ?Category $record) => Rule::unique(Category::class, 'slug')
+                            ->when(
+                                $record,
+                                fn (Unique $rule) => $rule->ignore(
+                                    $record->getOriginal($record->getKeyName()),
+                                    $record->getQualifiedKeyName(),
+                                ),
+                            )
+                            ->where('slug', Str::slug($state))
+                    ),
+                Hidden::make('slug')
+                    ->dehydratedWhenHidden()
+                    ->dehydrateStateUsing(fn (Get $get) => Str::slug($get('name'))),
+            ]),
+        ];
+    }
+
+    protected function safeDeleteCategory(Category $category): bool
+    {
+        return tap($category, fn (Category $cat) => $cat->assignments()->delete())->delete();
+    }
+
+    public function categoriesQuery(): Builder
+    {
+        return Category::withCount('assignments')->newQuery();
+    }
+}

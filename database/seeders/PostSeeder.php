@@ -3,22 +3,19 @@
 namespace Database\Seeders;
 
 use App\Models\Post;
+use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 class PostSeeder extends Seeder
 {
-    public function run(): void
+    public function run(int $total): void
     {
-        $this->createPosts(50);
-    }
+        $this->task('Creating Posts', static function () use ($total): void {
+            $current = now();
 
-    protected function createPosts(int $total): Collection
-    {
-        \Livewire\invade($this->command)->components->task('Creating Posts', function () use ($total) {
             foreach (range(1, $total) as $_) {
-                Carbon::setTestNow(now()->subDays(random_int(1, 50 + $total)));
+                Carbon::setTestNow($current->clone()->subDays(random_int(1, 50 + $total)));
 
                 tap(random_int(0, 1), function (bool $shouldPublish) {
                     $factory = Post::factory();
@@ -29,9 +26,15 @@ class PostSeeder extends Seeder
 
                     $factory->create();
                 });
-            }
-        });
 
-        return Post::all();
+            }
+
+            Carbon::setTestNow($current);
+        });
+    }
+
+    public function task(string $description, Closure $task): void
+    {
+        \Livewire\invade($this->command)->components->task($description, $task);
     }
 }

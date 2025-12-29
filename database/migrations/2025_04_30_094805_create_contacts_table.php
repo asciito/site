@@ -1,9 +1,13 @@
-
 <?php
 
+use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -20,29 +24,42 @@ return new class extends Migration
         });
 
         Schema::table('messages', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\Contact::class)->after((new \App\Models\User)->getForeignKey())->nullable();
+            $table->foreignIdFor(Contact::class)->nullable();
         });
 
-        $users = \App\Models\User::with('messages')
-            ->whereNotIn('email', config('site.allowed_emails'))
-            ->get();
+        $allowedEmails = (array) config('site.allowed_emails', []);
 
-        foreach ($users as $user) {
-            $contact = \App\Models\Contact::create([
-                'name' => $user->name,
-                'email' => $user->email,
-            ]);
+        $usersQuery = DB::table('users');
 
-            foreach ($user->messages as $message) {
-                $message->update(['contact_id' => $contact->id]);
-            }
+        if (! empty($allowedEmails)) {
+            $usersQuery->whereNotIn('email', $allowedEmails);
         }
 
+        DB::table('contacts')->insertUsing(
+            ['name', 'email', 'created_at', 'updated_at'],
+            $usersQuery->select([
+                'name',
+                'email',
+                DB::raw('CURRENT_TIMESTAMP'),
+                DB::raw('CURRENT_TIMESTAMP'),
+            ])
+        );
+
+        DB::table('messages')
+            ->whereNotNull('user_id')
+            ->update([
+                'contact_id' => DB::raw('(SELECT c.id FROM contacts c JOIN users u ON u.email = c.email WHERE u.id = messages.user_id LIMIT 1)'),
+            ]);
+
         Schema::table('messages', function (Blueprint $table) {
-            $table->dropColumn((new \App\Models\User)->getForeignKey());
+            $table->dropColumn((new User)->getForeignKey());
         });
 
-        $users->each->delete();
+        $deleteUsersQuery = DB::table('users');
+        if (! empty($allowedEmails)) {
+            $deleteUsersQuery->whereNotIn('email', $allowedEmails);
+        }
+        $deleteUsersQuery->delete();
     }
 
     /**
@@ -51,25 +68,30 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\User::class)->after((new \App\Models\Contact)->getForeignKey())->nullable();
+            $table->foreignIdFor(User::class)->after((new Contact)->getForeignKey())->nullable();
         });
 
-        $contacts = \App\Models\Contact::with('messages')->get();
+        $passwordHash = Hash::make(Str::random(32));
 
-        foreach ($contacts as $contact) {
-            $user = \App\Models\User::create([
-                'name' => $contact->name,
-                'email' => $contact->email,
-                'password' => bcrypt(\Illuminate\Support\Str::random(32)),
+        DB::table('users')->insertUsing(
+            ['name', 'email', 'password', 'created_at', 'updated_at'],
+            DB::table('contacts')->select([
+                'name',
+                'email',
+                DB::raw("'$passwordHash'"),
+                DB::raw('CURRENT_TIMESTAMP'),
+                DB::raw('CURRENT_TIMESTAMP'),
+            ])
+        );
+
+        DB::table('messages')
+            ->whereNotNull('contact_id')
+            ->update([
+                'user_id' => DB::raw('(SELECT u.id FROM users u JOIN contacts c ON u.email = c.email WHERE c.id = messages.contact_id LIMIT 1)'),
             ]);
 
-            foreach ($contact->messages as $message) {
-                $message->update(['user_id' => $user->id]);
-            }
-        }
-
         Schema::table('messages', function (Blueprint $table) {
-            $table->dropColumn((new \App\Models\Contact)->getForeignKey());
+            $table->dropColumn((new Contact)->getForeignKey());
         });
 
         Schema::dropIfExists('contacts');

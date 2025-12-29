@@ -11,14 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('content')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        Schema::dropColumns('job_experiences', ['meta']);
     }
 
     /**
@@ -26,6 +19,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::table('job_experiences', function (Blueprint $table) {
+            $table->json('meta')->nullable();
+        });
     }
 };
