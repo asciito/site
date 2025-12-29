@@ -2,12 +2,8 @@
 
 use App\Models\JobExperience;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
-use Filament\Support\Colors\Color;
-use Filament\Support\Enums\Size;
 use Filament\Support\Icons\Heroicon;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Pluralizer;
 use Livewire\Attributes\Computed;
@@ -55,57 +51,40 @@ new class extends Component {
                     </div>
                 </div>
 
-                <section x-data="{ amIOpened: () => currentlyOpen == {{ $job->id }} }"> <!-- Content -->
-                    <div class="flex justify-between gap-x-2">
-                        <header class="grid gap-1">
-                            <h2 class="text-2xl font-semibold leading-6">{{ $job->title }}</h2>
+                <details name="job-experience" class="group"> <!-- Content -->
+                    <summary class="flex items-start justify-between gap-4 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-blue-600">
+                        <span class="grid gap-1">
+                            <span class="text-2xl font-semibold leading-6">{{ $job->title }}</span>
 
-                            <p class="text-base!">
+                            <span class="text-base!">
                                 <span>At</span>
 
                                 @if ($job->company_website)
-                                    <x-filament::link :href="$job->company_website" class="text-blue-600" target="_blank" rel="noopener noreferrer">
+                                    <x-filament::link :href="$job->company_website" class="text-blue-500 hover:text-blue-600" target="_blank" rel="noopener noreferrer">
                                         {{ $job->company }}
                                     </x-filament::link>
                                 @else
                                     <span>{{ $job->company }}</span>
                                 @endif
-                            </p>
+                            </span>
 
-                            <p class="text-sm text-dark-blue/60 leading-snug m-0">
+                            <span class="text-sm text-zinc-500 leading-snug m-0">
                                 <x-site::date-range
                                     :from="$job->start_date"
                                     :to="! $job->working_here ? $job->end_date : null"
                                     :empty-state-to="$job->working_here ? new HtmlString('<strong>Working Here®'. ($alreadyWorking  ? ' too' : '') .'</strong>') : null"
                                     :relative="! $job->working_here && $job->date_range_as_relative"
                                 />
-                            </p>
-                        </header>
+                            </span>
+                        </span>
 
-                        <div class="grid items-start">
-                            <x-site::button
-                                class="px-2! py-1!"
-                                x-bind:class="{ 'bg-harlequin-800/10!': amIOpened() }"
-                                :size="Size::ExtraSmall"
-                                @click.stop="showMe({{ $job->id }})"
-                                ::aria-label="
-                                    amIOpened()
-                                        ? 'Collapse details for {{ $job->title }}'
-                                        : 'Expand details for {{ $job->title }}'
-                                "
-                            >
-                                <template x-if="! amIOpened()">
-                                    <x-filament::icon class="text-zinc-900" :icon="Heroicon::ChevronRight"/>
-                                </template>
+                        <span class="relative mt-1 shrink-0 size-6" aria-controls="job-description-{{ $job->id }}">
+                            <span class="absolute inline-block w-6 h-[.1875rem] bg-zinc-900 origin-center top-1/2 group-hover:bg-dark-blue-200"></span>
+                            <span class="absolute inline-block w-6 h-[.1875rem] bg-zinc-900 origin-center top-1/2 group-hover:bg-dark-blue-200 group-open:bg-dark-blue-200 transition-transform ease-in duration-100 group-not-open:rotate-90 group-open:rotate-180"></span>
+                        </span>
+                    </summary>
 
-                                <template x-if="amIOpened()">
-                                    <x-filament::icon class="text-zinc-900" :icon="Heroicon::ChevronDown"/>
-                                </template>
-                            </x-site::button>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 space-y-6" x-cloak x-show="amIOpened()">
+                    <div id="job-description-{{ $job->id }}" class="mt-4 space-y-6">
                         <div class="content">
                             {{ RichContentRenderer::make($job->description) }}
                         </div>
@@ -116,13 +95,13 @@ new class extends Component {
 
                                 <ul class="flex flex-wrap gap-2">
                                     @foreach($job->categories as $tech)
-                                        <li class="text-xs uppercase shink-0 bg-dark-blue text-white px-2 py-1">{{ $tech->name }}</li>
+                                        <li class="text-xs uppercase shrink-0 bg-dark-blue text-white px-2 py-1">{{ $tech->name }}</li>
                                     @endforeach
                                 </ul>
                             </div>
                         @endif
                     </div>
-                </section>
+                </details>
             </div>
 
             @php($alreadyWorking = $alreadyWorking || $job->working_here)
