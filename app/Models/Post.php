@@ -200,7 +200,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
                     $marker = $counters[$level].'.';
                 }
 
-                return sprintf($baseTemplate, $indent, $marker, $title, str($title)->slug());
+                return sprintf($baseTemplate, $indent, $marker, $title, str(html_entity_decode($title))->stripTags()->slug());
             })->join("\n");
 
         return $toc ? str($toc)->markdown()->toHtmlString() : null;

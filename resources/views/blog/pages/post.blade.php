@@ -50,7 +50,17 @@
 
                 const headings = document.querySelectorAll('#content h2, #content h3, #content h4, #content h5, #content h6');
 
-                const slugify = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+                const slugify = text => {
+                    return text
+                        .trim()
+                        .replace(/\s+/g, ' ')
+                        .toLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .replace(/['’]/g, '')
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-+|-+$/g, '');
+                };
 
                 toc.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', event => {
