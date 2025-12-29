@@ -60,9 +60,9 @@ new class extends Component {
                                 <span>At</span>
 
                                 @if ($job->company_website)
-                                    <x-filament::link :href="$job->company_website" class="text-blue-500 hover:text-blue-600" target="_blank" rel="noopener noreferrer">
+                                    <a href="{{ $job->company_website }}" class="text-dark-blue-100 hover:text-dark-blue-400 active:text-dark-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">
                                         {{ $job->company }}
-                                    </x-filament::link>
+                                    </a>
                                 @else
                                     <span>{{ $job->company }}</span>
                                 @endif
