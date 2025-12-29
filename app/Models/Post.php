@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Status;
-use App\HtmlContent;
 use App\Models\Concerns\ModelStatus;
 use App\Settings\SiteSettings;
 use Closure;
@@ -66,18 +65,25 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
         'published_at',
     ];
 
-    public function getContent(bool $withTorchlight = true): string
+    public function getContent(bool $withTorchlight = true): HtmlString
     {
         $rawKey = $this->generateKey('content-raw');
 
         $raw = $this->rememberPostCache($rawKey, fn () => $this->getRawContent());
 
-        return $withTorchlight ? $this->applyTorchlight($raw) : $raw;
+        return new HtmlString($raw && $withTorchlight ? $this->applyTorchlight($raw) : $raw);
     }
 
     protected function applyTorchlight(string $content): string
     {
-        return (string) new HtmlContent($content);
+        return Str::replaceMatches(
+            '~<pre>\s*<code(?:\s+class="language-([^"]+)")?>(.*?)</code>\s*</pre>~s',
+            fn (array $matches) => view('site::torchlight', [
+                'content' => trim((string) $matches[2]),
+                'language' => $matches[1] ?? 'text',
+            ]),
+            $content
+        );
     }
 
     public function getRawContent(): string
@@ -94,14 +100,18 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
         $cacheKey = $this->generateKey('excerpt-'.md5($end));
 
         if (! config('site.cache.post')) {
-            return $this->extractExcerpt($this->getContent(withTorchlight: false), $end);
+            return $this->extractExcerpt($this->getContent(withTorchlight: false)->toHtml(), $end);
         }
 
-        return Cache::rememberForever($cacheKey, fn () => $this->extractExcerpt($this->getContent(withTorchlight: false), $end));
+        return Cache::rememberForever($cacheKey, fn () => $this->extractExcerpt($this->getContent(withTorchlight: false)->toHtml(), $end));
     }
 
     protected function extractExcerpt(string $content, string $end = '...'): string
     {
+        if (blank($content)) {
+            return '';
+        }
+
         $dom = new DOMDocument;
         libxml_use_internal_errors(true);
         $dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));

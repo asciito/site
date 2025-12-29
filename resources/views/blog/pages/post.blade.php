@@ -40,7 +40,7 @@
 
             <hr>
 
-            {!! $post->getContent() !!}
+            {{ $post->getContent() }}
         </div>
 
         @push('scripts')
