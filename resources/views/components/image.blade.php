@@ -17,5 +17,5 @@
     src="{{ $src }}"
     @isset($width) width="{{ $width }}" @endisset
     @isset($height) height="{{ $height }}" @endisset
-    {{ $attributes->merge(['w-full']) }}
+    {{ $attributes->merge(['class' => 'w-full']) }}
 />
