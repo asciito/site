@@ -19,7 +19,8 @@
         @vite('resources/css/filament.css')
     @endauth
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+    @vite('resources/css/app.css')
 </head>
 <body>
     <div
@@ -135,6 +136,10 @@
         @filamentScripts
     @endauth
 
+    @livewireScriptConfig
+
     @stack('scripts')
+
+    <script src="{{ Vite::asset('resources/js/app.js') }}" type="module"></script>
 </body>
 </html>

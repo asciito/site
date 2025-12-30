@@ -9,11 +9,7 @@
 
         <hr>
 
-        @if ($toc = $record->getTableOfContent(withLinks: false))
-            <h2>Table of Content</h2>
-
-            {!! $toc !!}
-        @endif
+        {{ $record->getTableOfContent(withLinks: false) }}
 
         <hr>
 
