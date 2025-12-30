@@ -9,6 +9,8 @@ use App\Models\Concerns\ModelStatus;
 use App\Settings\SiteSettings;
 use Closure;
 use Database\Factories\PostFactory;
+use Dom\HTMLDocument;
+use Dom\HTMLElement;
 use DOMDocument;
 use DOMElement;
 use Filament\Forms\Components\RichEditor\FileAttachmentProviders\SpatieMediaLibraryFileAttachmentProvider;
@@ -150,7 +152,8 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
         <time datetime="{$date->format('Y-m-d H:i:s')}">
             $message
         </time>
-        HTML) : $date;
+        HTML
+        ) : $date;
     }
 
     public function getDynamicSEOData(): SEOData
@@ -204,43 +207,88 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
             ->setLastModificationDate($this->updated_at);
     }
 
-    public function getTableOfContent(bool $withLinks = true, bool $unordered = true): ?HtmlString
+    public function getTableOfContent(bool $withLinks = true, bool $unordered = true, ?string $marker = null): ?HtmlString
     {
-        preg_match_all('~<(?<tag>h(?<size>[2-6]))[^>]*>(?<title>(?!\s*</\k<tag>>)[\s\S]*?)</\k<tag>>~', $this->content, $matches);
+        $content = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+        <head></head>
+        <body>{$this->getContent(withTorchlight: false)->toHtml()}</body>
+        </html>
+        HTML;
 
-        if (empty($matches['size']) || empty($matches['title'])) {
+        /** @var Collection<int, HtmlElement> $headings */
+        $headings = collect(HTMLDocument::createFromString($content)->querySelectorAll('h2, h2 ~ h3'));
+
+        if ($headings->isEmpty()) {
             return null;
         }
 
-        $counters = [];
-        $baseTemplate = '%s%s '.($withLinks ? '<a href="#%s" class="group"><span class="item-marker">→</span><span>%s</span></a>' : '**%s**');
+        /** @var HtmlElement $heading */
+        $heading = $headings->shift();
 
-        $toc = collect($matches['size'])
-            ->zip($matches['title'])
-            ->map(function (Collection $heading) use ($baseTemplate, &$counters, $unordered) {
-                [$size, $title] = $heading;
+        $toc = [
+            $heading->textContent => [],
+        ];
 
-                $level = (int) $size;
+        $headings->each(function (HtmlElement $element) use (&$toc, &$heading) {
+            if ($element->tagName === 'H2') {
+                $heading = $element;
+                $toc[$heading->textContent] = [];
+            } elseif ($element->tagName === 'H3') {
+                $toc[$heading->textContent][] = $element->textContent;
+            }
+        });
 
-                // Indent by 4 spaces per nesting level (Markdown convention)
-                $indent = str_repeat(' ', ($level - 2) * 4);
+        $listTag = $unordered ? 'ul' : 'ol';
 
-                if ($unordered) {
-                    $marker = '-';
-                } else {
-                    // Reset deeper levels when we come back up
-                    for ($l = $level + 1; $l <= 6; $l++) {
-                        unset($counters[$l]);
-                    }
+        return (static function (string $tag, array $toc) use ($withLinks, $marker): HtmlString {
+            ob_start(); ?>
+                <details id="toc" open>
+                    <summary id="toc-title" class="m-0">
+                        Table of Content
+                    </summary>
 
-                    $counters[$level] = ($counters[$level] ?? 0) + 1;
-                    $marker = $counters[$level].'.';
-                }
+                    <nav
+                        aria-labelledby="toc-title"
+                        <?php if (filled($marker)) { ?>
+                            class="group has-marker mt-6"
+                            style="--marker-url: url(<?= e($marker); ?>)"
+                        <?php } else { ?>
+                            class="group mt-6"
+                        <?php } ?>
+                    >
 
-                return sprintf($baseTemplate, $indent, $marker, str(html_entity_decode($title))->stripTags(), $title);
-            })->join("\n");
+                        <<?= $tag; ?> class="toc-list">
+                        <?php foreach ($toc as $heading => $subheadings) { ?>
+                            <li class="toc-item">
+                                <?php if ($withLinks) { ?>
+                                    <a href="#<?= $heading ?>"><?= e($heading); ?></a>
+                                <?php } else { ?>
+                                    <span><?= e($heading); ?></span>
+                                <?php } ?>
 
-        return $toc ? str($toc)->markdown()->toHtmlString() : null;
+                            <?php if (! empty($subheadings)) { ?>
+                                <<?= $tag; ?> class="toc-sublist toc-list">
+
+                                <?php foreach ($subheadings as $subheading) { ?>
+                                    <li class="toc-subitem toc-item">
+                                        <?php if ($withLinks) { ?>
+                                            <a href="#<?= $subheading ?>"><?= e($subheading); ?></a>
+                                        <?php } else { ?>
+                                            <span><?= e($subheading); ?></span>
+                                        <?php } ?>
+                                    </li>
+                                <?php } ?>
+                                </<?= $tag; ?>>
+                            <?php } ?>
+                            </li>
+                        <?php } ?>
+                        </<?= $tag; ?>>
+                    </nav>
+                </details>
+            <?php return new HtmlString(ob_get_clean());
+        })($listTag, $toc);
     }
 
     public function setUpRichContent(): void
