@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Status;
-use App\HtmlContent;
 use App\Models\Concerns\ModelStatus;
 use App\Settings\SiteSettings;
+use Closure;
 use Database\Factories\PostFactory;
 use DOMDocument;
 use DOMElement;
@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Override;
@@ -64,9 +65,30 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
         'published_at',
     ];
 
-    public function getContent(bool $withTorchlight = true): Htmlable
+    public function getContent(bool $withTorchlight = true): HtmlString
     {
-        return new HtmlContent($this->renderRichContent('content'), $withTorchlight);
+        $rawKey = $this->generateKey('content-raw');
+
+        $raw = $this->rememberPostCache($rawKey, fn () => $this->getRawContent());
+
+        return new HtmlString($raw && $withTorchlight ? $this->applyTorchlight($raw) : $raw);
+    }
+
+    protected function applyTorchlight(string $content): string
+    {
+        return Str::replaceMatches(
+            '~<pre>\s*<code(?:\s+class="language-([^"]+)")?>(.*?)</code>\s*</pre>~s',
+            fn (array $matches) => view('site::torchlight', [
+                'content' => trim((string) $matches[2]),
+                'language' => $matches[1] ?? 'text',
+            ]),
+            $content
+        );
+    }
+
+    public function getRawContent(): string
+    {
+        return $this->renderRichContent('content');
     }
 
     public function getExcerpt(string $end = '...'): string
@@ -75,15 +97,30 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
             return $this->excerpt;
         }
 
+        $cacheKey = $this->generateKey('excerpt-'.md5($end));
+
+        if (! config('site.cache.post')) {
+            return $this->extractExcerpt($this->getContent(withTorchlight: false)->toHtml(), $end);
+        }
+
+        return Cache::rememberForever($cacheKey, fn () => $this->extractExcerpt($this->getContent(withTorchlight: false)->toHtml(), $end));
+    }
+
+    protected function extractExcerpt(string $content, string $end = '...'): string
+    {
+        if (blank($content)) {
+            return '';
+        }
+
         $dom = new DOMDocument;
         libxml_use_internal_errors(true);
-        $dom->loadHTML(mb_convert_encoding($this->getContent(false)->toHtml(), 'HTML-ENTITIES', 'UTF-8'));
+        $dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
         libxml_clear_errors();
 
-        $text = collect($dom->getElementsByTagName('p'))
-            ->reduce(fn (string $text, DOMElement $p) => $text.' '.trim(strip_tags($p->textContent)), '');
+        $paragraphs = $dom->getElementsByTagName('p');
+        $textContent = collect($paragraphs)->reduce(fn (string $text, DOMElement $p) => $text.' '.trim(strip_tags($p->textContent)), '');
 
-        return (string) Str::of($text)->trim()->limit(255, $end);
+        return (string) Str::of($textContent)->trim()->limit(255, $end);
     }
 
     public function getDate(bool $asHtml = true): Htmlable|Carbon
@@ -214,5 +251,49 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
     protected static function newFactory(): PostFactory
     {
         return PostFactory::new();
+    }
+
+    /**
+     * Generate a unique key for caching rich content attributes.
+     *
+     * @internal
+     */
+    protected function rememberPostCache(string $key, Closure $callback): string
+    {
+        if (! config('site.cache.should_cache')) {
+            return (string) $callback();
+        }
+
+        $ttl = config('site.cache.ttl');
+
+        if (filled($ttl)) {
+            return (string) Cache::remember($key, $ttl, fn () => (string) $callback());
+        }
+
+        return (string) Cache::rememberForever($key, fn () => (string) $callback());
+    }
+
+    protected function generateKey(string $attribute): string
+    {
+        $id = $this->getKey() ?? 'new';
+
+        return 'post-'.$id.'-'.$attribute.'-v'.$this->updated_at->timestamp;
+    }
+
+    #[Override]
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        // Only warm caches when caching is enabled. Warming is safe in any environment.
+        if (! config('site.cache.should_cache')) {
+            return;
+        }
+
+        static::saved(function (Post $post) {
+            $post->getContent(withTorchlight: false);
+
+            $post->getExcerpt();
+        });
     }
 }
