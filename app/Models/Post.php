@@ -242,7 +242,7 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
 
         $listTag = $unordered ? 'ul' : 'ol';
 
-        return (static function (string $tag, array $toc) use ($withLinks, $marker): \Illuminate\Support\HtmlString {
+        return (static function (string $tag, array $toc) use ($withLinks, $marker): HtmlString {
             ob_start(); ?>
             <nav
                 id="toc"
