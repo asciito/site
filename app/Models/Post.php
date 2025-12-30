@@ -272,11 +272,13 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
 
                         <?php foreach ($subheadings as $subheading) { ?>
                             <li class="toc-subitem toc-item">
-                                <?php if ($withLinks) { ?>
-                                    <a href="#<?= $subheading ?>"><?= e($subheading); ?></a>
-                                <?php } else { ?>
-                                    <?= e($subheading); ?>
-                                <?php } ?>
+                                <p class="m-0">
+                                    <?php if ($withLinks) { ?>
+                                        <a href="#<?= $subheading ?>"><?= e($subheading); ?></a>
+                                    <?php } else { ?>
+                                        <?= e($subheading); ?>
+                                    <?php } ?>
+                                </p>
                             </li>
                         <?php } ?>
                         </<?= $tag; ?>>
