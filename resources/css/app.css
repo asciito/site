@@ -57,21 +57,19 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
+    *,
+        ::after,
+        ::before,
+        ::backdrop,
+        ::file-selector-button {
+        border-color: var(--color-gray-200, currentcolor);
+    }
 
-@layer base {
     html {
         @apply bg-slate-50 text-slate-800 font-mono;
     }
 
-    @supports (hanging-punctuation: first) and (font: -apple-system-body) and (-webkit-appearance: none) {
+    @supports (font: -apple-system-body) and (-webkit-appearance: none) {
         html, * {
             @apply selection:bg-harlequin;
 
@@ -113,28 +111,24 @@
             prose-ul:pl-5 prose-ol:pl-9
     }
 
-    #table-of-content {
-        @apply bg-slate-600/5 p-4 md:p-6;
-
-        & nav > ul:first-of-type {
-            padding-left: 0;
+    #toc {
+        #toc-title {
+            @apply text-center text-2xl mb-4 mt-0;
         }
 
-        ul {
-            @apply grid m-0 gap-2 mt-2;
+        .toc-list {
+            @apply grid m-0 gap-1 mt-1 pl-5 group-[.has-marker]:list-image-(--marker-url) marker:text-2xl;
 
-            li {
-                @apply list-none m-0 p-0;
+            .toc-item {
+                @apply m-0 p-0;
 
-                a {
-                    @apply m-0 grid grid-cols-[auto_1fr] gap-2 no-underline;
+                > p {
+                    @apply pl-1;
 
-                    .item-marker {
-                        @apply text-lg group-hover:text-inherit text-zinc-900/20 no-underline;
-                    }
-
-                    & > :not(.item-marker) {
-                        @apply underline underline-offset-4 decoration-1
+                    a {
+                        @apply  grid grid-cols-[auto_1fr] gap-1
+                                font-medium
+                                no-underline underline-offset-4 hover:underline hover:text-dark-blue-400 visited:text-inherit;
                     }
                 }
             }
