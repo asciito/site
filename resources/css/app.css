@@ -113,7 +113,7 @@
 
     #toc {
         #toc-title {
-            @apply text-center text-2xl mb-4 mt-0;
+            @apply text-center text-2xl mb-4 mt-0 select-none m-0;
         }
 
         .toc-list {

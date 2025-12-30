@@ -244,45 +244,49 @@ class Post extends Model implements HasMedia, HasRichContent, Sitemapable
 
         return (static function (string $tag, array $toc) use ($withLinks, $marker): HtmlString {
             ob_start(); ?>
-            <nav
-                id="toc"
-                aria-labelledby="toc-title"
-                <?php if (filled($marker)) { ?>
-                    class="group has-marker"
-                    style="--marker-url: url(<?= e($marker); ?>)"
-                <?php } else { ?>
-                    class="group"
-                <?php } ?>
-            >
-                <h2 id="toc-title">Table of Content</h2>
+                <details id="toc" open>
+                    <summary id="toc-title" class="m-0">
+                        Table of Content
+                    </summary>
 
-                <<?= $tag; ?> class="toc-list">
-                <?php foreach ($toc as $heading => $subheadings) { ?>
-                    <li class="toc-item">
-                        <?php if ($withLinks) { ?>
-                            <a href="#<?= $heading ?>"><?= e($heading); ?></a>
+                    <nav
+                        aria-labelledby="toc-title"
+                        <?php if (filled($marker)) { ?>
+                            class="group has-marker mt-6"
+                            style="--marker-url: url(<?= e($marker); ?>)"
                         <?php } else { ?>
-                            <span><?= e($heading); ?></span>
+                            class="group mt-6"
                         <?php } ?>
+                    >
 
-                    <?php if (! empty($subheadings)) { ?>
-                        <<?= $tag; ?> class="toc-sublist toc-list">
-
-                        <?php foreach ($subheadings as $subheading) { ?>
-                            <li class="toc-subitem toc-item">
+                        <<?= $tag; ?> class="toc-list">
+                        <?php foreach ($toc as $heading => $subheadings) { ?>
+                            <li class="toc-item">
                                 <?php if ($withLinks) { ?>
-                                    <a href="#<?= $subheading ?>"><?= e($subheading); ?></a>
+                                    <a href="#<?= $heading ?>"><?= e($heading); ?></a>
                                 <?php } else { ?>
-                                    <span><?= e($subheading); ?></span>
+                                    <span><?= e($heading); ?></span>
                                 <?php } ?>
+
+                            <?php if (! empty($subheadings)) { ?>
+                                <<?= $tag; ?> class="toc-sublist toc-list">
+
+                                <?php foreach ($subheadings as $subheading) { ?>
+                                    <li class="toc-subitem toc-item">
+                                        <?php if ($withLinks) { ?>
+                                            <a href="#<?= $subheading ?>"><?= e($subheading); ?></a>
+                                        <?php } else { ?>
+                                            <span><?= e($subheading); ?></span>
+                                        <?php } ?>
+                                    </li>
+                                <?php } ?>
+                                </<?= $tag; ?>>
+                            <?php } ?>
                             </li>
                         <?php } ?>
                         </<?= $tag; ?>>
-                    <?php } ?>
-                    </li>
-                <?php } ?>
-                </<?= $tag; ?>>
-                </nav>
+                    </nav>
+                </details>
             <?php return new HtmlString(ob_get_clean());
         })($listTag, $toc);
     }
