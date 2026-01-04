@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/filament.css',
                 'resources/css/app.css',
+                'resources/css/print-experience.css',
                 'resources/js/app.js',
             ],
             refresh: true,

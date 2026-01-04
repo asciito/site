@@ -3,14 +3,14 @@
 <header {{ $attributes->class(["border-b-2 border-slate-400"]) }}>
     <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto">
 
-        <div class="relative grid grid-cols-[minmax(5rem,15rem)_1fr_minmax(5rem,15rem)] items-center">
+        <div class="not-print:relative grid grid-cols-[minmax(5rem,15rem)_1fr_minmax(5rem,15rem)] items-center">
             <div id="brand" class="p-4">
                 <a href="/" class="uppercase text-3xl md:text-4xl">
                     <span>ASCII</span><span class="text-[rgba(51,255,51,1.0)]">.</span><span class="text-slate-500/80">TO</span>
                 </a>
             </div>
 
-            <div class="md:grid md:grid-cols-subgrid col-span-2 flex justify-end items-center p-4" x-data="{
+            <div class="md:grid md:grid-cols-subgrid col-span-2 flex justify-end items-center p-4 print:hidden" x-data="{
                 toggle: () => {
                     $refs.nav.classList.toggle('hidden');
                 }
@@ -21,7 +21,7 @@
                     <span class="block w-10 h-1 bg-dark-blue-600"></span>
                 </div>
 
-                <div x-ref="nav" class="md:grid md:grid-cols-subgrid md:col-span-2 items-center hidden absolute z-100 md:static top-full left-0 bg-slate-50 p-4 md:p-0 md:bg-transparent w-full md:justify-between shadow-md md:shadow-none">
+                <div x-ref="nav" class="md:grid md:grid-cols-subgrid md:col-span-2 items-center hidden absolute z-100 md:static top-full left-0 bg-slate-50 p-4 md:p-0 md:bg-transparent w-full md:justify-between shadow-md md:shadow-none print:hidden">
                     <nav id="menu" class="p-4 md:block">
                         <ol class="flex flex-col md:flex-row md:flex-wrap justify-center items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 text-md lg:text-xl">
                             <li>

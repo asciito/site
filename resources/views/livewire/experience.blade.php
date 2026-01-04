@@ -68,8 +68,8 @@ new class extends Component {
         @php($alreadyWorking = false)
 
         @forelse($this->experience as $job)
-            <div wire:key="{{ $job->id }}" class="grid grid-cols-[3rem_1fr] gap-3 group"> <!-- Main container -->
-                <div class="flex flex-col items-center"> <!-- Connector -->
+            <div wire:key="{{ $job->id }}" class="grid grid-cols-[3rem_1fr] print:grid-cols-1 gap-3 group"> <!-- Main container -->
+                <div class="print:hidden flex flex-col items-center"> <!-- Connector -->
                     <div> <!-- Icon -->
                         <div class="bg-harlequin size-12 grid place-content-center">
                             {{ generate_icon_html(Heroicon::Briefcase, attributes: new ComponentAttributeBag(['class' => 'text-zinc-900 size-6'])) }}
@@ -84,12 +84,11 @@ new class extends Component {
                 </div>
 
                 <details name="job-experience" class="group"> <!-- Content -->
-                    <summary
-                        class="flex items-start justify-between gap-4 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-blue-600">
+                    <summary class="flex items-start justify-between gap-4 cursor-pointer select-none outline-none overflow-visible print:overflow-visible focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-blue-600">
                         <span class="grid gap-1">
-                            <span class="text-2xl font-semibold leading-6">{{ $job->title }}</span>
+                            <span class="text-2xl font-semibold leading-6 print:leading-snug print:pb-[0.08em]">{{ $job->title }}</span>
 
-                            <span class="text-base!">
+                            <span class="text-base! print:leading-normal print:pb-[0.04em]">
                                 <span>At</span>
 
                                 @if ($job->company_website)
@@ -103,7 +102,7 @@ new class extends Component {
                                 @endif
                             </span>
 
-                            <span class="text-sm text-zinc-500 leading-snug m-0">
+                            <span class="text-sm text-zinc-500 leading-snug print:leading-normal print:pb-[0.08em] m-0">
                                 <x-site::date-range
                                     :from="$job->start_date"
                                     :to="! $job->working_here ? $job->end_date : null"
@@ -132,7 +131,7 @@ new class extends Component {
 
                                 <ul class="flex flex-wrap gap-2">
                                     @foreach($job->categories as $tech)
-                                        <li class="text-xs uppercase shrink-0 bg-dark-blue text-white px-2 py-1">{{ $tech->name }}</li>
+                                        <li class="text-xs uppercase shrink-0 bg-dark-blue text-white print:text-zinc-800 px-2 py-1">{{ $tech->name }}</li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -151,3 +150,39 @@ new class extends Component {
         @endforelse
     </div>
 </div>
+
+@script
+    <script>
+        window.addEventListener('beforeprint', () => {
+            // Remove temporary all the CSS applied to the page
+            document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
+                link.setAttribute('data-href', link.getAttribute('href'));
+                link.removeAttribute('href');
+            });
+
+            // Apply only the print CSS
+            const printStylesheet = document.createElement('link');
+            printStylesheet.setAttribute('id', 'print-stylesheet');
+            printStylesheet.setAttribute('rel', 'stylesheet');
+            printStylesheet.setAttribute('href', '{{ \Illuminate\Support\Facades\Vite::asset('resources/css/print-experience.css') }}');
+
+            document.head.appendChild(printStylesheet);
+        });
+
+        // Restore the CSS after printing
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
+                link.setAttribute('href', link.getAttribute('data-href'));
+                link.removeAttribute('data-href');
+            });
+
+            // Remove the print CSS
+            const printStylesheet = document.getElementById('print-stylesheet');
+
+            if (printStylesheet) {
+                printStylesheet.remove();
+            }
+        });
+
+    </script>
+@endscript
