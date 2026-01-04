@@ -34,6 +34,36 @@ new class extends Component {
                 this.currentlyOpen = id === this.currentlyOpen ? null : id;
             }
         }"
+        x-init="
+            let detailsName = null;
+            const detailsList = document.querySelectorAll('[name=job-experience]');
+
+            const toggle = (details) => {
+                /**
+                 * The `name` attribute behaves like the `radio` input so only one can be open at a time, and we want
+                 * to have all open when printing, so we temporarily remove it before toggling the `open` attribute.
+                 */
+                if (detailsName) {
+                    details.setAttribute('name', detailsName);
+                } else {
+                    details.removeAttribute('name');
+                }
+
+                details.toggleAttribute('open');
+            };
+
+            window.addEventListener('beforeprint', () => {
+                detailsList.forEach(toggle);
+
+                detailsName = detailsList[0].getAttribute('name');
+            });
+
+            window.addEventListener('afterprint', () => {
+                detailsList.forEach(toggle);
+
+                detailsName = null;
+            });
+        "
     >
         @php($alreadyWorking = false)
 
