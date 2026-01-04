@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0e26c1af7decfd4ffb569626b6851fd",
+    "content-hash": "2200929a9705e60852a85c9fe304ca34",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -740,16 +740,16 @@
         },
         {
             "name": "coyotito/laravel-settings",
-            "version": "v0.1.2",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/coyotito-mx/laravel-settings.git",
-                "reference": "c8f61a6f5f6665172c726d1a3c2858a2184eabcb"
+                "reference": "d0a9bff77e24b596590c6d108bcdf80eac585e72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/coyotito-mx/laravel-settings/zipball/c8f61a6f5f6665172c726d1a3c2858a2184eabcb",
-                "reference": "c8f61a6f5f6665172c726d1a3c2858a2184eabcb",
+                "url": "https://api.github.com/repos/coyotito-mx/laravel-settings/zipball/d0a9bff77e24b596590c6d108bcdf80eac585e72",
+                "reference": "d0a9bff77e24b596590c6d108bcdf80eac585e72",
                 "shasum": ""
             },
             "require": {
@@ -786,9 +786,9 @@
             "description": "add settings to your site",
             "support": {
                 "issues": "https://github.com/coyotito-mx/laravel-settings/issues",
-                "source": "https://github.com/coyotito-mx/laravel-settings/tree/v0.1.2"
+                "source": "https://github.com/coyotito-mx/laravel-settings/tree/v0.2.0"
             },
-            "time": "2025-12-21T03:39:50+00:00"
+            "time": "2026-01-04T18:28:38+00:00"
         },
         {
             "name": "danharrin/date-format-converter",
