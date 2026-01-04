@@ -37,8 +37,8 @@ class WebtoolsPanelProvider extends PanelProvider
             ->brandName(fn (SiteSettings $settings) => $settings->name)
             ->profile(ProfilePage::class)
             ->userMenuItems([
-                Action::make('settings-page')
-                    ->label('Settings')
+                Action::make('config-page')
+                    ->label(__('Config'))
                     ->url(fn () => Configuration::getUrl())
                     ->icon(Configuration::getNavigationIcon()),
             ])
