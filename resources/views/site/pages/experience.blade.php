@@ -14,7 +14,7 @@
 
         <p>
             Are you HR, or just someone curious about my professional journey?
-            Take a look around, download my résumé, and <x-filament::link :href="route('contact')" class="text-blue-700"><strong>Contact Me</strong></x-filament::link>
+            Take a look around, download my résumé, and <a href="{{ route('contact') }}" class="text-dark-blue-100 hover:text-dark-blue-400"><strong>Contact Me</strong></a>
             — I’d be happy to chat to collaborate and discuss your next project 😉
         </p>
     </div>
