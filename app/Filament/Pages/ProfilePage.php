@@ -179,7 +179,7 @@ class ProfilePage extends EditProfile
                 ->hiddenLabel()
                 ->collapsed()
                 ->collapsible()
-                ->itemLabel(function (array $state): null|string|HtmlString {
+                ->itemLabel(static function (array $state): null|string|HtmlString {
                     $title = $state['title'] ?? null;
                     $company = $state['company'] ?? null;
                     $company_website = $state['company_website'] ?? null;
@@ -187,8 +187,8 @@ class ProfilePage extends EditProfile
                     if ($title && $company) {
                         if ($company_website && filter_var($company_website, FILTER_VALIDATE_URL)) {
                             $company = view('filament::components.link', [
-                                'url' => $company_website,
-                                'slot' => $company,
+                                'url' => e($company_website),
+                                'slot' => e($company),
                             ]);
                         } else {
                             $company = e($company);
