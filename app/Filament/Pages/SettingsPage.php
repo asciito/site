@@ -46,7 +46,7 @@ abstract class SettingsPage extends Page
     #[Override]
     public function getTitle(): string|Htmlable
     {
-        return static::$title ?? 'Settings '.Str::headline($this->settings()->group);
+        return static::$title ?? 'Settings '.Str::headline($this->settings()::getGroup());
     }
 
     public function mount(): void

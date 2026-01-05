@@ -1,52 +1,10 @@
 @import 'tailwindcss';
+@import 'base.css';
 
 @plugin '@tailwindcss/typography';
 
 @source '../views/**/*.blade.php';
 @source '../../storage/framework/views/*.php';
-
-@theme {
-  --font-sans:
-    Figtree, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-
-  --color-harlequin-50: #ebffeb;
-  --color-harlequin-100: #d6ffd6;
-  --color-harlequin-200: #adffad;
-  --color-harlequin-300: #85ff85;
-  --color-harlequin-400: #5cff5c;
-  --color-harlequin-500: #33ff33;
-  --color-harlequin-600: #00fa00;
-  --color-harlequin-700: #00c200;
-  --color-harlequin-800: #008a00;
-  --color-harlequin-900: #005200;
-  --color-harlequin-950: #003600;
-  --color-harlequin: #33ff33;
-
-  --color-dark-blue-50: #6363ff;
-  --color-dark-blue-100: #4e4eff;
-  --color-dark-blue-200: #2525ff;
-  --color-dark-blue-300: #0000fc;
-  --color-dark-blue-400: #0000d3;
-  --color-dark-blue-500: #0000aa;
-  --color-dark-blue-600: #000072;
-  --color-dark-blue-700: #00003a;
-  --color-dark-blue-800: #000002;
-  --color-dark-blue-900: #000000;
-  --color-dark-blue-950: #000000;
-  --color-dark-blue: #0000aa;
-
-  --animate-fade: fadeIn 0.2s ease-in-out;
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-}
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
@@ -105,7 +63,12 @@
             prose-a:font-semibold prose-a:underline-offset-2 prose-a:hover:text-dark-blue-200 prose-a:visited:text-dark-blue
 
             /** blockquote **/
-            prose-blockquote:border-s-dark-blue/50 prose-blockquote:text-slate-800/50
+            prose-blockquote:bg-slate-100 prose-blockquote:p-4
+            prose-blockquote:border-s-dark-blue-100 prose-blockquote:text-slate-800
+            prose-blockquote:[&>p]:m-0
+            prose-blockquote:[&>p]:before:content-['“'] prose-blockquote:[&>p]:after:content-['”']
+            prose-blockquote:[&>p]:before:text-2xl prose-blockquote:[&>p]:after:text-2xl
+            prose-blockquote:[&>p]:before:font-black prose-blockquote:[&>p]:after:font-black
 
             /** (un)ordered list **/
             prose-ul:pl-5 prose-ol:pl-9
