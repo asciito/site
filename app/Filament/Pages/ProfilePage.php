@@ -22,6 +22,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -186,9 +187,13 @@ class ProfilePage extends EditProfile
 
                     if ($title && $company) {
                         if ($company_website && filter_var($company_website, FILTER_VALIDATE_URL)) {
-                            $company = view('filament::components.link', [
+                            $company = Blade::render(<<<'HTML'
+                                <x-filament::link :href="$url" @click.stop="\$event.target.click" target="_blank">
+                                    {{ $text }}
+                                </x-filament::link>
+                            HTML, [
                                 'url' => e($company_website),
-                                'slot' => e($company),
+                                'text' => e($company),
                             ]);
                         } else {
                             $company = e($company);
