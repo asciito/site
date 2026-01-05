@@ -1,8 +1,10 @@
 @php
+    use Filament\Forms\Components\RichEditor\RichContentRenderer;
     use Illuminate\Support\Facades\Storage;
+    use RalphJSmit\Laravel\SEO\Support\SEOData;
     use function Coyotito\LaravelSettings\Helpers\settings;
 
-    $seoData = new \RalphJSmit\Laravel\SEO\Support\SEOData(
+    $seoData = new SEOData(
         title: settings('name'),
         description: settings('description'),
         image: settings('image') ? Storage::disk('public')->url(settings('image')) : null,
@@ -13,7 +15,7 @@
     <header class="block text-center space-y-4 mb-8">
         <div class="content">
             @if ($introduction = $user?->introduction)
-                {!! str($introduction)->markdown()->toHtmlString() !!}
+                {{ RichContentRenderer::make($introduction) }}
             @else
                 <p>There's no introduction available</p>
             @endif
@@ -37,7 +39,7 @@
 
         <div class="content">
             @if ($description = $user?->description)
-                {!! str($description)->markdown()->sanitizeHtml() !!}
+                {{ RichContentRenderer::make($description) }}
             @else
                 <p class="text-center">There's no description available</p>
             @endif
