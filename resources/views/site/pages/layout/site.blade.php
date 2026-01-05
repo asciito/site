@@ -118,6 +118,7 @@
                 }
             }
         }"
+            x-cloak
             x-show="visible"
             x-transition
             @scroll.window.throttle.25ms="handleScroll"
