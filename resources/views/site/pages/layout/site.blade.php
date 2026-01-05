@@ -24,7 +24,7 @@
 </head>
 <body>
     <div
-        x-bind:class="{ 'sticky top-0 z-100 bg-white/50 backdrop-blur-md animate-fade': isSticky }"
+        x-bind:class="{ 'not-print:sticky not-print:top-0 not-print:z-100 not-print:bg-white/50 not-print:backdrop-blur-md not-print:animate-fade': isSticky }"
         x-data="{
             isSticky: false,
             getScrollPosition: () => document.body.scrollTop || document.documentElement.scrollTop,
@@ -53,7 +53,7 @@
         @endif
     </div>
 
-    <main @class(["relative", "border-b-2 border-slate-400" => $showFooter])>
+    <main @class(["not-print:relative", "border-b-2 border-slate-400" => $showFooter])>
         <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto my-10 p-4">
             <div class="max-w-3xl mx-auto">
                 {{ $slot }}
@@ -63,7 +63,7 @@
 
     @if($showFooter)
         <footer>
-            <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto flex flex-col justify-between md:flex-row items-center px-4 py-8 gap-4">
+            <div class="w-full md:max-w-5xl lg:max-w-7xl mx-auto flex flex-col not-print:justify-between print:justify-center md:flex-row items-center px-4 py-8 gap-4">
                 <ul class="flex justify-center space-x-4">
                     <li class="w-6">
                         <a href="https://github.com/{{ settings('github_handler') }}" target="_blank">
@@ -94,12 +94,12 @@
                     </li>
                 </ul>
 
-                <ol class="flex gap-4 text-sm">
+                <ol class="flex gap-4 text-sm print:hidden">
                     <li><a href="{{ route('terms') }}" class="font-semibold underline underline-offset-2 hover:text-dark-blue-200 visited:text-dark-blue">Terms of Use</a></li>
                     <li><a href="{{ route('privacy') }}" class="font-semibold underline underline-offset-2 hover:text-dark-blue-200 visited:text-dark-blue">Privacy Policy</a></li>
                 </ol>
 
-                <div>
+                <div class="print:hidden">
                     <livewire:download-resume/>
                 </div>
             </div>
@@ -121,7 +121,7 @@
             x-show="visible"
             x-transition
             @scroll.window.throttle.25ms="handleScroll"
-            class="fixed bottom-5 right-5 h-10 w-10 drop-shadow-sm">
+            class="fixed bottom-5 right-5 h-10 w-10 drop-shadow-sm print:hidden">
             <x-site::button
                 @click="window.scroll({top: 0, behavior: 'smooth'})"
                 class="relative rounded-full h-10 w-10 p-0!"

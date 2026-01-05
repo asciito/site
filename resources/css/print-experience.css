@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@media print {
+    body {
+        @apply bg-white text-black;
+    }
+}
