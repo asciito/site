@@ -53,9 +53,11 @@ new class extends Component {
             };
 
             window.addEventListener('beforeprint', () => {
+                const tempDetailsName = detailsList[0].getAttribute('name');
+
                 detailsList.forEach(toggle);
 
-                detailsName = detailsList[0].getAttribute('name');
+                detailsName = tempDetailsName;
             });
 
             window.addEventListener('afterprint', () => {
