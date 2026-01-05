@@ -140,6 +140,6 @@
 
     @stack('scripts')
 
-    <script src="{{ Vite::asset('resources/js/app.js') }}" type="module"></script>
+    <script defer src="{{ Vite::asset('resources/js/app.js') }}" type="module"></script>
 </body>
 </html>
