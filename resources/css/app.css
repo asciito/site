@@ -105,7 +105,12 @@
             prose-a:font-semibold prose-a:underline-offset-2 prose-a:hover:text-dark-blue-200 prose-a:visited:text-dark-blue
 
             /** blockquote **/
-            prose-blockquote:border-s-dark-blue/50 prose-blockquote:text-slate-800/50
+            prose-blockquote:bg-slate-100 prose-blockquote:p-4
+            prose-blockquote:border-s-dark-blue-100 prose-blockquote:text-slate-800
+            prose-blockquote:[&>p]:m-0
+            prose-blockquote:[&>p]:before:content-['“'] prose-blockquote:[&>p]:after:content-['”']
+            prose-blockquote:[&>p]:before:text-2xl prose-blockquote:[&>p]:after:text-2xl
+            prose-blockquote:[&>p]:before:font-black prose-blockquote:[&>p]:after:font-black
 
             /** (un)ordered list **/
             prose-ul:pl-5 prose-ol:pl-9
