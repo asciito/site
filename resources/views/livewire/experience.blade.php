@@ -25,7 +25,7 @@ new class extends Component {
     }
 }; ?>
 
-<div class="grid gap-10">
+<div id="work-experience" class="grid gap-10">
     <div
         class="grid grid-cols-1 gap-12"
         x-data="{
@@ -70,7 +70,7 @@ new class extends Component {
         @php($alreadyWorking = false)
 
         @forelse($this->experience as $job)
-            <div wire:key="{{ $job->id }}" class="grid grid-cols-[3rem_1fr] print:grid-cols-1 gap-3 group"> <!-- Main container -->
+            <div wire:key="{{ $job->id }}" class="grid grid-cols-[3rem_1fr] print:grid-cols-1 gap-3 group job-experience"> <!-- Main container -->
                 <div class="print:hidden flex flex-col items-center"> <!-- Connector -->
                     <div> <!-- Icon -->
                         <div class="bg-harlequin size-12 grid place-content-center">
@@ -131,9 +131,9 @@ new class extends Component {
                             <div class="space-y-2">
                                 <h3 class="font-semibold">Technologies</h3>
 
-                                <ul class="flex flex-wrap gap-2">
+                                <ul class="technologies flex flex-wrap gap-2">
                                     @foreach($job->categories as $tech)
-                                        <li class="text-xs uppercase shrink-0 bg-dark-blue text-white print:text-zinc-800 px-2 py-1">{{ $tech->name }}</li>
+                                        <li class="technology text-xs uppercase shrink-0 bg-dark-blue text-white print:text-zinc-800 px-2 py-1">{{ $tech->name }}</li>
                                     @endforeach
                                 </ul>
                             </div>

@@ -1,9 +1,24 @@
 @import 'tailwindcss';
-
-@plugin '@tailwindcss/typography';
+@import 'base.css';
 
 @media print {
-    body {
-        @apply bg-white text-black;
+    @layer base {
+        body {
+            @apply bg-white text-black;
+        }
+
+        main a {
+            @apply text-harlequin-800 no-underline;
+        }
+    }
+
+    .job-experience {
+        .technologies {
+            @apply flex space-x-2;
+
+            .technology {
+                @apply text-sm text-blue-600 font-black p-0 before:content-['‧'] before:mr-1;
+            }
+        }
     }
 }
