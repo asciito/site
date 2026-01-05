@@ -1,0 +1,42 @@
+@plugin '@tailwindcss/typography';
+
+@theme {
+    --font-sans: Figtree, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-harlequin-50: #ebffeb;
+    --color-harlequin-100: #d6ffd6;
+    --color-harlequin-200: #adffad;
+    --color-harlequin-300: #85ff85;
+    --color-harlequin-400: #5cff5c;
+    --color-harlequin-500: #33ff33;
+    --color-harlequin-600: #00fa00;
+    --color-harlequin-700: #00c200;
+    --color-harlequin-800: #008a00;
+    --color-harlequin-900: #005200;
+    --color-harlequin-950: #003600;
+    --color-harlequin: #33ff33;
+
+    --color-dark-blue-50: #6363ff;
+    --color-dark-blue-100: #4e4eff;
+    --color-dark-blue-200: #2525ff;
+    --color-dark-blue-300: #0000fc;
+    --color-dark-blue-400: #0000d3;
+    --color-dark-blue-500: #0000aa;
+    --color-dark-blue-600: #000072;
+    --color-dark-blue-700: #00003a;
+    --color-dark-blue-800: #000002;
+    --color-dark-blue-900: #000000;
+    --color-dark-blue-950: #000000;
+    --color-dark-blue: #0000aa;
+
+    --animate-fade: fadeIn 0.2s ease-in-out;
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+}
