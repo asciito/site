@@ -22,7 +22,9 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -178,7 +180,33 @@ class ProfilePage extends EditProfile
                 ->hiddenLabel()
                 ->collapsed()
                 ->collapsible()
-                ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                ->itemLabel(static function (array $state): null|string|HtmlString {
+                    $title = $state['title'] ?? null;
+                    $company = $state['company'] ?? null;
+                    $company_website = $state['company_website'] ?? null;
+
+                    if ($title && $company) {
+                        if ($company_website && filter_var($company_website, FILTER_VALIDATE_URL)) {
+                            $company = Blade::render(<<<'HTML'
+                                <x-filament::link :href="$url" @click.stop="\$event.target.click" target="_blank">
+                                    {{ $text }}
+                                </x-filament::link>
+                            HTML, [
+                                'url' => e($company_website),
+                                'text' => e($company),
+                            ]);
+                        } else {
+                            $company = e($company);
+                        }
+
+                        $label = "$title @ $company";
+
+                        return new HtmlString($label);
+                    }
+
+                    return $title;
+                })
+                ->live(debounce: 350)
                 ->reorderable()
                 ->orderColumn('order')
                 ->schema([
