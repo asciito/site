@@ -118,6 +118,7 @@
                 }
             }
         }"
+            x-cloak
             x-show="visible"
             x-transition
             @scroll.window.throttle.25ms="handleScroll"
@@ -140,6 +141,6 @@
 
     @stack('scripts')
 
-    <script src="{{ Vite::asset('resources/js/app.js') }}" type="module"></script>
+    <script defer src="{{ Vite::asset('resources/js/app.js') }}" type="module"></script>
 </body>
 </html>
