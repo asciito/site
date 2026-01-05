@@ -24,7 +24,7 @@
 </head>
 <body>
     <div
-        x-bind:class="{ 'sticky top-0 z-100 bg-white/50 backdrop-blur-md animate-fade': isSticky }"
+        x-bind:class="{ 'not-print:sticky not-print:top-0 not-print:z-100 not-print:bg-white/50 not-print:backdrop-blur-md not-print:animate-fade': isSticky }"
         x-data="{
             isSticky: false,
             getScrollPosition: () => document.body.scrollTop || document.documentElement.scrollTop,
